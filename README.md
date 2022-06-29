@@ -17,30 +17,23 @@ limitations under the License.
 
 [<img src="https://geode.apache.org/img/Apache_Geode_logo.png" align="center"/>](http://geode.apache.org)
 
-[![Build Status](https://api.travis-ci.org/apache/geode-examples.svg?branch=develop)](https://travis-ci.org.apache.geode_examples) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+# VMware GemFire examples
 
-# Apache Geode examples
+This is the home of VMware GemFire examples.
 
-This is the home of Apache Geode examples that are bundled with the project.
-Contributions<sup>[2]</sup> and corrections are welcome. Please talk to us
-about your suggestions at [dev@geode.apache.org](mailto:dev@geode.apache.org)
-or submit a [pull request](https://github.com/apache/geode/pull/new/develop).
+# VMware GemFire Version
 
-# Apache Geode Version
+VMware GemFire client code must link against the _same or older_ version of VMware GemFire as the VMware GemFire server it will connect to.
 
-Geode client code must link against the _same or older_ version of Geode as the Geode server it will connect to.
-
-Add `-PgeodeRepositoryUrl= -PgeodeVersion=1.12.0` to your `./gradlew` command to specify which Geode client libraries to link, otherwise the default may be too new.
-
-If the latest examples don't compile with your preferred version of Geode, use `git tag` to list the available versions, then check out a suitable tag e.g. `git checkout rel/v1.12.0`.
+Add `-PgeodeRepositoryUrl=https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire -PgeodeVersion=9.10.15` to your `./gradlew` command to specify which VMware GemFire client libraries to link, otherwise the default may be too new.
 
 ## Running an example
 
-The gradle build will automatically download and install a Geode release in the
+The gradle build will automatically download and install a VMware GemFire release in the
 `build` directory. You can run an example with the following gradle targets:
 
 * `build` - compiles the example and runs unit tests
-* `start` - initializes the Geode cluster
+* `start` - initializes the VMware GemFire cluster
 * `run` - runs the example Application
 * `stop` - shuts down the cluster
 * `runAll` - invokes start, run, stop
@@ -52,15 +45,11 @@ usage:
     $ ./gradlew :replicated:run
     $ ./gradlew :replicated:stop
     $ ./gradlew runAll
-    $ ./gradlew runAll -PgeodeRepositoryUrl= -PgeodeVersion=1.12.0
+    $ ./gradlew runAll -PgeodeRepositoryUrl=https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire -PgeodeVersion=9.10.15
 
 ## Catalog of examples
 
-The following sections call out ready-made examples or new examples that could
-be built. You may want to start your journey with the [Apache Geode in 15
-minutes or
-Less](https://geode.apache.org/docs/guide/13/getting_started/15_minute_quickstart_gfsh.html)
-tutorial.
+The following sections call out ready-made examples.  You may want to start your journey with the [VMware GemFire Documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/9.15/tgf/GUID-about_gemfire.html).
 
 ### Basics
 
@@ -87,7 +76,6 @@ tutorial.
 *  [Overflow](overflow/README.md)
 *  [Security & SSL](clientSecurity/README.md)
 *  [Colocation](colocation/README.md)
-*  Off-heap
 *  [Rest](rest/README.md)
 
 ### Advanced
@@ -96,76 +84,4 @@ tutorial.
 *  [WAN Gateway](wan/README.md)
 *  [Durable Messaging for Subscriptions](durableMessaging/README.md)
 *  [Micrometer Metrics](micrometerMetrics/README.md)
-*  Delta propagation
-*  Network partition detection
-*  D-lock
 *  [Compression](compression/README.md)
-*  Resource manager
-*  PDX Advanced
-
-### Use cases, integrations and external examples
-
-This section has self-contained little projects that illustrate a use case or
-an integration with other projects.
-
-*  SpringBoot Application
-*  HTTP Session replication
-*  Memcached
-*  Spark Connector
-
-## Adding a new example
-
-Follow this approach to add a new example:
-
-* Create a subdirectory with a descriptive name like `cacheWriter`
-* Create a `README.md` file in the example subproject to walk the user through the tutorial
-* Create a Java class with a main method in the `org.apache.geode_examples.$name.Example` class
-* Create a cluster initialization script in `scripts/start.gfsh`
-* Create a cluster shutdown script in `scripts/stop.gfsh`
-* Modify the top-level `settings.gradle` file to include subproject
-* Modify this `README.md` file to include the new example in the catalog of examples
-
-The scripts should contain `gfsh` commands for starting locators, servers, and
-creating regions--everything that the example program will need to use. Where
-appropriate you should also add unit tests. To customize the build you can add
-a `build.gradle` file.
-
-Verify that the examples build by executing `./gradlew runAll` from the root directory.
-Note that the build may fail if you do not add ASF license headers or use the
-correct formatting. You can fix formatting with `./gradlew spotlessApply`.
-
-## References
-
-- [1]  [https://cwiki.apache.org/confluence/display/GEODE/Criteria+for+Code+Submissions](https://cwiki.apache.org/confluence/display/GEODE/Criteria+for+Code+Submissions)
-- [2]  [https://cwiki.apache.org/confluence/display/GEODE/How+to+Contribute](https://cwiki.apache.org/confluence/display/GEODE/How+to+Contribute)
-- [3]  [https://www.apache.org/licenses/#clas](http://www.apache.org/licenses/#clas)
-
-## Export Control
-
-This distribution includes cryptographic software.
-The country in which you currently reside may have restrictions
-on the import, possession, use, and/or re-export to another country,
-of encryption software. BEFORE using any encryption software,
-please check your country's laws, regulations and policies
-concerning the import, possession, or use, and re-export of
-encryption software, to see if this is permitted.
-See <https://www.wassenaar.org/> for more information.
-
-The U.S. Government Department of Commerce, Bureau of Industry and Security (BIS),
-has classified this software as Export Commodity Control Number (ECCN) 5D002.C.1,
-which includes information security software using or performing
-cryptographic functions with asymmetric algorithms.
-The form and manner of this Apache Software Foundation distribution makes
-it eligible for export under the License Exception
-ENC Technology Software Unrestricted (TSU) exception
-(see the BIS Export Administration Regulations, Section 740.13)
-for both object code and source code.
-
-The following provides more details on the included cryptographic software:
-
-* Apache Geode is designed to be used with
-  [Java Secure Socket Extension](https://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html) (JSSE) and
-  [Java Cryptography Extension](https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html) (JCE).
-  The [JCE Unlimited Strength Jurisdiction Policy](https://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
-  may need to be installed separately to use keystore passwords with 7 or more characters.
-* Apache Geode links to and uses [OpenSSL](https://www.openssl.org/) ciphers.

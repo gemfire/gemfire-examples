@@ -25,7 +25,7 @@ The example shows entry values being overflowed to disk and removed from memory.
 This example assumes that Geode is installed.
 
 ## Set up the region
-1. Set directory ```geode-examples/overflow``` to be the
+1. Set directory ```gemfire-examples/overflow``` to be the
 current working directory.
 Each step in this example specifies paths relative to that directory.
 

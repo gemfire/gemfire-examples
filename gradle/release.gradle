@@ -63,7 +63,7 @@ gradle.taskGraph.whenReady { taskGraph ->
 
 distributions {
   src {
-    baseName = 'apache-geode-examples'
+    baseName = 'apache-gemfire-examples'
     version = version + '-src'
     contents {
       from (rootDir) {

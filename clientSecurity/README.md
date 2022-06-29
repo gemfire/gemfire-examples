@@ -71,7 +71,7 @@ For more information on what permission is required for a given operation,
   This file is located at `src/main/resources/example_security.json`.
 
 ## Demonstration of Security
-1. Set directory `geode-examples/clientSecurity` to be the current working directory.
+1. Set directory `gemfire-examples/clientSecurity` to be the current working directory.
 Each step in this example specifies paths relative to that directory.
 
 2. Build the example

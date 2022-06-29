@@ -24,7 +24,7 @@ This example assumes you have installed Java and Geode.
 
 ## Steps
 
-1. From the `geode-examples/compression` directory, build the example and
+1. From the `gemfire-examples/compression` directory, build the example and
    run unit tests
 
         $ ../gradlew build

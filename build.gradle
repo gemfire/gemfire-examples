@@ -25,9 +25,9 @@ allprojects {
     repositories {
         if (!gradle.usingGeodeCompositeBuild) {
           maven {
-            url project.findProperty('geodeRepositoryUrl') ?: 'https://maven.apachegeode-ci.info/snapshots'
+            url project.findProperty('geodeRepositoryUrl') ?: 'gcs://gemfire-build-resources/maven/gemfire'
             content {
-              includeGroup 'org.apache.geode'
+              includeGroup 'com.vmware.gemfire'
             }
           }
         }
@@ -42,7 +42,7 @@ configurations {
 }
 
 dependencies {
-    geodeDistribution("org.apache.geode:apache-geode:$geodeVersion@tgz") {
+    geodeDistribution("com.vmware.gemfire:apache-geode:$geodeVersion@tgz") {
       if (gradle.usingGeodeCompositeBuild) {
         targetConfiguration = 'compositeTarget'
       }
@@ -69,10 +69,10 @@ subprojects {
     dependencies {
         // All callouts to org.apache.geode here, need to be specified in settings.gradle
         // for composite build to work
-        api(platform("org.apache.geode:geode-all-bom:$geodeVersion"))
-        implementation("org.apache.geode:geode-core")
-        implementation("org.apache.geode:geode-cq")
-        implementation("org.apache.geode:geode-logging")
+        api(platform("com.vmware.gemfire:geode-all-bom:$geodeVersion"))
+        implementation("com.vmware.gemfire:geode-core")
+        implementation("com.vmware.gemfire:geode-cq")
+        implementation("com.vmware.gemfire:geode-logging")
         implementation('com.google.guava:guava')
         implementation('org.apache.commons:commons-lang3')
         implementation("org.apache.logging.log4j:log4j-core")

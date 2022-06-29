@@ -24,7 +24,7 @@ Systems](https://cwiki.apache.org/confluence/display/GEODE/Publishing+Geode+Metr
 
 ## Steps to Run and Validate the Example
 
-1. From the `geode-examples/micrometerMetrics` directory, run the `start` task to build the example
+1. From the `gemfire-examples/micrometerMetrics` directory, run the `start` task to build the example
    and start a cluster. The cluster will have one locator, one server, and a single region. The
    locator and server will expose HTTP endpoints for Prometheus to scrape.
 

@@ -27,7 +27,7 @@ against the data. The example shows how to do a spatial query to find nearby tra
 This example assumes that Java and Geode are installed.
 
 ## Set up the Lucene index and region
-1. Set directory ```geode-examples/luceneSpatial``` to be the
+1. Set directory ```gemfire-examples/luceneSpatial``` to be the
 current working directory.
 Each step in this example specifies paths relative to that directory.
 

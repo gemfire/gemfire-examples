@@ -49,7 +49,7 @@ The jar file `jdbc.jar` will be generated in `build/libs` directory.
 
 e.g. 
 ```
-export CLASSPATH=/path/to/mysql-connector-java-8.0.15.jar:/path/to/geode-examples/jdbc/build/libs/jdbc.jar
+export CLASSPATH=/path/to/mysql-connector-java-8.0.15.jar:/path/to/gemfire-examples/jdbc/build/libs/jdbc.jar
 ```
 
 5. Start the Geode cluster with `gfsh run --file=scripts/start.gfsh`.

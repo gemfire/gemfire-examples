@@ -26,7 +26,7 @@ This example assumes you have installed Java and Geode.
 
 ## Steps
 
-1. From the `geode-examples/loader` directory, build the example and
+1. From the `gemfire-examples/loader` directory, build the example and
    run unit tests
 
         $ ../gradlew build

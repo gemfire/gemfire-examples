@@ -36,7 +36,7 @@ In order to store `Order` objects in the same member than their related customer
 
 ## Steps
 
-1. From the `geode-examples/colocation` directory, build the example.
+1. From the `gemfire-examples/colocation` directory, build the example.
 
         $ ../gradlew build
 

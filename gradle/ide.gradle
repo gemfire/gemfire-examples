@@ -23,7 +23,7 @@ subprojects {
       file {
         whenMerged { classpath ->
           // Remove missing resource dirs
-          classpath.entries.removeAll { entry -> (entry.path.contains('geode-examples/build/resources')) }
+          classpath.entries.removeAll { entry -> (entry.path.contains('gemfire-examples/build/resources')) }
         }
       }  
     }

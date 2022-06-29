@@ -27,7 +27,7 @@ to be invoked through the `gfsh` command-line interface.
 This example assumes that Java and Geode are installed.
 
 ## Set up the cluster 
-1. Set directory ```geode-examples/queries``` to be the
+1. Set directory ```gemfire-examples/queries``` to be the
 current working directory.
 Each step in this example specifies paths relative to that directory.
 

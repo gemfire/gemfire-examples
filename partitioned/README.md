@@ -33,7 +33,7 @@ the example demonstrates this.
 This example assumes that Java and Geode are installed.
 
 ## Demonstration of Partitioning
-1. Set directory ```geode-examples/partitioned``` to be the
+1. Set directory ```gemfire-examples/partitioned``` to be the
 current working directory.
 Each step in this example specifies paths relative to that directory.
 

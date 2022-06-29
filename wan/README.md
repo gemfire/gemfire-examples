@@ -47,7 +47,7 @@ app has run, both clusters will contain the data.
 
 **Special Note**
 The gfsh scripts and gradle tasks for this example do not follow the standard
-used by other geode-examples in order to create 2 separate clusters. Due to
+used by other gemfire-examples in order to create 2 separate clusters. Due to
 this, you must follow the steps outlined below, as this example will not
 run using the runAll gradle task.
 
@@ -55,7 +55,7 @@ This example assumes that Java and Geode are installed.
 
 ## Steps
 
-1. From the `geode-examples/wan` directory, build the client app example 
+1. From the `gemfire-examples/wan` directory, build the client app example 
 
         $ ../gradlew build
 

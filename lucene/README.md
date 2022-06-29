@@ -27,7 +27,7 @@ names of employees.
 This example assumes that Java and Geode are installed.
 
 ## Set up the Lucene index and region
-1. Set directory ```geode-examples/lucene``` to be the
+1. Set directory ```gemfire-examples/lucene``` to be the
 current working directory.
 Each step in this example specifies paths relative to that directory.
 

@@ -35,7 +35,7 @@ This example assumes you have installed Java and Geode.
 
 ## Steps
 
-1. From the `geode-examples/cq` directory, build the example.
+1. From the `gemfire-examples/cq` directory, build the example.
 
         $ ../gradlew build
 

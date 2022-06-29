@@ -34,7 +34,7 @@ This example assumes you have installed Java and Geode.
 
 ## Steps
 
-1. From the `geode-examples/durableMessaging` directory, build the example.
+1. From the `gemfire-examples/durableMessaging` directory, build the example.
 
         $ ../gradlew build
 
