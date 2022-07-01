@@ -79,7 +79,7 @@ subprojects {
 
         testImplementation("org.awaitility:awaitility")
         testImplementation("junit:junit")
-        testImplementation("org.mockito:mockito-core")
+        testImplementation("org.mockito:mockito-inline")
         testImplementation("com.github.stefanbirkner:system-rules")
         testImplementation("org.assertj:assertj-core")
         testImplementation('org.apache.httpcomponents:httpcore')
