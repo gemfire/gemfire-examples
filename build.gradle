@@ -38,20 +38,23 @@ allprojects {
 def installDir = "$buildDir/apache-geode"
 
 configurations {
+    compositeTarget
     geodeDistribution
 }
 
 dependencies {
-    geodeDistribution("com.vmware.gemfire:apache-geode:$geodeVersion@tgz") {
-      if (gradle.usingGeodeCompositeBuild) {
-        targetConfiguration = 'compositeTarget'
-      }
+    if (gradle.usingGeodeCompositeBuild) {
+        geodeDistribution(group: 'com.vmware.gemfire', name: 'apache-geode', version: geodeVersion) {
+            targetConfiguration = 'compositeTarget'
+        }
+    } else {
+        geodeDistribution("com.vmware.gemfire:apache-geode:${geodeVersion}@tgz")
     }
 }
 
 task installGeode(type: Copy) {
     if (gradle.usingGeodeCompositeBuild) {
-        dependsOn(gradle.includedBuild('geode').task(':geode-assembly:distTar'))
+        dependsOn(gradle.includedBuild(gradle.geodeProject).task(':geode-assembly:distTar'))
     }
     from {
         tarTree(configurations.geodeDistribution.singleFile)
@@ -67,7 +70,7 @@ subprojects {
     apply plugin: 'java-library'
 
     dependencies {
-        // All callouts to org.apache.geode here, need to be specified in settings.gradle
+        // All callouts to com.vmware.gemfire here, need to be specified in settings.gradle
         // for composite build to work
         api(platform("com.vmware.gemfire:geode-all-bom:$geodeVersion"))
         implementation("com.vmware.gemfire:geode-core")

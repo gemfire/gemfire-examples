@@ -53,17 +53,20 @@ def geodeDirectory = file(geodePath).absolutePath
 def geodeDirectoryExists = file(geodeDirectory).exists()
 def compositeBuildEnabled = System.getProperty("composite") != null
 gradle.ext.usingGeodeCompositeBuild = compositeBuildEnabled && geodeDirectoryExists
+def geodeProject = compositeBuildEnabled ? geodeDirectory.toString().replaceFirst(".*[/\\\\]", "") : "geode-support"
+gradle.ext.geodeProject = geodeProject
+
 
 if (gradle.ext.usingGeodeCompositeBuild) {
   includeBuild(geodeDirectory) {
     it.dependencySubstitution {
-      // Any submodule used by examples must should be listed here
-      it.substitute it.module("com.vmware.gemfire:geode-all-bom") with it.project(':boms:geode-all-bom')
-      it.substitute it.module("com.vmware.gemfire:geode-cq") with it.project(':geode-cq')
-      it.substitute it.module("com.vmware.gemfire:geode-core") with it.project(':geode-core')
-      it.substitute it.module("com.vmware.gemfire:geode-logging") with it.project(':geode-logging')
-      it.substitute it.module("com.vmware.gemfire:geode-lucene") with it.project(':geode-lucene')
-      it.substitute it.module("com.vmware.gemfire:apache-geode") with it.project(':geode-assembly')
+      // Any submodule used by examples must be listed here
+      substitute module("com.vmware.gemfire:geode-all-bom") with project(':boms:geode-all-bom')
+      it.substitute it.module("com.vmware.gemfire:geode-cq:${geodeVersion}") with it.project(':geode-cq')
+      it.substitute it.module("com.vmware.gemfire:geode-core:${geodeVersion}") with it.project(':geode-core')
+      it.substitute it.module("com.vmware.gemfire:geode-logging:${geodeVersion}") with it.project(':geode-logging')
+      it.substitute it.module("com.vmware.gemfire:geode-lucene:${geodeVersion}") with it.project(':geode-lucene')
+      it.substitute it.module("com.vmware.gemfire:apache-geode:${geodeVersion}") with it.project(':geode-assembly')
     }
   }
 }
