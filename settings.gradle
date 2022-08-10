@@ -62,11 +62,11 @@ if (gradle.ext.usingGeodeCompositeBuild) {
     it.dependencySubstitution {
       // Any submodule used by examples must be listed here
       substitute module("com.vmware.gemfire:geode-all-bom") with project(':boms:geode-all-bom')
-      it.substitute it.module("com.vmware.gemfire:geode-cq:${geodeVersion}") with it.project(':geode-cq')
-      it.substitute it.module("com.vmware.gemfire:geode-core:${geodeVersion}") with it.project(':geode-core')
-      it.substitute it.module("com.vmware.gemfire:geode-logging:${geodeVersion}") with it.project(':geode-logging')
-      it.substitute it.module("com.vmware.gemfire:geode-lucene:${geodeVersion}") with it.project(':geode-lucene')
-      it.substitute it.module("com.vmware.gemfire:apache-geode:${geodeVersion}") with it.project(':geode-assembly')
+      it.substitute it.module("com.vmware.gemfire:geode-cq") with it.project(':geode-cq')
+      it.substitute it.module("com.vmware.gemfire:geode-core") with it.project(':geode-core')
+      it.substitute it.module("com.vmware.gemfire:geode-logging") with it.project(':geode-logging')
+      it.substitute it.module("com.vmware.gemfire:geode-lucene") with it.project(':geode-lucene')
+      it.substitute it.module("com.vmware.gemfire:apache-geode") with it.project(':geode-assembly')
     }
   }
 }
