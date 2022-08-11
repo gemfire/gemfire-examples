@@ -22,8 +22,20 @@ start server --name=server2 --locators=127.0.0.1[10334] --server-port=0 --classp
 
 ## Create a lucene index with our custom serializer
 create lucene index --name=simpleIndex --region=example-region --field=name --serializer=org.apache.geode_examples.luceneSpatial.TrainStopSerializer
+create lucene index --name=simpleIndex1 --region=example-region-find-distance --field=name --serializer=org.apache.geode_examples.luceneSpatial.RegionInfoSerializer
+create lucene index --name=simpleIndex2 --region=example-region-make-shape --field=name --serializer=org.apache.geode_examples.luceneSpatial.RegionInfoSerializer
+create lucene index --name=simpleIndex3 --region=example-region-is-location-inside-shape --field=name --serializer=org.apache.geode_examples.luceneSpatial.RegionInfoSerializer
+create lucene index --name=simpleIndex4 --region=example-compute-area --field=name --serializer=org.apache.geode_examples.luceneSpatial.RegionInfoSerializer
 
 create region --name=example-region --type=PARTITION
+create region --name=example-region-find-distance --type=PARTITION
+create region --name=example-region-make-shape --type=PARTITION
+create region --name=example-region-is-location-inside-shape --type=PARTITION
+create region --name=example-compute-area --type=PARTITION
 
 list members
 describe region --name=example-region
+describe region --name=example-region-find-distance
+describe region --name=example-region-make-shape
+describe region --name=example-region-is-location-inside-shape
+describe region --name=example-compute-area

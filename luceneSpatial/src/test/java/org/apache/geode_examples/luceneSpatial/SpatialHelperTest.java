@@ -55,6 +55,6 @@ public class SpatialHelperTest {
     SearcherManager searcherManager = new SearcherManager(writer, null);
     IndexSearcher searcher = searcherManager.acquire();
     TopDocs results = searcher.search(query, 100);
-    assertEquals(1, results.totalHits);
+    assertEquals(1, results.totalHits.value);
   }
 }
