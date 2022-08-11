@@ -45,15 +45,15 @@ include 'compression'
 include 'rest'
 
 // Logic for defining a custom Geode clone for integration with this project
-// Define `-PgeodeCompositeDirectory` to your geode root, default `../geode-support`
+// Define `-PgeodeCompositeDirectory` to your geode root, default `../gemfire`
 // Define `-Dcomposite` to enable Gradle includeBuild feature
 def geodeCompositePropertyName = 'geodeCompositeDirectory'
-def geodePath = hasProperty(geodeCompositePropertyName) ? geodeCompositeDirectory : '../geode-support'
+def geodePath = hasProperty(geodeCompositePropertyName) ? geodeCompositeDirectory : '../gemfire'
 def geodeDirectory = file(geodePath).absolutePath
 def geodeDirectoryExists = file(geodeDirectory).exists()
 def compositeBuildEnabled = System.getProperty("composite") != null
 gradle.ext.usingGeodeCompositeBuild = compositeBuildEnabled && geodeDirectoryExists
-def geodeProject = compositeBuildEnabled ? geodeDirectory.toString().replaceFirst(".*[/\\\\]", "") : "geode-support"
+def geodeProject = compositeBuildEnabled ? geodeDirectory.toString().replaceFirst(".*[/\\\\]", "") : "gemfire"
 gradle.ext.geodeProject = geodeProject
 
 
