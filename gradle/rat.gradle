@@ -17,6 +17,10 @@
 apply plugin: "org.nosphere.apache.rat"
 
 rat {
+  substringMatcher("VMware", "VMware", "VMware, Inc.", "vmware-eula")
+  approvedLicense("VMware")
+  approvedLicense("Apache License Version 2.0")
+
   excludes = [
     // git
     '.git/**',

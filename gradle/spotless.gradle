@@ -57,7 +57,7 @@ spotless {
         throw new AssertionError("Do not use Awaitility.await(). Use GeodeAwaitility.await() instead. 'spotlessApply' cannot resolve this issue.")
       }
     }
-    importOrderFile "${rootDir}/gradle/eclipseOrganizeImports.importorder"
+    importOrderFile "${rootDir}/etc/eclipseOrganizeImports.importorder"
 
     custom 'Remove unhelpful javadoc stubs', {
       // e.g., remove the following lines:
@@ -111,7 +111,7 @@ spotless {
 
     // The format file is relative to geode-core and not the root project as the root project would change
     // if Geode and submodules are included as part of a different gradle project.
-    eclipse('4.6.3').configFile "${rootDir}/gradle/eclipse-java-google-style.xml"
+    eclipse('4.6.3').configFile "${rootDir}/etc/eclipse-java-google-style.xml"
     trimTrailingWhitespace()
     endWithNewline()
   }
