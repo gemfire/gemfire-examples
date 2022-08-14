@@ -15,10 +15,7 @@
 package org.apache.geode_examples.lucene;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Random;
-import java.util.function.Consumer;
 
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
@@ -31,12 +28,12 @@ import org.apache.geode.cache.lucene.LuceneServiceProvider;
 
 public class Example {
   // These index names are predefined in gfsh scripts
-  final static String SIMPLE_INDEX = "simpleIndex";
-  final static String ANALYZER_INDEX = "analyzerIndex";
-  final static String NESTEDOBJECT_INDEX = "nestedObjectIndex";
+  static final String SIMPLE_INDEX = "simpleIndex";
+  static final String ANALYZER_INDEX = "analyzerIndex";
+  static final String NESTEDOBJECT_INDEX = "nestedObjectIndex";
 
   // These region names are prefined in gfsh scripts
-  final static String EXAMPLE_REGION = "example-region";
+  static final String EXAMPLE_REGION = "example-region";
 
   public static void main(String[] args) throws LuceneQueryException {
     // connect to the locator using default port 10334

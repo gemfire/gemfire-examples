@@ -14,13 +14,13 @@
  */
 package org.apache.geode_examples.colocation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Example {
   private int maximum;

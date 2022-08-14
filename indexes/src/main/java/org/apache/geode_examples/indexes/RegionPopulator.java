@@ -14,12 +14,12 @@
  */
 package org.apache.geode_examples.indexes;
 
-import org.apache.geode.cache.Region;
-
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.PrimitiveIterator;
 import java.util.Random;
+
+import org.apache.geode.cache.Region;
 
 public class RegionPopulator {
   static final String[] airlines = "FFT,NKS,ASQ,AAL,UAL,SKW,SWA,HAL,JBU,VRD,DAL,ASA,EIA".split(",");

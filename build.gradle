@@ -17,7 +17,7 @@
 
 plugins {
     id "org.nosphere.apache.rat" version "0.6.0"
-    id "com.diffplug.gradle.spotless" version "3.0.0"
+    id "com.diffplug.spotless" version "6.4.1"
     id "de.undercouch.download" version "3.1.2"
 }
 
@@ -189,3 +189,6 @@ apply from: "gradle/spotless.gradle"
 apply from: "gradle/ide.gradle"
 apply from: "gradle/rat.gradle"
 apply from: "gradle/release.gradle"
+
+project.tasks.check.dependsOn(gradle.includedBuilds*.task(":check"))
+project.tasks.clean.dependsOn(gradle.includedBuilds*.task(":clean"))

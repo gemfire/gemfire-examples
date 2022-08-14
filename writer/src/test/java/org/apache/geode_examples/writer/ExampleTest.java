@@ -22,10 +22,10 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
+import org.junit.Test;
+
 import org.apache.geode.cache.CacheWriterException;
 import org.apache.geode.cache.Region;
-
-import org.junit.Test;
 
 public class ExampleTest {
   @Test

@@ -14,12 +14,6 @@
  */
 package org.apache.geode_examples.expiration;
 
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.cache.client.ClientCacheFactory;
-import org.apache.geode.cache.client.ClientRegionFactory;
-import org.apache.geode.cache.client.ClientRegionShortcut;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -31,6 +25,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.IntStream;
+
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.client.ClientRegionFactory;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 
 public class Example {
   private static final DateFormat ISO_8601_TIMESTAMP_FORMAT =

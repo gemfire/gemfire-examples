@@ -16,9 +16,9 @@ package org.apache.geode_examples.queries;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import java.util.Map;
+
+import org.junit.Test;
 
 public class ExampleTest {
 

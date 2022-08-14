@@ -22,9 +22,9 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.geode.cache.Region;
-
 import org.junit.Test;
+
+import org.apache.geode.cache.Region;
 
 public class ExampleTest {
   @Test

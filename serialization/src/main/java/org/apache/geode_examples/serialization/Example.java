@@ -14,14 +14,14 @@
  */
 package org.apache.geode_examples.serialization;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class Example {
   public static final String ARENDELLE = "Arendelle";

@@ -16,16 +16,16 @@
  */
 
 configurations {
-    dependenciesToIncludeInEndpointJar
+  dependenciesToIncludeInEndpointJar
 }
 
 dependencies {
-    dependenciesToIncludeInEndpointJar "io.micrometer:micrometer-registry-prometheus:$micrometerVersion"
-    configurations.compile.extendsFrom(configurations.dependenciesToIncludeInEndpointJar)
+  dependenciesToIncludeInEndpointJar "io.micrometer:micrometer-registry-prometheus:$micrometerVersion"
+  configurations.compile.extendsFrom(configurations.dependenciesToIncludeInEndpointJar)
 }
 
 jar {
-    from {
-        configurations.dependenciesToIncludeInEndpointJar.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+  from {
+    configurations.dependenciesToIncludeInEndpointJar.collect { it.isDirectory() ? it : zipTree(it) }
+  }
 }

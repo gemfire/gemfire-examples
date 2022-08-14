@@ -14,12 +14,8 @@
  */
 package org.apache.geode_examples.listener;
 
-import java.util.LinkedList;
-import java.util.Queue;
 
-import org.apache.geode.cache.CacheListener;
 import org.apache.geode.cache.EntryEvent;
-import org.apache.geode.cache.RegionEvent;
 import org.apache.geode.cache.util.CacheListenerAdapter;
 
 public class ExampleCacheListener extends CacheListenerAdapter<Integer, String> {

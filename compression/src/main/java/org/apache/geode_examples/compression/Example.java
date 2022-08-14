@@ -19,7 +19,11 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.apache.geode.cache.Region;
-import org.apache.geode.cache.client.*;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.client.PoolFactory;
+import org.apache.geode.cache.client.PoolManager;
 
 public class Example {
   private final Region<Integer, String> region;

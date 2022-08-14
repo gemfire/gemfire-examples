@@ -23,12 +23,12 @@ import static org.mockito.Mockito.when;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.geode.cache.LoaderHelper;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.mockito.Mockito;
+
+import org.apache.geode.cache.LoaderHelper;
 
 public class ExampleTest {
 
