@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 dependencies {
-  compile("com.vmware.gemfire:geode-lucene:$geodeVersion")
+  compile("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion")
   compile("org.apache.lucene:lucene-spatial-extras:6.4.1")
 }
 

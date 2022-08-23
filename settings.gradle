@@ -65,7 +65,6 @@ if (gradle.ext.usingGeodeCompositeBuild) {
       it.substitute it.module("com.vmware.gemfire:geode-cq") with it.project(':geode-cq')
       it.substitute it.module("com.vmware.gemfire:geode-core") with it.project(':geode-core')
       it.substitute it.module("com.vmware.gemfire:geode-logging") with it.project(':geode-logging')
-      it.substitute it.module("com.vmware.gemfire:geode-lucene") with it.project(':geode-lucene')
       it.substitute it.module("com.vmware.gemfire:apache-geode") with it.project(':geode-assembly')
     }
   }

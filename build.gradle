@@ -31,6 +31,9 @@ allprojects {
             }
           }
         }
+        if(project.hasProperty("useMavenLocal")) {
+            mavenLocal()
+        }
         mavenCentral()
     }
 }
