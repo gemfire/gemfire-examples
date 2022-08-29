@@ -14,24 +14,22 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import java.util.Collection;
-import java.util.Collections;
-
+import org.apache.geode.cache.lucene.LuceneIndex;
+import org.apache.geode.cache.lucene.LuceneSerializer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.spatial.vector.PointVectorStrategy;
 
-import org.apache.geode.cache.lucene.LuceneIndex;
-import org.apache.geode.cache.lucene.LuceneSerializer;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * LuceneSerializer that converts train stops into lucene documents with the gps coordinates indexed
- * using lucene's {@link PointVectorStrategy}
+ * using lucene's {@link org.apache.lucene.spatial.vector.PointVectorStrategy}
  */
-public class TrainStopSerializer implements LuceneSerializer<TrainStop> {
+public class RegionInfoSerializer implements LuceneSerializer<RegionInfo> {
   @Override
-  public Collection<Document> toDocuments(LuceneIndex index, TrainStop value) {
+  public Collection<Document> toDocuments(LuceneIndex index, RegionInfo value) {
 
     Document doc = new Document();
     // Index the name of the train stop

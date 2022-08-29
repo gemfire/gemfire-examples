@@ -14,35 +14,21 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import java.io.Serializable;
+import static org.junit.Assert.assertEquals;
 
-public class TrainStop implements Serializable {
-  private static final long serialVersionUID = 1L;
+import java.util.Collection;
 
-  private String name;
-  private double latitude;
-  private double longitude;
+import org.apache.lucene.document.Document;
+import org.junit.Test;
 
-  public TrainStop(String name, double longitude, double latitude) {
-    this.name = name;
-    this.longitude = longitude;
-    this.latitude = latitude;
-  }
+public class RegionInfoSerializerTest {
 
-  public String getName() {
-    return name;
-  }
+  @Test
+  public void serializerReturnsSingleDocument() {
+    RegionInfoSerializer serializer = new RegionInfoSerializer();
+    Collection<Document> documents =
+        serializer.toDocuments(null, new RegionInfo("here", -122.8515139, 45.5099231));
 
-  public double getLatitude() {
-    return latitude;
-  }
-
-  public double getLongitude() {
-    return longitude;
-  }
-
-  @Override
-  public String toString() {
-    return "TrainStop [name=" + name + ", location=" + longitude + ", " + latitude + "]";
+    assertEquals(1, documents.size());
   }
 }

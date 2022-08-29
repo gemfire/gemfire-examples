@@ -14,24 +14,23 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import org.apache.geode.cache.lucene.LuceneService;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-
-import org.apache.geode.cache.lucene.LuceneService;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class ExampleTest {
 
   @Test
   public void testPutEntries() throws InterruptedException {
     LuceneService service = mock(LuceneService.class);
-    Map<String, TrainStop> region = new HashMap<String, TrainStop>();
-    Example.putEntries(service, region);
-    assertEquals(3, region.size());
+    Map<String, RegionInfo> region = new HashMap<String, RegionInfo>();
+    ExampleCommon.putEntries(service, region);
+    assertEquals(7, region.size());
 
   }
 }
