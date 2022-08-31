@@ -14,18 +14,18 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import java.util.Collection;
-
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.lucene.LuceneQuery;
 import org.apache.geode.cache.lucene.LuceneQueryException;
 import org.apache.geode.cache.lucene.LuceneService;
 
+import java.util.Collection;
+
 public class SearchNearestResultExample {
   public static void main(String[] args) throws InterruptedException, LuceneQueryException {
     // connect to the locator using default port 10334
     Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region");
-    LuceneService luceneService = ExampleCommon.luceneService(region);
+    LuceneService luceneService = ExampleCommon.luceneService();
     // Add some entries into the region
     ExampleCommon.putEntries(luceneService, region);
     findNearbyMcDonalds(luceneService);

@@ -42,7 +42,7 @@ public class ExampleCommon {
         .create(regionName);
   }
 
-  public static LuceneService luceneService(Region<String, RegionInfo> region) {
+  public static LuceneService luceneService() {
     ClientCache cache = createCache();
     return LuceneServiceProvider.get(cache);
   }

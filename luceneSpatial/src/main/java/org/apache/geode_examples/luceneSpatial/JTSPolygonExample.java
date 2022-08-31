@@ -14,20 +14,20 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.lucene.LuceneQueryException;
+import org.apache.geode.cache.lucene.LuceneService;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.lucene.LuceneQueryException;
-import org.apache.geode.cache.lucene.LuceneService;
-
 public class JTSPolygonExample {
   public static void main(String[] args) throws InterruptedException, LuceneQueryException {
 
     Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region-make-shape");
-    LuceneService luceneService = ExampleCommon.luceneService(region);
+    LuceneService luceneService = ExampleCommon.luceneService();
     // Add some entries into the region
     ExampleCommon.putEntries(luceneService, region);
     makeAShape(region);

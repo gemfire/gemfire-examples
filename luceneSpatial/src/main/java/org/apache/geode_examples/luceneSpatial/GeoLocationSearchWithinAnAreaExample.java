@@ -14,18 +14,18 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.lucene.LuceneQueryException;
 import org.apache.geode.cache.lucene.LuceneService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GeoLocationSearchWithinAnAreaExample {
   public static void main(String[] args) throws InterruptedException, LuceneQueryException {
     Region<String, RegionInfo> region =
         ExampleCommon.createRegion("example-region-is-location-inside-shape");
-    LuceneService luceneService = ExampleCommon.luceneService(region);
+    LuceneService luceneService = ExampleCommon.luceneService();
     // Add some entries into the region
     ExampleCommon.putEntries(luceneService, region);
     double givenLongitude = -46.653;
