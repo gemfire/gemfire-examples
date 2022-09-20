@@ -15,9 +15,16 @@
  * limitations under the License.
  */
 dependencies {
-  compile("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion")
-  compile("org.apache.lucene:lucene-spatial-extras:8.11.2")
+  compile("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion"){
+    exclude(group:"com.vmware.gemfire")
+  }
+
+  compile("org.apache.lucene:lucene-spatial-extras:9.3.0")
   compile("org.locationtech.jts:jts-core:1.15.1")
+}
+
+tasks.named("start") { start ->
+  start.environment ('CLASSPATH', configurations.runtime.asPath)
 }
 
 task copyDependencies(type:Copy) {

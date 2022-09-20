@@ -15,10 +15,12 @@
 package org.apache.geode_examples.luceneSpatial;
 
 import org.apache.geode.cache.Region;
+import org.apache.geode.cache.lucene.LuceneQuery;
 import org.apache.geode.cache.lucene.LuceneQueryException;
 import org.apache.geode.cache.lucene.LuceneService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -26,15 +28,16 @@ import java.util.Set;
 public class JTSPolygonExample {
   public static void main(String[] args) throws InterruptedException, LuceneQueryException {
 
-    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region-make-shape");
+    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region");
     LuceneService luceneService = ExampleCommon.luceneService();
     // Add some entries into the region
     ExampleCommon.putEntries(luceneService, region);
-    makeAShape(region);
+    getTheShapeOfTheCoordinates(region, luceneService);
     ExampleCommon.closeCache();
   }
 
-  public static void makeAShape(Region<String, RegionInfo> region) {
+  public static void getTheShapeOfTheCoordinates(Region<String, RegionInfo> region,
+      LuceneService luceneService) throws LuceneQueryException {
     Set<String> keySet = region.keySetOnServer();
     List<String> list = new ArrayList<String>(keySet);
     Collections.sort(list);
@@ -44,8 +47,13 @@ public class JTSPolygonExample {
       longitudeList.add(region.get(s).getLongitude());
       latitudeList.add(region.get(s).getLatitude());
     }
-    System.out.println("Shape of the provided coordinates is: "
-        + SpatialHelper.getAShapeFromCoordinates(longitudeList, latitudeList));
+
+    LuceneQuery<String, RegionInfo> query =
+        luceneService.createLuceneQueryFactory().create("simpleIndex", region.getName(),
+            luceneIndex -> SpatialHelper.getTheShape(longitudeList, latitudeList));
+
+    Collection<RegionInfo> results = query.findValues();
+    System.out.println("Shape of the provided coordinates is: " + results);
 
   }
 }

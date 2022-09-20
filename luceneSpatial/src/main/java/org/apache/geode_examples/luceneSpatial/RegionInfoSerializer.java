@@ -14,14 +14,15 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import org.apache.geode.cache.lucene.LuceneIndex;
-import org.apache.geode.cache.lucene.LuceneSerializer;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
 
-import java.util.Collection;
-import java.util.Collections;
+import org.apache.geode.cache.lucene.LuceneIndex;
+import org.apache.geode.cache.lucene.LuceneSerializer;
 
 /**
  * LuceneSerializer that converts train stops into lucene documents with the gps coordinates indexed

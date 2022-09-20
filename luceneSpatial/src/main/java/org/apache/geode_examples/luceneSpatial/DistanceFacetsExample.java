@@ -22,7 +22,7 @@ import java.util.Set;
 public class DistanceFacetsExample {
   public static void main(String[] args) throws InterruptedException {
     // connect to the locator using default port 10334
-    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region-find-distance");
+    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region");
     LuceneService luceneService = ExampleCommon.luceneService();
     // Add some entries into the region
     ExampleCommon.putEntries(luceneService, region);
@@ -36,7 +36,7 @@ public class DistanceFacetsExample {
       double sourceLong) {
     Set<String> keySet = region.keySetOnServer();
     for (String s : keySet) {
-      double distance = SpatialHelper.getDistanceInMiles(sourceLat, sourceLong,
+      double distance = SpatialHelper.getDistanceInMilesFromTwoLocations(sourceLat, sourceLong,
           region.get(s).getLatitude(), region.get(s).getLongitude());
       System.out.println("Distance between the source and destination is : " + distance);
     }

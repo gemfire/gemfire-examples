@@ -23,7 +23,7 @@ import java.util.List;
 public class BoundingAreaExample {
   public static void main(String[] args) throws InterruptedException {
     // connect to the locator using default port 10334
-    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-compute-area");
+    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region");
     LuceneService luceneService = ExampleCommon.luceneService();
     // Add some entries into the region
     ExampleCommon.putEntries(luceneService, region);

@@ -14,14 +14,15 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import org.apache.geode.cache.lucene.LuceneService;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import org.junit.Test;
+
+import org.apache.geode.cache.lucene.LuceneService;
 
 public class ExampleTest {
 

@@ -15,7 +15,11 @@
 package org.apache.geode_examples.luceneSpatial;
 
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.LatLonPoint;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.spatial.query.SpatialArgs;
 import org.apache.lucene.spatial.query.SpatialOperation;
 import org.apache.lucene.spatial.vector.PointVectorStrategy;
@@ -68,12 +72,13 @@ public class SpatialHelper {
     return new PointImpl(longitude, latitude, CONTEXT);
   }
 
-  public static double getDistanceInMiles(double lat1, double long1, double lat2, double long2) {
+  public static double getDistanceInMilesFromTwoLocations(double lat1, double long1, double lat2,
+      double long2) {
     double sortKey = SloppyMath.haversinSortKey(lat1, long1, lat2, long2);
     return (SloppyMath.haversinMeters(sortKey)) * 0.00062137119;
   }
 
-  public static Shape getAShapeFromCoordinates(List<Double> longitudeList,
+  private static Shape getAShapeFromCoordinates(List<Double> longitudeList,
       List<Double> latitudeList) {
 
     JtsSpatialContextFactory jtsSpatialContextFactory = new JtsSpatialContextFactory();
@@ -89,13 +94,21 @@ public class SpatialHelper {
         .pointXY(latitudeList.get(6), longitudeList.get(6)).build();
   }
 
-  public static boolean verifyLocationIsInsideShape(List<Double> longitudeList,
+  public static Query getTheShape(List<Double> longitudeList, List<Double> latitudeList) {
+    return LatLonPoint
+            .newPolygonQuery(getAShapeFromCoordinates(longitudeList, latitudeList).toString());
+  }
+
+  public static Query verifyLocationIsInsideShape(List<Double> longitudeList,
       List<Double> latitudeList, double givenLongitude, double givenLatitude) {
     Geometry geometry = JtsSpatialContext.GEO.getShapeFactory()
         .getGeometryFrom(getAShapeFromCoordinates(longitudeList, latitudeList));
     Coordinate givenCoordinate = new Coordinate(givenLatitude, givenLongitude);
     PointLocator pointLocator = new PointLocator();
-    return pointLocator.intersects(givenCoordinate, geometry);
+    TermQuery termQuery =
+        new TermQuery(new Term(String.valueOf(pointLocator.intersects(givenCoordinate, geometry))));
+    BooleanClause clause = new BooleanClause(termQuery, BooleanClause.Occur.MUST);
+    return clause.getQuery();
   }
 
   public static double computeArea(List<Double> latitudeList, List<Double> longitudeList) {

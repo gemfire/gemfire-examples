@@ -28,14 +28,14 @@ public class SearchNearestResultExample {
     LuceneService luceneService = ExampleCommon.luceneService();
     // Add some entries into the region
     ExampleCommon.putEntries(luceneService, region);
-    findNearbyMcDonalds(luceneService);
+    findNearbyMcDonalds(luceneService, region);
     ExampleCommon.closeCache();
   }
 
-  public static void findNearbyMcDonalds(LuceneService luceneService) throws LuceneQueryException {
-    LuceneQuery<Integer, RegionInfo> query =
-        luceneService.createLuceneQueryFactory().create("simpleIndex", "example-region",
-            index -> SpatialHelper.findWithin(-122.8515139, 45.5099231, 0.25));
+  public static void findNearbyMcDonalds(LuceneService luceneService, Region region)
+      throws LuceneQueryException {
+    LuceneQuery<Integer, RegionInfo> query = luceneService.createLuceneQueryFactory().create(
+        "simpleIndex", region.getName(), index -> SpatialHelper.findWithin(-46.653, -23.543, 0.25));
 
     Collection<RegionInfo> results = query.findValues();
     System.out.println("Found stops: " + results);

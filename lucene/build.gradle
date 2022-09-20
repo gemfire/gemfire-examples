@@ -15,5 +15,18 @@
  * limitations under the License.
  */
 dependencies {
-  compile("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion")
+  compile("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion"){
+    exclude(group:"com.vmware.gemfire")
+  }
 }
+
+tasks.named("start") { start ->
+  start.environment ('CLASSPATH', configurations.runtime.asPath)
+}
+
+task copyDependencies(type:Copy) {
+  into "$buildDir/libs"
+  from configurations['runtime']
+}
+
+build.dependsOn(copyDependencies)
