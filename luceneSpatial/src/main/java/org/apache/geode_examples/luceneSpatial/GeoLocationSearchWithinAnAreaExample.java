@@ -24,24 +24,32 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/*
+ * This example shows if a location is within a given area
+ */
 public class GeoLocationSearchWithinAnAreaExample {
   public static void main(String[] args)
       throws InterruptedException, LuceneQueryException, ParseException {
-    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region");
-    LuceneService luceneService = ExampleCommon.luceneService();
+    // Create client region which is same as the region on the server
+    Region<String, LocationInfo> region = CommonOps.createClientRegion("example-region");
+    // Create Lucene Service
+    LuceneService luceneService = CommonOps.luceneService();
     // Add some entries into the region
-    ExampleCommon.putEntries(luceneService, region);
+    CommonOps.putEntries(luceneService, region);
+    // Given location
     double givenLongitude = -46.653;
     double givenLatitude = -23.543;
+    // Verify if given location is within a given area
     verifyIfGivenLocationIsInsideShape(region, givenLongitude, givenLatitude, luceneService);
-    ExampleCommon.closeCache();
+    // Close the cache
+    CommonOps.closeCache();
   }
 
 
-  public static void verifyIfGivenLocationIsInsideShape(Region<String, RegionInfo> region,
+  public static void verifyIfGivenLocationIsInsideShape(Region<String, LocationInfo> region,
       double givenLongitude, double givenLatitude, LuceneService luceneService)
       throws LuceneQueryException {
-    List<String> LatLongList = ExampleCommon.getLatLongList(region);
+    List<String> LatLongList = CommonOps.getLatLongList(region);
     List<Double> longitudeList = new ArrayList<>();
     List<Double> latitudeList = new ArrayList<>();
     for (String s : LatLongList) {
@@ -49,14 +57,12 @@ public class GeoLocationSearchWithinAnAreaExample {
       latitudeList.add(region.get(s).getLatitude());
     }
 
-    LuceneQuery<Integer, RegionInfo> query =
+    LuceneQuery<Integer, LocationInfo> query =
         luceneService.createLuceneQueryFactory().create("simpleIndex", region.getName(),
             luceneIndex -> SpatialHelper.verifyLocationIsInsideShape(longitudeList, latitudeList,
                 givenLongitude, givenLatitude));
 
-    Collection<RegionInfo> results = query.findValues();
+    Collection<LocationInfo> results = query.findValues();
     System.out.println("Given Coordinates are inside the shape :: " + results);
-    // System.out.println(verifyLocationIsInsideShape(longitudeList, latitudeList, givenLongitude,
-    // givenLatitude)));
   }
 }

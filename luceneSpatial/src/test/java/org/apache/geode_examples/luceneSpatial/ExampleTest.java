@@ -29,8 +29,8 @@ public class ExampleTest {
   @Test
   public void testPutEntries() throws InterruptedException {
     LuceneService service = mock(LuceneService.class);
-    Map<String, RegionInfo> region = new HashMap<String, RegionInfo>();
-    ExampleCommon.putEntries(service, region);
+    Map<String, LocationInfo> region = new HashMap<String, LocationInfo>();
+    CommonOps.putEntries(service, region);
     assertEquals(7, region.size());
 
   }

@@ -112,7 +112,6 @@ subprojects {
     }
     clean.finalizedBy cleanServer
 
-//    def geodePath = "${System.env.PATH}${System.getProperty('path.separator')}${installDir}/bin"
     def geodePath = "${installDir}/bin${System.getProperty('path.separator')}${System.env.PATH}"
     task start(type: Exec, dependsOn: [installGeode, build, cleanServer]) {
         workingDir projectDir

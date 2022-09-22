@@ -14,25 +14,32 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
+import java.util.Set;
+
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.lucene.LuceneService;
 
-import java.util.Set;
-
+/*
+ * The example shows the distance between two locations
+ */
 public class DistanceFacetsExample {
   public static void main(String[] args) throws InterruptedException {
-    // connect to the locator using default port 10334
-    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region");
-    LuceneService luceneService = ExampleCommon.luceneService();
+    // Create client region which is same as the region on the server
+    Region<String, LocationInfo> region = CommonOps.createClientRegion("example-region");
+    // Create Lucene Service
+    LuceneService luceneService = CommonOps.luceneService();
     // Add some entries into the region
-    ExampleCommon.putEntries(luceneService, region);
+    CommonOps.putEntries(luceneService, region);
+    // Given location
     double sourceLat = 36.8738;
     double sourceLong = -78.78412;
+    // Find distance between two locations
     findDistance(region, sourceLat, sourceLong);
-    ExampleCommon.closeCache();
+    // Close the cache
+    CommonOps.closeCache();
   }
 
-  public static void findDistance(Region<String, RegionInfo> region, double sourceLat,
+  public static void findDistance(Region<String, LocationInfo> region, double sourceLat,
       double sourceLong) {
     Set<String> keySet = region.keySetOnServer();
     for (String s : keySet) {

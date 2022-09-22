@@ -21,23 +21,30 @@ import org.apache.geode.cache.lucene.LuceneService;
 
 import java.util.Collection;
 
+/*
+ * The example shows how to do a spatial query to find nearby McDonalds location.
+ */
+
 public class SearchNearestResultExample {
   public static void main(String[] args) throws InterruptedException, LuceneQueryException {
-    // connect to the locator using default port 10334
-    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region");
-    LuceneService luceneService = ExampleCommon.luceneService();
+    // Create client region which is same as the region on the server
+    Region<String, LocationInfo> region = CommonOps.createClientRegion("example-region");
+    // Create Lucene Service
+    LuceneService luceneService = CommonOps.luceneService();
     // Add some entries into the region
-    ExampleCommon.putEntries(luceneService, region);
+    CommonOps.putEntries(luceneService, region);
+    // Search the desired location
     findNearbyMcDonalds(luceneService, region);
-    ExampleCommon.closeCache();
+    // Close the cache
+    CommonOps.closeCache();
   }
 
   public static void findNearbyMcDonalds(LuceneService luceneService, Region region)
       throws LuceneQueryException {
-    LuceneQuery<Integer, RegionInfo> query = luceneService.createLuceneQueryFactory().create(
+    LuceneQuery<Integer, LocationInfo> query = luceneService.createLuceneQueryFactory().create(
         "simpleIndex", region.getName(), index -> SpatialHelper.findWithin(-46.653, -23.543, 0.25));
 
-    Collection<RegionInfo> results = query.findValues();
+    Collection<LocationInfo> results = query.findValues();
     System.out.println("Found stops: " + results);
   }
 

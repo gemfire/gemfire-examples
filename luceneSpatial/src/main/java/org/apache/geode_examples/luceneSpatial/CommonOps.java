@@ -28,17 +28,17 @@ import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.apache.geode.cache.lucene.LuceneService;
 import org.apache.geode.cache.lucene.LuceneServiceProvider;
 
-public class ExampleCommon {
+public class CommonOps {
 
   public static ClientCache createCache() {
     return new ClientCacheFactory().addPoolLocator("127.0.0.1", 10334).set("log-level", "WARN")
         .create();
   }
 
-  public static Region<String, RegionInfo> createRegion(String regionName) {
+  public static Region<String, LocationInfo> createClientRegion(String regionName) {
     ClientCache cache = createCache();
     // create a local region that matches the server region
-    return cache.<String, RegionInfo>createClientRegionFactory(ClientRegionShortcut.PROXY)
+    return cache.<String, LocationInfo>createClientRegionFactory(ClientRegionShortcut.PROXY)
         .create(regionName);
   }
 
@@ -51,20 +51,20 @@ public class ExampleCommon {
     createCache().close();
   }
 
-  public static void putEntries(LuceneService luceneService, Map<String, RegionInfo> region)
+  public static void putEntries(LuceneService luceneService, Map<String, LocationInfo> region)
       throws InterruptedException {
-    region.put("McD1", new RegionInfo("McD1", -46.653, -23.543));
-    region.put("McD2", new RegionInfo("McD2", -46.634, -23.5346));
-    region.put("McD3", new RegionInfo("McD3", -46.613, -23.543));
-    region.put("McD4", new RegionInfo("McD3", -46.614, -23.559));
-    region.put("McD5", new RegionInfo("McD3", -46.631, -23.567));
-    region.put("McD6", new RegionInfo("McD3", -46.653, -23.560));
-    region.put("McD7", new RegionInfo("McD3", -46.653, -23.543));
+    region.put("McDonalds1", new LocationInfo("McDonalds1", -46.653, -23.543));
+    region.put("McDonalds2", new LocationInfo("McDonalds2", -46.634, -23.5346));
+    region.put("McDonalds3", new LocationInfo("McDonalds3", -46.613, -23.543));
+    region.put("McDonalds4", new LocationInfo("McDonalds4", -46.614, -23.559));
+    region.put("McDonalds5", new LocationInfo("McDonalds5", -46.631, -23.567));
+    region.put("McDonalds6", new LocationInfo("McDonalds6", -46.653, -23.560));
+    region.put("McDonalds7", new LocationInfo("McDonalds7", -46.653, -23.543));
 
     luceneService.waitUntilFlushed("simpleIndex", region.toString(), 1, TimeUnit.MINUTES);
   }
 
-  public static List<String> getLatLongList(Region<String, RegionInfo> region) {
+  public static List<String> getLatLongList(Region<String, LocationInfo> region) {
     Set<String> keySet = region.keySetOnServer();
     List<String> LatLongList = new ArrayList<>(keySet);
     Collections.sort(LatLongList);

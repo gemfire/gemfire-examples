@@ -54,11 +54,16 @@ public class SpatialHelperTest {
     writer.commit();
 
     // Make sure a findWithin query locates the document
-    Query query = SpatialHelper.findWithin(-122.8515239, 45.5099331, 1);
-    SearcherManager searcherManager = new SearcherManager(writer, null);
-    IndexSearcher searcher = searcherManager.acquire();
-    TopDocs results = searcher.search(query, 100);
-    FileUtils.deleteDirectory(new File("/tmp/lucene"));
-    assertEquals(1, results.totalHits.value);
+    try {
+      Query query = SpatialHelper.findWithin(-122.8515239, 45.5099331, 1);
+      SearcherManager searcherManager = new SearcherManager(writer, null);
+      IndexSearcher searcher = searcherManager.acquire();
+      TopDocs results = searcher.search(query, 100);
+      assertEquals(1, results.totalHits.value);
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      FileUtils.deleteDirectory(new File("/tmp/lucene"));
+    }
   }
 }

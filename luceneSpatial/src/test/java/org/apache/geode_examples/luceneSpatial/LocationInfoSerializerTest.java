@@ -21,13 +21,13 @@ import java.util.Collection;
 import org.apache.lucene.document.Document;
 import org.junit.Test;
 
-public class RegionInfoSerializerTest {
+public class LocationInfoSerializerTest {
 
   @Test
   public void serializerReturnsSingleDocument() {
-    RegionInfoSerializer serializer = new RegionInfoSerializer();
+    LocationInfoSerializer serializer = new LocationInfoSerializer();
     Collection<Document> documents =
-        serializer.toDocuments(null, new RegionInfo("here", -122.8515139, 45.5099231));
+        serializer.toDocuments(null, new LocationInfo("here", -122.8515139, 45.5099231));
 
     assertEquals(1, documents.size());
   }

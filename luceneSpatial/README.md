@@ -17,14 +17,14 @@ limitations under the License.
 
 # Geode Lucene Spatial Indexing Example
 
-This examples demonstrates how to use Geode's LuceneSerializer and LuceneQueryProvider APIs
+These examples demonstrates how to use Geode's LuceneSerializer and LuceneQueryProvider APIs
 to customize how Geode data is stored and indexed in Lucene.
 
-In this example two servers host a partitioned region that stores train station stop information,
-including GPS coordinates. The region has lucene index that allows spatial queries to be performed
-against the data. The example shows how to do a spatial query to find nearby train stations.
-
-This example assumes that Java and Geode are installed.
+ In these example two servers host a partitioned region that stores McDonalds location information,
+        including GPS coordinates. The region has lucene index that allows spatial queries to be performed
+        against the data.
+        
+These example assumes that Java and Geode are installed.
 
 ## Set up the Lucene index and region
 1. Set directory ```gemfire-examples/luceneSpatial``` to be the

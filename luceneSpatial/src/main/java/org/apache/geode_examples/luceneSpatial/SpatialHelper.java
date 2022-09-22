@@ -14,6 +14,10 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
+import static org.locationtech.spatial4j.distance.DistanceUtils.EARTH_MEAN_RADIUS_MI;
+
+import java.util.List;
+
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LatLonPoint;
 import org.apache.lucene.index.Term;
@@ -37,10 +41,6 @@ import org.locationtech.spatial4j.shape.ShapeFactory;
 import org.locationtech.spatial4j.shape.impl.GeoCircle;
 import org.locationtech.spatial4j.shape.impl.PointImpl;
 import org.locationtech.spatial4j.shape.jts.JtsShapeFactory;
-
-import java.util.List;
-
-import static org.locationtech.spatial4j.distance.DistanceUtils.EARTH_MEAN_RADIUS_MI;
 
 public class SpatialHelper {
   private static final SpatialContext CONTEXT = SpatialContext.GEO;
@@ -96,7 +96,7 @@ public class SpatialHelper {
 
   public static Query getTheShape(List<Double> longitudeList, List<Double> latitudeList) {
     return LatLonPoint
-            .newPolygonQuery(getAShapeFromCoordinates(longitudeList, latitudeList).toString());
+        .newPolygonQuery(getAShapeFromCoordinates(longitudeList, latitudeList).toString());
   }
 
   public static Query verifyLocationIsInsideShape(List<Double> longitudeList,

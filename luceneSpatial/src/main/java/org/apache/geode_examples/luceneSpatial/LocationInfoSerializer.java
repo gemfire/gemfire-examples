@@ -25,12 +25,12 @@ import org.apache.geode.cache.lucene.LuceneIndex;
 import org.apache.geode.cache.lucene.LuceneSerializer;
 
 /**
- * LuceneSerializer that converts train stops into lucene documents with the gps coordinates indexed
- * using lucene's {@link org.apache.lucene.spatial.vector.PointVectorStrategy}
+ * LuceneSerializer that converts McDonalds locations into lucene documents with the gps coordinates
+ * indexed using lucene's {@link org.apache.lucene.spatial.vector.PointVectorStrategy}
  */
-public class RegionInfoSerializer implements LuceneSerializer<RegionInfo> {
+public class LocationInfoSerializer implements LuceneSerializer<LocationInfo> {
   @Override
-  public Collection<Document> toDocuments(LuceneIndex index, RegionInfo value) {
+  public Collection<Document> toDocuments(LuceneIndex index, LocationInfo value) {
 
     Document doc = new Document();
     // Index the name of the train stop

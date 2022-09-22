@@ -25,18 +25,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+/*
+ * The example shows how to find the shape of the provided coordinates.
+ */
+
 public class JTSPolygonExample {
   public static void main(String[] args) throws InterruptedException, LuceneQueryException {
-
-    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region");
-    LuceneService luceneService = ExampleCommon.luceneService();
+    // Create client region which is same as the region on the server
+    Region<String, LocationInfo> region = CommonOps.createClientRegion("example-region");
+    // Create Lucene Service
+    LuceneService luceneService = CommonOps.luceneService();
     // Add some entries into the region
-    ExampleCommon.putEntries(luceneService, region);
+    CommonOps.putEntries(luceneService, region);
+    // find the shape of the provided coordinates
     getTheShapeOfTheCoordinates(region, luceneService);
-    ExampleCommon.closeCache();
+    // Close the cache
+    CommonOps.closeCache();
   }
 
-  public static void getTheShapeOfTheCoordinates(Region<String, RegionInfo> region,
+  public static void getTheShapeOfTheCoordinates(Region<String, LocationInfo> region,
       LuceneService luceneService) throws LuceneQueryException {
     Set<String> keySet = region.keySetOnServer();
     List<String> list = new ArrayList<String>(keySet);
@@ -48,11 +55,11 @@ public class JTSPolygonExample {
       latitudeList.add(region.get(s).getLatitude());
     }
 
-    LuceneQuery<String, RegionInfo> query =
+    LuceneQuery<String, LocationInfo> query =
         luceneService.createLuceneQueryFactory().create("simpleIndex", region.getName(),
             luceneIndex -> SpatialHelper.getTheShape(longitudeList, latitudeList));
 
-    Collection<RegionInfo> results = query.findValues();
+    Collection<LocationInfo> results = query.findValues();
     System.out.println("Shape of the provided coordinates is: " + results);
 
   }

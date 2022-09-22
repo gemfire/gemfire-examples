@@ -16,14 +16,14 @@ package org.apache.geode_examples.luceneSpatial;
 
 import java.io.Serializable;
 
-public class RegionInfo implements Serializable {
+public class LocationInfo implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private String name;
   private double latitude;
   private double longitude;
 
-  public RegionInfo(String name, double longitude, double latitude) {
+  public LocationInfo(String name, double longitude, double latitude) {
     this.name = name;
     this.longitude = longitude;
     this.latitude = latitude;

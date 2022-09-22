@@ -14,25 +14,29 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import org.apache.geode.cache.Region;
-import org.apache.geode.cache.lucene.LuceneService;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.geode.cache.Region;
+import org.apache.geode.cache.lucene.LuceneService;
+
+// This example calculates the area of given coordinates
 public class BoundingAreaExample {
   public static void main(String[] args) throws InterruptedException {
-    // connect to the locator using default port 10334
-    Region<String, RegionInfo> region = ExampleCommon.createRegion("example-region");
-    LuceneService luceneService = ExampleCommon.luceneService();
+    // Create client region which is same as the region on the server
+    Region<String, LocationInfo> region = CommonOps.createClientRegion("example-region");
+    // Create Lucene Service
+    LuceneService luceneService = CommonOps.luceneService();
     // Add some entries into the region
-    ExampleCommon.putEntries(luceneService, region);
+    CommonOps.putEntries(luceneService, region);
+    // Calculate the area
     computeArea(region, luceneService);
-    ExampleCommon.closeCache();
+    // Close the cache
+    CommonOps.closeCache();
   }
 
-  public static void computeArea(Region<String, RegionInfo> region, LuceneService luceneService) {
-    List<String> LatLongList = ExampleCommon.getLatLongList(region);
+  public static void computeArea(Region<String, LocationInfo> region, LuceneService luceneService) {
+    List<String> LatLongList = CommonOps.getLatLongList(region);
     List<Double> longitudeList = new ArrayList<>();
     List<Double> latitudeList = new ArrayList<>();
     for (String s : LatLongList) {
