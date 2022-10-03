@@ -14,53 +14,63 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.StringUtils;
+
 import org.apache.geode.cache.Region;
+import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.apache.geode.cache.lucene.LuceneQuery;
 import org.apache.geode.cache.lucene.LuceneQueryException;
 import org.apache.geode.cache.lucene.LuceneService;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import org.apache.geode.cache.lucene.LuceneServiceProvider;
 
 /*
- * The example shows how to find the shape of the provided coordinates.
+ * The example shows if one place resides in the other place
  */
 
 public class JTSPolygonExample {
-  public static void main(String[] args) throws InterruptedException, LuceneQueryException {
+  private static final String REGION = "example-region2";
+  private static final String INDEX = "simpleIndex2";
+
+
+  public static void verifyIfTheShapeIsPolygon() throws LuceneQueryException, InterruptedException {
     // Create client region which is same as the region on the server
-    Region<String, LocationInfo> region = CommonOps.createClientRegion("example-region");
+
+    ClientCache cache = new ClientCacheFactory().addPoolLocator("127.0.0.1", 10334)
+        .set("log-level", "WARN").create();
+    Region<String, PlaceAndShapeObject> region =
+        cache.<String, PlaceAndShapeObject>createClientRegionFactory(ClientRegionShortcut.PROXY)
+            .create(REGION);
+
     // Create Lucene Service
-    LuceneService luceneService = CommonOps.luceneService();
+    LuceneService luceneService = LuceneServiceProvider.get(cache);
     // Add some entries into the region
-    CommonOps.putEntries(luceneService, region);
+    putEntries(region);
+
+    luceneService.waitUntilFlushed(INDEX, region.getName(), 1, TimeUnit.MINUTES);
+
+
     // find the shape of the provided coordinates
-    getTheShapeOfTheCoordinates(region, luceneService);
+    String shape = StringUtils.substringBefore(SpatialHelper.getPolygonQuery().toString(), " ");
+    LuceneQuery<String, PlaceAndShapeObject> query =
+        luceneService.createLuceneQueryFactory().create(INDEX, region.getName(), shape, "shape");
+
+    List results = query.findResults();
+    System.out.println("4. Shape of the coordinates is : " + results + "/n");
     // Close the cache
     CommonOps.closeCache();
+
   }
 
-  public static void getTheShapeOfTheCoordinates(Region<String, LocationInfo> region,
-      LuceneService luceneService) throws LuceneQueryException {
-    Set<String> keySet = region.keySetOnServer();
-    List<String> list = new ArrayList<String>(keySet);
-    Collections.sort(list);
-    List<Double> longitudeList = new ArrayList<>();
-    List<Double> latitudeList = new ArrayList<>();
-    for (String s : list) {
-      longitudeList.add(region.get(s).getLongitude());
-      latitudeList.add(region.get(s).getLatitude());
-    }
 
-    LuceneQuery<String, LocationInfo> query =
-        luceneService.createLuceneQueryFactory().create("simpleIndex", region.getName(),
-            luceneIndex -> SpatialHelper.getTheShape(longitudeList, latitudeList));
-
-    Collection<LocationInfo> results = query.findValues();
-    System.out.println("Shape of the provided coordinates is: " + results);
-
+  private static void putEntries(Region<String, PlaceAndShapeObject> region) {
+    region.put("North Carolina", new PlaceAndShapeObject("North Carolina", "POLYGON"));
+    region.put("California", new PlaceAndShapeObject("California", "POLYGON"));
+    region.put("Utah", new PlaceAndShapeObject("Utah", "Rectangle"));
+    region.put("Wyoming", new PlaceAndShapeObject("Wyoming", "Rectangle"));
   }
 }

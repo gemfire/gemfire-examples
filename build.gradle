@@ -130,7 +130,7 @@ subprojects {
     task run(type: JavaExec, dependsOn: build) {
         description = 'Run example'
         classpath = sourceSets.main.runtimeClasspath
-        main = "org.apache.geode_examples.${project.name}.SearchNearestResultExample"
+        main = "org.apache.geode_examples.${project.name}.Main"
     }
 
     task waitForExitingMembers(type: Exec) {

@@ -14,21 +14,24 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import static org.junit.Assert.assertEquals;
+import java.io.IOException;
 
-import java.util.Collection;
+import org.apache.geode.cache.lucene.LuceneQueryException;
 
-import org.apache.lucene.document.Document;
-import org.junit.Test;
+public class Main {
+  public static void main(String[] args)
+      throws InterruptedException, LuceneQueryException, IOException {
 
-public class LocationInfoSerializerTest {
+    // find nearby McDonalds location
+    SearchNearestResultExample.findNearbyMcDonalds();
+    // find all the locations which intersects given location.
+    DistanceFacetsExample.findDistance();
+    // verify if one location is in a place
+    GeoLocationSearchWithinARegionExample.verifyIfGivenLocationIsInsideShape();
+    // verify if one place resides in the other place
+    JTSPolygonExample.verifyIfTheShapeIsPolygon();
+    // verify if one area of a place is in another area
+    BoundingAreaExample.VerifyIfOneAreaIsWithinAnotherArea();
 
-  @Test
-  public void serializerReturnsSingleDocument() {
-    LocationInfoSerializer serializer = new LocationInfoSerializer();
-    Collection<Document> documents =
-        serializer.toDocuments(null, new LocationObject("here", -122.8515139, 45.5099231));
-
-    assertEquals(1, documents.size());
   }
 }

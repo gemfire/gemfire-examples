@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
@@ -29,8 +30,9 @@ public class ExampleTest {
   @Test
   public void testPutEntries() throws InterruptedException {
     LuceneService service = mock(LuceneService.class);
-    Map<String, LocationInfo> region = new HashMap<String, LocationInfo>();
-    CommonOps.putEntries(service, region);
+    Map<String, LocationObject> region = new HashMap<String, LocationObject>();
+    CommonOps.putEntries(region);
+    service.waitUntilFlushed("simpleIndex", region.toString(), 1, TimeUnit.MINUTES);
     assertEquals(7, region.size());
 
   }

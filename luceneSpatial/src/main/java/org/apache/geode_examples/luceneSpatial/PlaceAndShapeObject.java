@@ -16,33 +16,30 @@ package org.apache.geode_examples.luceneSpatial;
 
 import java.io.Serializable;
 
-public class LocationInfo implements Serializable {
+public class PlaceAndShapeObject implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  private String name;
-  private double latitude;
-  private double longitude;
+  private String place;
+  private String shape;
 
-  public LocationInfo(String name, double longitude, double latitude) {
-    this.name = name;
-    this.longitude = longitude;
-    this.latitude = latitude;
+  public PlaceAndShapeObject(String place, String shape) {
+    this.place = place;
+    this.shape = shape;
   }
 
-  public String getName() {
-    return name;
+  public String getShape() {
+    return shape;
   }
 
-  public double getLatitude() {
-    return latitude;
+  public String getPlace() {
+    return place;
   }
 
-  public double getLongitude() {
-    return longitude;
-  }
 
   @Override
   public String toString() {
-    return "Region [name=" + name + ", location=" + longitude + ", " + latitude + "]";
+    return "State [state=" + place + ", shape=" + shape + "]";
   }
+
+
 }

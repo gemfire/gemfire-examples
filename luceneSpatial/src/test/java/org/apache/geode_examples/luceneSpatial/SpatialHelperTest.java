@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.document.Document;
@@ -50,6 +51,7 @@ public class SpatialHelperTest {
     for (Field field : fields) {
       document.add(field);
     }
+    System.out.println(Arrays.toString(fields));
     writer.addDocument(document);
     writer.commit();
 

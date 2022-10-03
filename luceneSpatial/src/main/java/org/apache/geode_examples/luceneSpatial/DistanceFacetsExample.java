@@ -14,38 +14,37 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.geode.cache.Region;
+import org.apache.geode.cache.lucene.LuceneQuery;
+import org.apache.geode.cache.lucene.LuceneQueryException;
 import org.apache.geode.cache.lucene.LuceneService;
 
 /*
- * The example shows the distance between two locations
+ * The example shows how to do a spatial query to find all the locations which intersects given
+ * location.
  */
+
 public class DistanceFacetsExample {
-  public static void main(String[] args) throws InterruptedException {
-    // Create client region which is same as the region on the server
-    Region<String, LocationInfo> region = CommonOps.createClientRegion("example-region");
-    // Create Lucene Service
+
+  private static final String REGION = "example-region";
+  private static final String INDEX = "simpleIndex";
+
+
+  public static void findDistance() throws LuceneQueryException, InterruptedException {
+    Region region = CommonOps.createClientRegion(REGION);
     LuceneService luceneService = CommonOps.luceneService();
-    // Add some entries into the region
-    CommonOps.putEntries(luceneService, region);
-    // Given location
-    double sourceLat = 36.8738;
-    double sourceLong = -78.78412;
-    // Find distance between two locations
-    findDistance(region, sourceLat, sourceLong);
-    // Close the cache
+    CommonOps.putEntries(region);
+    luceneService.waitUntilFlushed(INDEX, region.toString(), 1, TimeUnit.MINUTES);
+
+    LuceneQuery<Integer, LocationObject> query =
+        luceneService.createLuceneQueryFactory().create(INDEX, region.getName(),
+            index -> SpatialHelper.findDistanceForTheGivenCoord(-46.653, -23.543, 1000.25));
+    Collection<LocationObject> results = query.findValues();
+    System.out.println("2. Found intersecting location for given location: " + results + "/n");
     CommonOps.closeCache();
   }
 
-  public static void findDistance(Region<String, LocationInfo> region, double sourceLat,
-      double sourceLong) {
-    Set<String> keySet = region.keySetOnServer();
-    for (String s : keySet) {
-      double distance = SpatialHelper.getDistanceInMilesFromTwoLocations(sourceLat, sourceLong,
-          region.get(s).getLatitude(), region.get(s).getLongitude());
-      System.out.println("Distance between the source and destination is : " + distance);
-    }
-  }
 }

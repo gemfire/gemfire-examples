@@ -28,15 +28,15 @@ import org.apache.geode.cache.lucene.LuceneSerializer;
  * LuceneSerializer that converts McDonalds locations into lucene documents with the gps coordinates
  * indexed using lucene's {@link org.apache.lucene.spatial.vector.PointVectorStrategy}
  */
-public class LocationInfoSerializer implements LuceneSerializer<LocationObject> {
+public class PlaceAndShapeObjectSerializer implements LuceneSerializer<PlaceAndShapeObject> {
   @Override
-  public Collection<Document> toDocuments(LuceneIndex index, LocationObject value) {
+  public Collection<Document> toDocuments(LuceneIndex index, PlaceAndShapeObject value) {
 
     Document doc = new Document();
     // Index the name of the train stop
-    doc.add(new TextField("name", value.getName(), Field.Store.NO));
+    doc.add(new TextField("shape", value.getShape(), Field.Store.NO));
 
-    Field[] fields = SpatialHelper.getIndexableFields(value.getLongitude(), value.getLatitude());
+    Field[] fields = SpatialHelper.getIndexableFields();
 
     for (Field field : fields) {
       doc.add(field);

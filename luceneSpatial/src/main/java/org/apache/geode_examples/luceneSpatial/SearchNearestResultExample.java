@@ -14,38 +14,34 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.lucene.LuceneQuery;
 import org.apache.geode.cache.lucene.LuceneQueryException;
 import org.apache.geode.cache.lucene.LuceneService;
-
-import java.util.Collection;
 
 /*
  * The example shows how to do a spatial query to find nearby McDonalds location.
  */
 
 public class SearchNearestResultExample {
-  public static void main(String[] args) throws InterruptedException, LuceneQueryException {
-    // Create client region which is same as the region on the server
-    Region<String, LocationInfo> region = CommonOps.createClientRegion("example-region");
-    // Create Lucene Service
+  private static final String REGION = "example-region";
+  private static final String INDEX = "simpleIndex";
+
+  public static void findNearbyMcDonalds() throws LuceneQueryException, InterruptedException {
+    Region region = CommonOps.createClientRegion(REGION);
     LuceneService luceneService = CommonOps.luceneService();
-    // Add some entries into the region
-    CommonOps.putEntries(luceneService, region);
-    // Search the desired location
-    findNearbyMcDonalds(luceneService, region);
-    // Close the cache
+    CommonOps.putEntries(region);
+    luceneService.waitUntilFlushed(INDEX, region.toString(), 1, TimeUnit.MINUTES);
+
+    LuceneQuery<Integer, LocationObject> query = luceneService.createLuceneQueryFactory()
+        .create(INDEX, region.getName(), index -> SpatialHelper.findWithin(-46.653, -23.543, 0.25));
+
+    Collection<LocationObject> results = query.findValues();
+    System.out.println("1.  Found NearBy Location: " + results + "/n");
     CommonOps.closeCache();
-  }
-
-  public static void findNearbyMcDonalds(LuceneService luceneService, Region region)
-      throws LuceneQueryException {
-    LuceneQuery<Integer, LocationInfo> query = luceneService.createLuceneQueryFactory().create(
-        "simpleIndex", region.getName(), index -> SpatialHelper.findWithin(-46.653, -23.543, 0.25));
-
-    Collection<LocationInfo> results = query.findValues();
-    System.out.println("Found stops: " + results);
   }
 
 }
