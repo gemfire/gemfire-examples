@@ -1,7 +1,5 @@
-/*
- * Copyright (c) VMware, Inc. 2022. All rights reserved.
- * SPDX-License-Identifier: Apache-2.0
- */
+// Copyright (c) VMware, Inc. 2022.
+// All rights reserved. SPDX-License-Identifier: Apache-2.0
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
