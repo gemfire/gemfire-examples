@@ -14,10 +14,7 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-
+import org.apache.commons.io.FileUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
@@ -27,8 +24,15 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.SearcherManager;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.MMapDirectory;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
 
 public class SpatialHelperTest {
 
@@ -36,7 +40,7 @@ public class SpatialHelperTest {
   public void queryFindsADocumentThatWasAdded() throws IOException {
 
     // Create an in memory lucene index to add a document to
-    RAMDirectory directory = new RAMDirectory();
+    MMapDirectory directory = new MMapDirectory(Paths.get(("/tmp/lucene")));
     IndexWriter writer = new IndexWriter(directory, new IndexWriterConfig());
 
     // Add a document to the lucene index
@@ -46,15 +50,21 @@ public class SpatialHelperTest {
     for (Field field : fields) {
       document.add(field);
     }
+    System.out.println(Arrays.toString(fields));
     writer.addDocument(document);
     writer.commit();
 
-
     // Make sure a findWithin query locates the document
-    Query query = SpatialHelper.findWithin(-122.8515239, 45.5099331, 1);
-    SearcherManager searcherManager = new SearcherManager(writer, null);
-    IndexSearcher searcher = searcherManager.acquire();
-    TopDocs results = searcher.search(query, 100);
-    assertEquals(1, results.totalHits);
+    try {
+      Query query = SpatialHelper.findWithin(-122.8515239, 45.5099331, 1);
+      SearcherManager searcherManager = new SearcherManager(writer, null);
+      IndexSearcher searcher = searcherManager.acquire();
+      TopDocs results = searcher.search(query, 100);
+      assertEquals(1, results.totalHits.value);
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      FileUtils.deleteDirectory(new File("/tmp/lucene"));
+    }
   }
 }
