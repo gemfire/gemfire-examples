@@ -14,7 +14,11 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import org.apache.commons.io.FileUtils;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.util.Arrays;
+
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
@@ -26,12 +30,6 @@ import org.apache.lucene.search.SearcherManager;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.ByteBuffersDirectory;
 import org.junit.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-
-import static org.junit.Assert.assertEquals;
 
 public class SpatialHelperTest {
 
@@ -54,10 +52,10 @@ public class SpatialHelperTest {
     writer.commit();
 
     // Make sure a findWithin query locates the document
-      Query query = SpatialHelper.findWithin(-122.8515239, 45.5099331, 1);
-      SearcherManager searcherManager = new SearcherManager(writer, null);
-      IndexSearcher searcher = searcherManager.acquire();
-      TopDocs results = searcher.search(query, 100);
-      assertEquals(1, results.totalHits.value);
+    Query query = SpatialHelper.findWithin(-122.8515239, 45.5099331, 1);
+    SearcherManager searcherManager = new SearcherManager(writer, null);
+    IndexSearcher searcher = searcherManager.acquire();
+    TopDocs results = searcher.search(query, 100);
+    assertEquals(1, results.totalHits.value);
   }
 }

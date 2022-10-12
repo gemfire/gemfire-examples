@@ -14,12 +14,12 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import static org.junit.Assert.assertEquals;
+import org.apache.lucene.document.Document;
+import org.junit.Test;
 
 import java.util.Collection;
 
-import org.apache.lucene.document.Document;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class TrainStopSerializerTest {
 
