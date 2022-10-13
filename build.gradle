@@ -38,32 +38,32 @@ allprojects {
     }
 }
 
-def installDir = "$buildDir/apache-geode"
+def installDir = "$buildDir/vmware-gemfire"
 
 configurations {
     compositeTarget
-    geodeDistribution
+    gemfireDistribution
 }
 
 dependencies {
     if (gradle.usingGeodeCompositeBuild) {
-        geodeDistribution(group: 'com.vmware.gemfire', name: 'apache-geode', version: geodeVersion) {
+        gemfireDistribution(group: 'com.vmware.gemfire', name: 'vmware-gemfire', version: geodeVersion) {
             targetConfiguration = 'compositeTarget'
         }
     } else {
-        geodeDistribution("com.vmware.gemfire:apache-geode:${geodeVersion}@tgz")
+        gemfireDistribution("com.vmware.gemfire:vmware-gemfire:${geodeVersion}@tgz")
     }
 }
 
 task installGeode(type: Copy) {
     if (gradle.usingGeodeCompositeBuild) {
-        dependsOn(gradle.includedBuild(gradle.geodeProject).task(':geode-assembly:distTar'))
+        dependsOn(gradle.includedBuild(gradle.geodeProject).task(':vmware-gemfire:distTar'))
     }
     from {
-        tarTree(configurations.geodeDistribution.singleFile)
+        tarTree(configurations.gemfireDistribution.singleFile)
     }
     eachFile { fcp ->
-        fcp.path = fcp.path.replaceFirst("^apache-geode-[a-zA-Z0-9\\.\\-]+\\/", "apache-geode/")
+        fcp.path = fcp.path.replaceFirst("^vmware-gemfire-[a-zA-Z0-9\\.\\-]+\\/", "vmware-gemfire/")
     }
     into buildDir
     includeEmptyDirs false

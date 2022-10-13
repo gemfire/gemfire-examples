@@ -61,11 +61,11 @@ if (gradle.ext.usingGeodeCompositeBuild) {
   includeBuild(geodeDirectory) {
     it.dependencySubstitution {
       // Any submodule used by examples must be listed here
-      substitute module("com.vmware.gemfire:geode-all-bom") with project(':boms:geode-all-bom')
+      it.substitute it.module("com.vmware.gemfire:geode-all-bom") with project(':boms:geode-all-bom')
       it.substitute it.module("com.vmware.gemfire:geode-cq") with it.project(':geode-cq')
       it.substitute it.module("com.vmware.gemfire:geode-core") with it.project(':geode-core')
       it.substitute it.module("com.vmware.gemfire:geode-logging") with it.project(':geode-logging')
-      it.substitute it.module("com.vmware.gemfire:apache-geode") with it.project(':geode-assembly')
+      it.substitute it.module("com.vmware.gemfire:vmware-gemfire") with it.project(':geode-assembly')
     }
   }
 }

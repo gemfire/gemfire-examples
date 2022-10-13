@@ -62,7 +62,7 @@ the build step will have installed a `gfsh` executable for you
 at a path relative to the current working directory
 within a versioned directory:
 
-        ../build/apache-geode-<version>/bin/gfsh
+        ../build/vmware-gemfire-<version>/bin/gfsh
 
     You can use this relative path to invoke gfsh by substituting
 the appropriate `<version>`.
