@@ -17,7 +17,6 @@ package org.apache.geode_examples.luceneSpatial;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -47,7 +46,6 @@ public class SpatialHelperTest {
     for (Field field : fields) {
       document.add(field);
     }
-    System.out.println(Arrays.toString(fields));
     writer.addDocument(document);
     writer.commit();
 
