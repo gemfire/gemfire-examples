@@ -30,7 +30,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.SearcherManager;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.ByteBuffersDirectory;
 import org.junit.Test;
 
 public class SpatialHelperTest {
@@ -39,7 +39,7 @@ public class SpatialHelperTest {
   public void queryFindsADocumentThatWasAdded() throws IOException {
 
     // Create an in memory lucene index to add a document to
-    RAMDirectory directory = new RAMDirectory();
+    ByteBuffersDirectory directory = new ByteBuffersDirectory();
     IndexWriter writer = new IndexWriter(directory, new IndexWriterConfig());
 
     // Add a document to the lucene index
@@ -52,12 +52,11 @@ public class SpatialHelperTest {
     writer.addDocument(document);
     writer.commit();
 
-
     // Make sure a findWithin query locates the document
     Query query = SpatialHelper.findWithin(-122.8515239, 45.5099331, 1);
     SearcherManager searcherManager = new SearcherManager(writer, null);
     IndexSearcher searcher = searcherManager.acquire();
     TopDocs results = searcher.search(query, 100);
-    assertEquals(1, results.totalHits);
+    assertEquals(1, results.totalHits.value);
   }
 }

@@ -16,7 +16,7 @@
  */
 dependencies {
   compile("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion")
-  compile("org.apache.lucene:lucene-spatial-extras:6.4.1")
+  compile("org.apache.lucene:lucene-spatial-extras:9.3.0")
 }
 
 tasks.named("start") { start ->
