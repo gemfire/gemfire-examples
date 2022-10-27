@@ -30,13 +30,11 @@ start locator --name=locator --bind-address=127.0.0.1 --connect=false\
 
 start server --name=server1 --locators=127.0.0.1[10334]\
  --classpath=../build/resources/main/:../build/classes/java/main/\
- --security-properties-file=./example_security.properties --server-port=0\
- --user=superUser --password=123
+ --security-properties-file=./example_security.properties --server-port=0
 
 start server --name=server2 --locators=127.0.0.1[10334]\
  --classpath=../build/resources/main/:../build/classes/java/main/\
- --security-properties-file=./example_security.properties --server-port=0\
- --user=superUser --password=123
+ --security-properties-file=./example_security.properties --server-port=0
 
 # To execute any online commands, we need to connect to the locator
 # To create a region, we can connect as any user with CLUSTER:MANAGE
