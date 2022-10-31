@@ -1,6 +1,3 @@
-// Copyright (c) VMware, Inc. 2022.
-// All rights reserved. SPDX-License-Identifier: Apache-2.0
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional information regarding
@@ -27,6 +24,7 @@ import org.apache.lucene.spatial.vector.PointVectorStrategy;
 import org.locationtech.spatial4j.context.SpatialContext;
 import org.locationtech.spatial4j.distance.DistanceUtils;
 import org.locationtech.spatial4j.shape.Point;
+import org.locationtech.spatial4j.shape.Shape;
 import org.locationtech.spatial4j.shape.impl.GeoCircle;
 import org.locationtech.spatial4j.shape.impl.PointImpl;
 
@@ -58,6 +56,36 @@ public class SpatialHelper {
 
   private static Point createPoint(double longitude, double latitude) {
     return new PointImpl(longitude, latitude, CONTEXT);
+  }
+
+  public static Query findDistanceForTheGivenCoord(double sourceLang, double sourceLat,
+      double radiusMiles) {
+    double radiusDEG = DistanceUtils.dist2Degrees(radiusMiles, EARTH_MEAN_RADIUS_MI);
+    SpatialArgs args = new SpatialArgs(SpatialOperation.Intersects,
+        new GeoCircle(createPoint(sourceLang, sourceLat), radiusDEG, CONTEXT));
+    return STRATEGY.makeQuery(args);
+  }
+
+
+  public static Query queryIntersectingPoints(double minLong, double minLat, double maxLong,
+      double maxLat) {
+    SpatialArgs args =
+        new SpatialArgs(SpatialOperation.Intersects, getShape(minLong, minLat, maxLong, maxLat));
+    return STRATEGY.makeQuery(args);
+  }
+
+
+  static Shape getShape(double minLong, double minLat, double maxLong, double maxLat) {
+    return CONTEXT.getShapeFactory().rect((createPoint(minLong, minLat)),
+        (createPoint(maxLong, maxLat)));
+
+  }
+
+  public static Query findLocationThatIsInsideTheRectangle(double minLong, double minLat,
+      double maxLong, double maxLat) {
+    SpatialArgs args =
+        new SpatialArgs(SpatialOperation.IsWithin, getShape(minLong, minLat, maxLong, maxLat));
+    return STRATEGY.makeQuery(args);
   }
 
 }

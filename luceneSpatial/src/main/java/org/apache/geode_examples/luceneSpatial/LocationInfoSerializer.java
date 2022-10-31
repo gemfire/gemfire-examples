@@ -1,6 +1,3 @@
-// Copyright (c) VMware, Inc. 2022.
-// All rights reserved. SPDX-License-Identifier: Apache-2.0
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional information regarding
@@ -23,18 +20,17 @@ import java.util.Collections;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.spatial.vector.PointVectorStrategy;
 
 import org.apache.geode.cache.lucene.LuceneIndex;
 import org.apache.geode.cache.lucene.LuceneSerializer;
 
 /**
- * LuceneSerializer that converts train stops into lucene documents with the gps coordinates indexed
- * using lucene's {@link PointVectorStrategy}
+ * LuceneSerializer that converts McDonalds locations into lucene documents with the gps coordinates
+ * indexed using lucene's {@link org.apache.lucene.spatial.vector.PointVectorStrategy}
  */
-public class TrainStopSerializer implements LuceneSerializer<TrainStop> {
+public class LocationInfoSerializer implements LuceneSerializer<LocationObject> {
   @Override
-  public Collection<Document> toDocuments(LuceneIndex index, TrainStop value) {
+  public Collection<Document> toDocuments(LuceneIndex index, LocationObject value) {
 
     Document doc = new Document();
     // Index the name of the train stop

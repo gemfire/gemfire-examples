@@ -20,6 +20,7 @@ dependencies {
   }
 
   compile("org.apache.lucene:lucene-spatial-extras:9.3.0")
+  compile("org.locationtech.jts:jts-core:1.15.1")
 }
 
 tasks.named("start") { start ->
