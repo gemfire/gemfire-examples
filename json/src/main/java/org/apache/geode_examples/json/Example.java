@@ -32,20 +32,22 @@ import org.apache.geode.json.JsonParseException;
 
 public class Example {
 
-  private static final int NUM_KEYS = 10000;
+  private static final int NUM_KEYS = 10;
 
   public static void main(String[] args) {
     // connect to the locator using default port 10334
     ClientCache cache = new ClientCacheFactory().addPoolLocator("127.0.0.1", 10334)
-        .set("log-level", "WARN").setPdxReadSerialized(true).create();
+        .set("log-level", "WARN").create();
 
     // create a local region that matches the server region
     Region<Long, JsonDocument> region =
-        cache.<Long, JsonDocument>createClientRegionFactory(ClientRegionShortcut.CACHING_PROXY)
+        cache.<Long, JsonDocument>createClientRegionFactory(ClientRegionShortcut.PROXY)
             .create("example-region");
 
     for (long i = 0; i < NUM_KEYS; i++) {
       try {
+        // The default is StorageFormat.BSON.
+        // If you prefer StorageFormat.PDX, use cache.getJsonDocumentFactory(StorageFormat.PDX)
         JsonDocument jsonDocument = cache.getJsonDocumentFactory().create(createJson(i));
         region.put(i, jsonDocument);
       } catch (JsonParseException e) {
