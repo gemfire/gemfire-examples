@@ -29,8 +29,6 @@ import org.apache.geode.cache.lucene.LuceneQueryException;
 import org.apache.geode.cache.lucene.LuceneService;
 import org.apache.geode.cache.lucene.LuceneServiceProvider;
 
-import static org.apache.geode.cache.client.ClientRegionShortcut.CACHING_PROXY;
-
 public class Example {
   // These index names are predefined in gfsh scripts
   static final String SIMPLE_INDEX = "simpleIndex";
@@ -47,7 +45,7 @@ public class Example {
 
     // create a local region that matches the server region
     Region<Integer, EmployeeData> region =
-        cache.<Integer, EmployeeData>createClientRegionFactory(CACHING_PROXY)
+        cache.<Integer, EmployeeData>createClientRegionFactory(ClientRegionShortcut.CACHING_PROXY)
             .create("example-region");
 
     insertValues(region);
