@@ -45,17 +45,18 @@ public class Example {
     System.out.println("\nUsing Document.getField(), the value of JSON intField is: "
         + jsonDocument.getField("intField"));
 
-    System.out.println("\nUsing Document.getField(), the value of JSON nestedField is: "
-        + jsonDocument.getField("nestedField"));
+    JsonDocument nestedField = (JsonDocument) jsonDocument.getField("nestedField");
+    System.out
+        .println("\nUsing Document.getField(), the value of JSON nestedField is: " + nestedField);
 
     System.out.println("\nUsing Document.getField() to get field2 of nestedField: "
-        + ((JsonDocument) jsonDocument.getField("nestedField")).getField("field2"));
+        + nestedField.getField("field2"));
 
-    System.out.println(
-        "\nUsing Document.getField() to get arrayField: " + jsonDocument.getField("arrayField"));
+    List arrayField = (List) jsonDocument.getField("arrayField");
+    System.out.println("\nUsing Document.getField() to get arrayField: " + arrayField);
 
-    System.out.println("\nUsing Document.getField(), the value of JSON arrayField[1] is: "
-        + ((List) jsonDocument.getField("arrayField")).get(1));
+    System.out
+        .println("\nUsing List.get(), the value of JSON arrayField[1] is: " + arrayField.get(1));
 
     System.out.println("\nQuery: select * from /example-region where name='name5'");
     System.out.println("\nQuery result:\n\n" + cache.getQueryService()
