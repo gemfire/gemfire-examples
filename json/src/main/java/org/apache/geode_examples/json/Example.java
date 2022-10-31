@@ -2,12 +2,13 @@
 // All rights reserved. SPDX-License-Identifier: Apache-2.0
 package org.apache.geode_examples.json;
 
+import static org.apache.geode.cache.client.ClientRegionShortcut.PROXY;
+
 import java.util.List;
 
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientCacheFactory;
-import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.apache.geode.cache.query.FunctionDomainException;
 import org.apache.geode.cache.query.NameResolutionException;
 import org.apache.geode.cache.query.QueryInvocationTargetException;
@@ -21,42 +22,49 @@ public class Example {
   private static final int NUM_KEYS = 10;
 
   public static void main(String[] args) throws FunctionDomainException, TypeMismatchException,
-      QueryInvocationTargetException, NameResolutionException {
+      QueryInvocationTargetException, NameResolutionException, JsonParseException {
     // connect to the locator using default port 10334
     ClientCache cache = new ClientCacheFactory().addPoolLocator("127.0.0.1", 10334)
         .set("log-level", "WARN").create();
 
     // create a local region that matches the server region
     Region<Long, JsonDocument> region =
-        cache.<Long, JsonDocument>createClientRegionFactory(ClientRegionShortcut.PROXY)
-            .create("example-region");
+        cache.<Long, JsonDocument>createClientRegionFactory(PROXY).create("example-region");
     // The default is StorageFormat.BSON for cache.getJsonDocumentFactory()
     // If you prefer StorageFormat.PDX, use cache.getJsonDocumentFactory(StorageFormat.PDX)
     JsonDocumentFactory jsonDocumentFactory = cache.getJsonDocumentFactory();
     for (long i = 0; i < NUM_KEYS; i++) {
-      try {
-        JsonDocument jsonDocument = jsonDocumentFactory.create(createJson(i));
-        region.put(i, jsonDocument);
-      } catch (JsonParseException e) {
-        throw new RuntimeException(e);
-      }
+      JsonDocument jsonDocument = jsonDocumentFactory.create(createJson(i));
+      region.put(i, jsonDocument);
     }
 
     JsonDocument jsonDocument = region.get(0L);
+
     System.out.println("The JSON string is:\n\n" + jsonDocument.toJson());
-    System.out.println("\nUsing Document.getField(), the value of JSON intField is "
+
+    System.out.println("\nUsing Document.getField(), the value of JSON intField is: "
         + jsonDocument.getField("intField"));
-    System.out.println("\nUsing Document.getField(), the value of JSON nestedField.field2 is "
+
+    System.out.println("\nUsing Document.getField(), the value of JSON nestedField is: "
+        + jsonDocument.getField("nestedField"));
+
+    System.out.println("\nUsing Document.getField() to get field2 of nestedField: "
         + ((JsonDocument) jsonDocument.getField("nestedField")).getField("field2"));
-    System.out.println("\nUsing Document.getField(), the value of JSON arrayField[1] is "
+
+    System.out.println(
+        "\nUsing Document.getField() to get arrayField: " + jsonDocument.getField("arrayField"));
+
+    System.out.println("\nUsing Document.getField(), the value of JSON arrayField[1] is: "
         + ((List) jsonDocument.getField("arrayField")).get(1));
 
     System.out.println("\nQuery: select * from /example-region where name='name5'");
     System.out.println("\nQuery result:\n\n" + cache.getQueryService()
         .newQuery("select * from /example-region where name='name5'").execute());
-    System.out.println("\nQuery: select * from /example-region where arrayField[0]=5");
+
+    System.out.println("\nQuery: select * from /example-region where arrayField[0]=6");
     System.out.println("\nQuery result:\n\n" + cache.getQueryService()
-        .newQuery("select * from /example-region where arrayField[0]=5").execute());
+        .newQuery("select * from /example-region where arrayField[0]=6").execute());
+
     cache.close();
   }
 
