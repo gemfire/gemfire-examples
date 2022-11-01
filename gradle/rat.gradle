@@ -41,6 +41,7 @@ rat {
     'etc/eclipse-java-google-style.xml',
     'etc/intellij-java-google-style.xml',
     'etc/eclipseOrganizeImports.importorder',
+    'etc/intellij-vmware-copyright-notice.xml',
     '**/.project',
     '**/.classpath',
     '**/.settings/**',
