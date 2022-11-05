@@ -19,36 +19,45 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Lucene Spatial Indexing Example
+# GemFire Lucene Spatial Indexing Example
 
-This examples demonstrates how to use Geode's LuceneSerializer and LuceneQueryProvider APIs
-to customize how Geode data is stored and indexed in Lucene.
+These examples demonstrate how to use GemFire's LuceneSerializer and LuceneQueryProvider APIs
+to customize how GemFire data is stored and indexed in Lucene.
 
-In this example two servers host a partitioned region that stores train station stop information,
-including GPS coordinates. The region has lucene index that allows spatial queries to be performed
-against the data. The example shows how to do a spatial query to find nearby train stations.
+All the examples are run from Example.java class's main method. In these example two servers host a partitioned region that stores the location information,including GPS coordinates. The region has lucene index that allows spatial queries to be performed against the data. These examples show how to do a spatial query.
 
-This example assumes that Java and Geode are installed.
+First example is SearchNearestResultExample, it finds nearby locations from a specific location.
+
+Second example is DistanceFacetsExample, it finds all the locations which coincides with the given location. 
+
+Third example is SearchOverlappingLocation, it finds the location that overlaps with other locations.
+
+Fourth example is SearchIntersectingCoordinates, it finds the location that coincides with a given shape (which consists of multiple locations). 
+
+These example assumes that Java 11 and GemFire are installed. Minimum java version is jdk11. 
 
 ## Set up the Lucene index and region
-1. Set directory ```gemfire-examples/luceneSpatial``` to be the
-current working directory.
+1. Set directory ```gemfire-examples/luceneSpatial``` to be the current working directory.
 Each step in this example specifies paths relative to that directory.
 
-2. Build the example
+2. Build the examples
 
         $ ../gradlew build
+        
+3. Prepare lucene-extension
+    
+    Build or download ```gemfire-lucene-extension-1.0.0-build.0.gfm```. Untar it and copy the jar files into ```/build/libs```
+    
+       $ tar xvf gemfire-lucene-extension-1.0.0-build.0.gfm
+       $ cp com/vmware/gemfire/gemfire-lucene/1/*.jar build/libs
+       $ export CLASSPATH=com/vmware/gemfire/gemfire-lucene/1/*
 
-3. Run a script that starts a locator and two servers, creates a Lucene index
-called ```simpleIndex``` with a custom LuceneSerializer that indexes spatial data. The script
+4. Run a script that starts a locator and two servers, creates a Lucene index called ```simpleIndex``` with a custom LuceneSerializer that indexes spatial data. The script
 then creates the ```example-region``` region.
 
         $ gfsh run --file=scripts/start.gfsh
 
-4. Run the example. This program adds data to the example-region, and then looks
-for train stations with a 1 mile of a specific GPS coordinate. Look at Example.java to see
-what this program does.
-
+4. Run the examples to populate both the Lucene index and `example-region`. This program adds data to the example-region, and then performs the searches mentioned above.
 
         $ ../gradlew run
 

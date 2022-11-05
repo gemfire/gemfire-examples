@@ -25,7 +25,7 @@ public class Example {
     SearchNearestResultExample.findNearbyMcDonalds();
     // find all the locations which intersects given location.
     DistanceFacetsExample.findDistance();
-    // verify if one place overlaps with other place
+    // find the location that overlaps with other location
     SearchOverlappingLocation.findLocationWithinRectangle();
     // find Location that intersects with a shape
     SearchIntersectingCoordinates.findIntersectingLocationWithARectangle();
