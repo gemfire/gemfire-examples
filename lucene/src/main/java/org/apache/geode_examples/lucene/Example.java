@@ -59,6 +59,11 @@ public class Example {
     LuceneQuery<Integer, EmployeeData> query = lucene.createLuceneQueryFactory()
         .create(SIMPLE_INDEX, EXAMPLE_REGION, "firstName:Chris~2", "firstname");
     System.out.println("Employees with first names like Chris: " + query.findValues());
+    LuceneQuery<Integer, EmployeeData> query2 =
+        lucene.createLuceneQueryFactory().create(ANALYZER_INDEX, EXAMPLE_REGION,
+            "lastName:hall~ AND email:Kris.Call\\@example.com", "lastName");
+    System.out.println(
+        "Compound search on last name and email using analyzerIndex: " + query.findValues());
   }
 
   private static void queryNestedObject(ClientCache cache) throws LuceneQueryException {

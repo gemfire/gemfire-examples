@@ -52,16 +52,16 @@ then creates the ```example-region``` region.
 
         $ gfsh run --file=scripts/start.gfsh
 
-4. Run the examples to populate both the Lucene index and `example-region`. This program adds data to the example-region, and then performs the searches mentioned above.
+5. Run the examples to populate both the Lucene index and `example-region`. This program adds data to the example-region, and then performs the searches mentioned above.
 
         $ ../gradlew run
 
 
-5. Shut down the cluster
+6. Shut down the cluster
 
         $ gfsh run --file=scripts/stop.gfsh
 
-6. Clean up any generated directories and files so this example can be rerun.
+7. Clean up any generated directories and files so this example can be rerun.
     
         $ ../gradlew cleanServer
 
