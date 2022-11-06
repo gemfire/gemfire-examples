@@ -24,13 +24,13 @@ import java.util.Collection;
 import org.apache.lucene.document.Document;
 import org.junit.Test;
 
-public class TrainStopSerializerTest {
+public class LocationInfoSerializerTest {
 
   @Test
   public void serializerReturnsSingleDocument() {
-    TrainStopSerializer serializer = new TrainStopSerializer();
+    LocationInfoSerializer serializer = new LocationInfoSerializer();
     Collection<Document> documents =
-        serializer.toDocuments(null, new TrainStop("here", -122.8515139, 45.5099231));
+        serializer.toDocuments(null, new LocationObject("here", -122.8515139, 45.5099231));
 
     assertEquals(1, documents.size());
   }

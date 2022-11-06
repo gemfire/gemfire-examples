@@ -1,6 +1,3 @@
-// Copyright (c) VMware, Inc. 2022.
-// All rights reserved. SPDX-License-Identifier: Apache-2.0
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
  * agreements. See the NOTICE file distributed with this work for additional information regarding
@@ -19,14 +16,14 @@ package org.apache.geode_examples.luceneSpatial;
 
 import java.io.Serializable;
 
-public class TrainStop implements Serializable {
+public class LocationObject implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private String name;
   private double latitude;
   private double longitude;
 
-  public TrainStop(String name, double longitude, double latitude) {
+  public LocationObject(String name, double longitude, double latitude) {
     this.name = name;
     this.longitude = longitude;
     this.latitude = latitude;
@@ -46,6 +43,6 @@ public class TrainStop implements Serializable {
 
   @Override
   public String toString() {
-    return "TrainStop [name=" + name + ", location=" + longitude + ", " + latitude + "]";
+    return "Region [name=" + name + ", location=" + longitude + ", " + latitude + "]";
   }
 }
