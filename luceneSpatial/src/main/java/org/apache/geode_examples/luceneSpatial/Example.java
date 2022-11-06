@@ -14,9 +14,9 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
-import java.io.IOException;
-
 import org.apache.geode.cache.lucene.LuceneQueryException;
+
+import java.io.IOException;
 
 public class Example {
   public static void main(String[] args)

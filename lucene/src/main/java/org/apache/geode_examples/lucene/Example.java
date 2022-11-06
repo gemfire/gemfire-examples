@@ -57,13 +57,8 @@ public class Example {
   private static void query(ClientCache cache) throws LuceneQueryException {
     LuceneService lucene = LuceneServiceProvider.get(cache);
     LuceneQuery<Integer, EmployeeData> query = lucene.createLuceneQueryFactory()
-        .create(SIMPLE_INDEX, EXAMPLE_REGION, "firstName:Chris~2", "firstName");
+        .create(SIMPLE_INDEX, EXAMPLE_REGION, "firstName:Chris~2", "firstname");
     System.out.println("Employees with first names like Chris: " + query.findValues());
-    LuceneQuery<Integer, EmployeeData> query2 =
-        lucene.createLuceneQueryFactory().create(ANALYZER_INDEX, EXAMPLE_REGION,
-            "lastName:hall~ AND email:Kris.Call\\@example.com", "lastName");
-    System.out.println(
-        "Compound search on last name and email using analyzerIndex: " + query.findValues());
   }
 
   private static void queryNestedObject(ClientCache cache) throws LuceneQueryException {
@@ -85,7 +80,7 @@ public class Example {
     for (int index = 0; index < firstNames.length; index++) {
       emplNumber = emplNumber + index;
       Integer key = emplNumber;
-      String email = firstNames[index] + "." + lastNames[index] + "\\@example.com";
+      String email = firstNames[index] + "." + lastNames[index] + "@example.com";
       // Generating random number between 0 and 100000 for salary
       int salary = salaries[index % 5];
       int hoursPerWeek = hours[index % 5];

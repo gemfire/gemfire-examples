@@ -29,10 +29,8 @@ that represent employee information. The example indexes the first and last
 names of employees.
 
 This example assumes that Java and Geode are installed.
-The minimum java version is jdk 11.
 
 ## Set up the Lucene index and region
-
 1. Set directory ```gemfire-examples/lucene``` to be the
 current working directory.
 Each step in this example specifies paths relative to that directory.
@@ -41,20 +39,13 @@ Each step in this example specifies paths relative to that directory.
 
         $ ../gradlew build
 
-3. Prepare lucene-extension
-Build or download gemfire-lucene-extension-1.0.0-build.0.gfm. Untar it and copy the jar files into build/libs
-
-        $ tar xvf gemfire-lucene-extension-1.0.0-build.0.gfm
-        $ cp com/vmware/gemfire/gemfire-lucene/1/*.jar build/libs
-        $ export CLASSPATH=com/vmware/gemfire/gemfire-lucene/1/*
-
-4. Run a script that starts a locator and two servers, creates a Lucene index
+3. Run a script that starts a locator and two servers, creates a Lucene index
 called ```simpleIndex```, and then creates the ```example-region``` region.
 A Lucene index must be created before creating the region.
 
         $ gfsh run --file=scripts/start.gfsh
 
-5. Run the example to populate both the Lucene index and `example-region`. The data
+4. Run the example to populate both the Lucene index and `example-region`. The data
 will also be retrieved from the region and printed to the console.
 
         $ ../gradlew run
@@ -84,7 +75,7 @@ will also be retrieved from the region and printed to the console.
         gfsh>search lucene --name=simpleIndex --region=example-region --queryStrings="firstName:cat~ OR lastName:chive~" --defaultField=lastName
 
      // Do a compound search on last name and email using analyzerIndex
-        gfsh>search lucene --name=analyzerIndex --region=example-region --queryStrings="lastName:hall~ AND email:Kris.Call\\\@example.com" --defaultField=lastName
+        gfsh>search lucene --name=analyzerIndex --region=example-region --queryStrings="lastName:hall~ AND email:Kris.Call@example.com" --defaultField=lastName
 
      // Do a compound search on nested object with both 5035330001 AND 5036430001 in contacts
      // Note: 5035330001 is the phone number of one of the contacts, 5036430001 is phone number of another contact. Since they are both contacts of this employee, it will lead to this employee. 
