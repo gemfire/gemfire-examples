@@ -44,13 +44,8 @@ Each step in this example specifies paths relative to that directory.
 
         $ ../gradlew build
         
-3. Prepare lucene-extension
-    
-    Build or download ```gemfire-lucene-extension-1.0.0-build.0.gfm```. Untar it and copy the jar files into ```/build/libs```
-    
-       $ tar xvf gemfire-lucene-extension-1.0.0-build.0.gfm
-       $ cp com/vmware/gemfire/gemfire-lucene/1/*.jar build/libs
-       $ export CLASSPATH=com/vmware/gemfire/gemfire-lucene/1/*
+3. Add lucene-extension jars into CLASSPATH, which is required by manual steps.
+        $ export CLASSPATH=build/libs/*
 
 4. Run a script that starts a locator and two servers, creates a Lucene index called ```simpleIndex``` with a custom LuceneSerializer that indexes spatial data. The script
 then creates the ```example-region``` region.

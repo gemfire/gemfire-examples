@@ -32,11 +32,11 @@ public class SearchIntersectingCoordinates {
 
     Region region = CommonOps.createClientRegion(REGION);
     LuceneService luceneService = CommonOps.luceneService();
-    // indexing on the given region
-    luceneService.waitUntilFlushed(INDEX, region.getName(), 1, TimeUnit.MINUTES);
 
     // Add some entries into the region
     CommonOps.putEntries(region);
+    // indexing on the given region
+    luceneService.waitUntilFlushed(INDEX, region.getName(), 1, TimeUnit.MINUTES);
 
     double maxLong = -46.614;
     double maxLat = 23.559;

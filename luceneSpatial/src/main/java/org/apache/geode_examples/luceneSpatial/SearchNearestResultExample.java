@@ -14,13 +14,13 @@
  */
 package org.apache.geode_examples.luceneSpatial;
 
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.lucene.LuceneQuery;
 import org.apache.geode.cache.lucene.LuceneQueryException;
 import org.apache.geode.cache.lucene.LuceneService;
-
-import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 
 /*
  * The example shows how to do a spatial query to find nearby McDonalds location.
