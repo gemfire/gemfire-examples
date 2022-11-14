@@ -16,9 +16,9 @@
 #
 set variable --name=STAR --value=*
 
-start locator --name=locator --bind-address=127.0.0.1 --classpath=../build/libs/${STAR}
-start server --name=server1 --locators=127.0.0.1[10334] --server-port=0 --classpath=../build/libs/${STAR} --enable-time-statistics --statistic-archive-file=lucene1.gfs
-start server --name=server2 --locators=127.0.0.1[10334] --server-port=0 --classpath=../build/libs/${STAR} --enable-time-statistics --statistic-archive-file=lucene2.gfs
+start locator --name=locator --bind-address=127.0.0.1 --disable-classloader-isolation --classpath=../build/libs/${STAR}
+start server --name=server1 --locators=127.0.0.1[10334] --server-port=0 --disable-classloader-isolation --classpath=../build/libs/${STAR} --enable-time-statistics --statistic-archive-file=lucene1.gfs
+start server --name=server2 --locators=127.0.0.1[10334] --server-port=0 --disable-classloader-isolation --classpath=../build/libs/${STAR} --enable-time-statistics --statistic-archive-file=lucene2.gfs
 
 ## Create a lucene index with our custom serializer
 create lucene index --name=simpleIndex --region=locationRegion --field=name --serializer=org.apache.geode_examples.luceneSpatial.LocationInfoSerializer
