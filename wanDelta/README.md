@@ -38,12 +38,6 @@ Delta object with a small change.  Each Delta update event will only cause
 the changes to be replicated across the WAN.  After the client app has run, 
 both clusters will contain the data.
 
-**Special Note**
-The gfsh scripts and gradle tasks for this example do not follow the standard
-used by other gemfire-examples in order to create 2 separate clusters. Due to
-this, you must follow the steps outlined below, as this example will not
-run using the runAll gradle task.
-
 This example assumes that Java and Geode are installed.
 
 ## Steps
@@ -52,22 +46,13 @@ This example assumes that Java and Geode are installed.
 
         $ ../gradlew build
 
-2. Run the script that starts the London cluster (1 locator and 2 servers) and
-   creates the gateway senders and receivers.  
+2. Run the script that starts the London and New York clusters.  Each cluster includes one locator
+   and two servers.  Each server configures one gateway sender, one gateway receiver and one
+   partitioned region attached to the gateway sender.
 
-        $ gfsh run --file=scripts/start-ln.gfsh
+        $ gfsh run --file=scripts/start.gfsh
 
-3. Run the script that starts the New York cluster (1 locator and 2 servers) and
-   creates the gateway senders and receivers.  
-
-        $ gfsh run --file=scripts/start-ny.gfsh
-
-4. Run the script that creates the example-region in each cluster and associates the 
-   gateway senders to this region.
-
-        $ gfsh run --file=scripts/start-wan.gfsh
-
-5. Run the client example app that connects to the London cluster and puts Delta entries 
+6. Run the client example app that connects to the London cluster and puts Delta entries 
    into the `example-region` and then updates them. The data will be automatically sent to
    the New York cluster, as well as printed to the console.
 

@@ -84,6 +84,7 @@ The following sections call out ready-made examples.  You may want to start your
 
 *  [Lucene Spatial Indexing](luceneSpatial/README.md)
 *  [WAN Gateway](wan/README.md)
+*  [WAN Gateway Delta](wanDelta/README.md)
 *  [Durable Messaging for Subscriptions](durableMessaging/README.md)
 *  [Micrometer Metrics](micrometerMetrics/README.md)
 *  [Compression](compression/README.md)
