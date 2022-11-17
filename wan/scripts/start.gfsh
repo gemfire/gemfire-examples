@@ -1,4 +1,6 @@
 #
+# Copyright (c) VMware, Inc. 2022. All rights reserved.
+#
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -22,8 +24,3 @@ disconnect
 # Start the New York (ny) cluster
 run --file=./scripts/start-ny.gfsh
 disconnect
-sh sleep 5
-
-# Create the region on each cluster and bind the gateway senders/receivers to region
-run --file=./scripts/start-wan.gfsh
-
