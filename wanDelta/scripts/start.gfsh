@@ -1,0 +1,10 @@
+# Copyright (c) VMware, Inc. 2022. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Start the London (ln) cluster
+run --file=./scripts/start-ln.gfsh
+disconnect
+
+# Start the New York (ny) cluster
+run --file=./scripts/start-ny.gfsh
+disconnect
