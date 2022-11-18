@@ -49,12 +49,6 @@ This example runs a single client that connects to the London cluster and
 puts 10 entries into the example-region and prints them.  After the client
 app has run, both clusters will contain the data.
 
-**Special Note**
-The gfsh scripts and gradle tasks for this example do not follow the standard
-used by other gemfire-examples in order to create 2 separate clusters. Due to
-this, you must follow the steps outlined below, as this example will not
-run using the runAll gradle task.
-
 This example assumes that Java and Geode are installed.
 
 ## Steps
@@ -63,20 +57,11 @@ This example assumes that Java and Geode are installed.
 
         $ ../gradlew build
 
-2. Run the script that starts the London cluster (1 locator and 2 servers) and
-   creates the gateway senders and receivers.  
+2. Run the script that starts the London and New York clusters.  Each cluster includes one locator
+   and two servers.  Each server configures one gateway sender, one gateway receiver and one
+   partitioned region attached to the gateway sender.
 
-        $ gfsh run --file=scripts/start-ln.gfsh
-
-3. Run the script that starts the New York cluster (1 locator and 2 servers) and
-   creates the gateway senders and receivers.  
-
-        $ gfsh run --file=scripts/start-ny.gfsh
-
-4. Run the script that creates the example-region in each cluster and associates the 
-   gateway senders to this region.
-
-        $ gfsh run --file=scripts/start-wan.gfsh
+        $ gfsh run --file=scripts/start.gfsh
 
 5. Run the client example app that connects to the London cluster and puts 10 entries 
 into the `example-region`. The data will be automatically sent to the New York cluster,
@@ -90,7 +75,7 @@ as well as printed to the console.
         $ gfsh
         ...
         Cluster-1 gfsh>connect --locator=localhost[10331]
-        Cluster-1 gfsh>query --query="select e.key from /example-region.entries e"
+        Cluster-1 gfsh>query --query="select e.key, e.value from /example-region.entries e"
         ...
 
 7. In another terminal, run a `gfsh` command, connect to the London cluster, and verify
@@ -99,7 +84,7 @@ as well as printed to the console.
         $ gfsh
         ...
         Cluster-2 gfsh>connect --locator=localhost[10332]
-        Cluster-2 gfsh>query --query="select e.key from /example-region.entries e"
+        Cluster-2 gfsh>query --query="select e.key, e.value from /example-region.entries e"
         ...
 
 8. Use other gfsh commands to learn statistics about the regions, gateway senders,
@@ -112,12 +97,12 @@ as well as printed to the console.
    and verify it is in the region on this cluster.
 
         Cluster-1 gfsh>put --key=20 --value="value20" --region=example-region
-        Cluster-1 gfsh>query --query="select e.key from /example-region.entries e"
+        Cluster-1 gfsh>query --query="select e.key, e.value from /example-region.entries e"
 
 10. In the terminal connected to the London cluster, verify the new entry has also 
     been added to the region on this cluster.
 
-        Cluster-2 gfsh>query --query="select e.key from /example-region.entries e"
+        Cluster-2 gfsh>query --query="select e.key, e.value from /example-region.entries e"
 
 11. Exit gfsh in each terminal and shutdown the cluster using the stop.gfsh script
  
