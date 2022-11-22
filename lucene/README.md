@@ -40,8 +40,11 @@ Each step in this example specifies paths relative to that directory.
 
         $ ../gradlew build
 
-3. Add lucene-extension jars into CLASSPATH, which is required by manual steps.
-        $ export CLASSPATH=build/libs/*
+3. Add VMware GemFire Search extension path to the `GEMFIRE_EXTENSIONS_REPOSITORY_PATH` environment 
+variable. For example, if your vmware-gemfire-search-<version>.gfm file is located in 
+/gemfire-extensions, use the following command:
+
+        $ export GEMFIRE_EXTENSIONS_REPOSITORY_PATH=/gemfire-extensions
 
 4. Run a script that starts a locator and two servers, creates a Lucene index
 called ```simpleIndex```, and then creates the ```example-region``` region.

@@ -1,4 +1,8 @@
 /*
+ * Copyright (c) VMware, Inc. 2022. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -19,14 +23,3 @@ dependencies {
     exclude(group:"com.vmware.gemfire")
   }
 }
-
-tasks.named("start") { start ->
-  start.environment ('CLASSPATH', configurations.runtime.asPath)
-}
-
-task copyDependencies(type:Copy) {
-  into "$buildDir/libs"
-  from configurations['runtime']
-}
-
-build.dependsOn(copyDependencies)
