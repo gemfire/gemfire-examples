@@ -18,10 +18,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+configurations {
+  server
+}
+
 dependencies {
   compile("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion"){
     exclude(group:"com.vmware.gemfire")
   }
 
   compile("org.apache.lucene:lucene-spatial-extras:9.3.0")
+
+  server("org.apache.lucene:lucene-spatial-extras:9.3.0") {
+    exclude(group: "org.apache.lucene", module: "lucene-core")
+  }
 }
+
+task copyDependencies(type:Copy) {
+  into "$buildDir/libs"
+  from configurations['server']
+}
+
+build.dependsOn(copyDependencies)
