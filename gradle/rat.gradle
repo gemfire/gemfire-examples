@@ -64,6 +64,9 @@ rat {
     // image files
     '**/*.svg',
 
+    // GemFire extensions
+    '**/*.gfm',
+
     // working directories
     '**/locator/**',
     '**/server/**',
