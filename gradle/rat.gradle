@@ -66,6 +66,7 @@ rat {
 
     // GemFire extensions
     '**/*.gfm',
+    'vmware-gemfire-1*/**',
 
     // working directories
     '**/locator/**',
