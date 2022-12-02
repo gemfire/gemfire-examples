@@ -25,7 +25,13 @@ allprojects {
     repositories {
         if (!gradle.usingGeodeCompositeBuild) {
           maven {
-            url project.findProperty('geodeRepositoryUrl') ?: 'gcs://gemfire-build-resources/maven/gemfire'
+            if (project.findProperty('geodeRepositoryUrl').contains('commercial-repo.pivotal.io')||project.findProperty('geodeRepositoryUrl').isEmpty()) {
+              credentials {
+                username "your_commercial_repo_email"
+                password "your_commercial_repo_pwd"
+              }
+            }
+            url project.findProperty('geodeRepositoryUrl') ?: 'https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire'
             content {
               includeGroup 'com.vmware.gemfire'
             }
@@ -38,35 +44,26 @@ allprojects {
     }
 }
 
-def installDir = "$buildDir/vmware-gemfire"
+def installDir = "${System.env.GEODE_HOME}"
+def extensionsDirs = "${System.env.GEMFIRE_EXTENSIONS_REPOSITORY_PATH}"
+
+task checkEnv {
+    if (installDir=="null" || installDir.isEmpty()) {
+        throw new GradleException("Please set GEODE_HOME to the directory where you have downloaded and extracted GemFire .tgz")
+    } else {
+        println("GEODE_HOME=$installDir")
+    }
+
+    if (extensionsDirs=="null" || extensionsDirs.isEmpty()) {
+        println("WARNING: Please set GEMFIRE_EXTENSIONS_REPOSITORY_PATH to the directory where you have downloaded required .gfm file(s)")
+    } else {
+        println("GEMFIRE_EXTENSIONS_REPOSITORY_PATH=$extensionsDirs")
+    }
+}
 
 configurations {
     compositeTarget
     gemfireDistribution
-}
-
-dependencies {
-    if (gradle.usingGeodeCompositeBuild) {
-        gemfireDistribution(group: 'com.vmware.gemfire', name: 'vmware-gemfire', version: geodeVersion) {
-            targetConfiguration = 'compositeTarget'
-        }
-    } else {
-        gemfireDistribution("com.vmware.gemfire:vmware-gemfire:${geodeVersion}@tgz")
-    }
-}
-
-task installGeode(type: Copy) {
-    if (gradle.usingGeodeCompositeBuild) {
-        dependsOn(gradle.includedBuild(gradle.geodeProject).task(':vmware-gemfire:distTar'))
-    }
-    from {
-        tarTree(configurations.gemfireDistribution.singleFile)
-    }
-    eachFile { fcp ->
-        fcp.path = fcp.path.replaceFirst("^vmware-gemfire-[a-zA-Z0-9\\.\\-]+\\/", "vmware-gemfire/")
-    }
-    into buildDir
-    includeEmptyDirs false
 }
 
 subprojects {
@@ -112,19 +109,16 @@ subprojects {
     }
     clean.finalizedBy cleanServer
 
-    def geodePath = "${installDir}/bin${System.getProperty('path.separator')}${System.env.PATH}"
-    task start(type: Exec, dependsOn: [installGeode, build, cleanServer]) {
+    task start(type: Exec, dependsOn: [checkEnv, build, cleanServer]) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        environment 'PATH', geodePath
-        commandLine 'sh', '-c', "gfsh run --file=${projectDir}/scripts/start.gfsh"
+        commandLine 'sh', '-c', "$installDir/bin/gfsh run --file=${projectDir}/scripts/start.gfsh"
     }
 
-    task stop(type: Exec, dependsOn: installGeode) {
+    task stop(type: Exec, dependsOn: checkEnv) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        environment 'PATH', geodePath
-        commandLine 'sh', '-c', "gfsh run --file=${projectDir}/scripts/stop.gfsh"
+        commandLine 'sh', '-c', "$installDir/bin/gfsh run --file=${projectDir}/scripts/stop.gfsh"
     }
 
     task run(type: JavaExec, dependsOn: build) {
@@ -136,7 +130,6 @@ subprojects {
     task waitForExitingMembers(type: Exec) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        environment 'PATH', geodePath
         ignoreExitValue true
         commandLine 'sh', '-c', "" +
                 "TIMEOUT=120 ;" +
@@ -164,7 +157,6 @@ subprojects {
     task verifyNoMembersRunning(type: Exec) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        environment 'PATH', geodePath
         ignoreExitValue true
         commandLine 'sh', '-c', "echo \"Looking for existing member processes...\" ; " +
                 "pgrep -f \"(Server|Locator)Launcher\" ; "
