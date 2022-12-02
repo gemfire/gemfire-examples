@@ -1,5 +1,3 @@
-// Copyright (c) VMware, Inc. 2022.
-// All rights reserved. SPDX-License-Identifier: Apache-2.0
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,7 +17,7 @@
 
 plugins {
     id "org.nosphere.apache.rat" version "0.6.0"
-    id "com.diffplug.gradle.spotless" version "3.0.0"
+    id "com.diffplug.spotless" version "6.4.1"
     id "de.undercouch.download" version "3.1.2"
 }
 
@@ -27,49 +25,52 @@ allprojects {
     repositories {
         if (!gradle.usingGeodeCompositeBuild) {
           maven {
-            url project.findProperty('geodeRepositoryUrl') ?: 'gcs://gemfire-build-resources/maven/gemfire'
+            if (project.findProperty('geodeRepositoryUrl').contains('commercial-repo.pivotal.io')||project.findProperty('geodeRepositoryUrl').isEmpty()) {
+              credentials {
+                username "your_commercial_repo_email"
+                password "your_commercial_repo_pwd"
+              }
+            }
+            url project.findProperty('geodeRepositoryUrl') ?: 'https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire'
             content {
               includeGroup 'com.vmware.gemfire'
             }
           }
         }
+        if(project.hasProperty("useMavenLocal")) {
+            mavenLocal()
+        }
         mavenCentral()
     }
 }
 
-def installDir = "$buildDir/apache-geode"
+def installDir = "${System.env.GEODE_HOME}"
+def extensionsDirs = "${System.env.GEMFIRE_EXTENSIONS_REPOSITORY_PATH}"
+
+task checkEnv {
+    if (installDir=="null" || installDir.isEmpty()) {
+        throw new GradleException("Please set GEODE_HOME to the directory where you have downloaded and extracted GemFire .tgz")
+    } else {
+        println("GEODE_HOME=$installDir")
+    }
+
+    if (extensionsDirs=="null" || extensionsDirs.isEmpty()) {
+        println("WARNING: Please set GEMFIRE_EXTENSIONS_REPOSITORY_PATH to the directory where you have downloaded required .gfm file(s)")
+    } else {
+        println("GEMFIRE_EXTENSIONS_REPOSITORY_PATH=$extensionsDirs")
+    }
+}
 
 configurations {
-    geodeDistribution
-}
-
-dependencies {
-    geodeDistribution("com.vmware.gemfire:apache-geode:$geodeVersion@tgz") {
-      if (gradle.usingGeodeCompositeBuild) {
-        targetConfiguration = 'compositeTarget'
-      }
-    }
-}
-
-task installGeode(type: Copy) {
-    if (gradle.usingGeodeCompositeBuild) {
-        dependsOn(gradle.includedBuild('geode').task(':geode-assembly:distTar'))
-    }
-    from {
-        tarTree(configurations.geodeDistribution.singleFile)
-    }
-    eachFile { fcp ->
-        fcp.path = fcp.path.replaceFirst("^apache-geode-[a-zA-Z0-9\\.\\-]+\\/", "apache-geode/")
-    }
-    into buildDir
-    includeEmptyDirs false
+    compositeTarget
+    gemfireDistribution
 }
 
 subprojects {
     apply plugin: 'java-library'
 
     dependencies {
-        // All callouts to org.apache.geode here, need to be specified in settings.gradle
+        // All callouts to com.vmware.gemfire here, need to be specified in settings.gradle
         // for composite build to work
         api(platform("com.vmware.gemfire:geode-all-bom:$geodeVersion"))
         implementation("com.vmware.gemfire:geode-core")
@@ -108,19 +109,16 @@ subprojects {
     }
     clean.finalizedBy cleanServer
 
-    def geodePath = "${System.env.PATH}${System.getProperty('path.separator')}${installDir}/bin"
-    task start(type: Exec, dependsOn: [installGeode, build, cleanServer]) {
+    task start(type: Exec, dependsOn: [checkEnv, build, cleanServer]) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        environment 'PATH', geodePath
-        commandLine 'sh', '-c', "gfsh run --file=${projectDir}/scripts/start.gfsh"
+        commandLine 'sh', '-c', "$installDir/bin/gfsh run --file=${projectDir}/scripts/start.gfsh"
     }
 
-    task stop(type: Exec, dependsOn: installGeode) {
+    task stop(type: Exec, dependsOn: checkEnv) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        environment 'PATH', geodePath
-        commandLine 'sh', '-c', "gfsh run --file=${projectDir}/scripts/stop.gfsh"
+        commandLine 'sh', '-c', "$installDir/bin/gfsh run --file=${projectDir}/scripts/stop.gfsh"
     }
 
     task run(type: JavaExec, dependsOn: build) {
@@ -132,7 +130,6 @@ subprojects {
     task waitForExitingMembers(type: Exec) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        environment 'PATH', geodePath
         ignoreExitValue true
         commandLine 'sh', '-c', "" +
                 "TIMEOUT=120 ;" +
@@ -160,7 +157,6 @@ subprojects {
     task verifyNoMembersRunning(type: Exec) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        environment 'PATH', geodePath
         ignoreExitValue true
         commandLine 'sh', '-c', "echo \"Looking for existing member processes...\" ; " +
                 "pgrep -f \"(Server|Locator)Launcher\" ; "
@@ -188,3 +184,6 @@ apply from: "gradle/spotless.gradle"
 apply from: "gradle/ide.gradle"
 apply from: "gradle/rat.gradle"
 apply from: "gradle/release.gradle"
+
+project.tasks.check.dependsOn(gradle.includedBuilds*.task(":check"))
+project.tasks.clean.dependsOn(gradle.includedBuilds*.task(":clean"))
