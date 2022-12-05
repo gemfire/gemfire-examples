@@ -24,6 +24,9 @@ import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.execute.Execution;
+import org.apache.geode.cache.execute.FunctionService;
+import org.apache.geode.cache.execute.ResultCollector;
 import org.apache.geode.cache.lucene.LuceneQuery;
 import org.apache.geode.cache.lucene.LuceneQueryException;
 import org.apache.geode.cache.lucene.LuceneService;
@@ -51,7 +54,32 @@ public class Example {
     insertValues(region);
     query(cache);
     queryNestedObject(cache);
+    queryViaFunction(region);
     cache.close();
+  }
+
+  private static void queryViaFunction(Region<Integer, EmployeeData> region) {
+    System.out.println("\nClient calls a function at server to query using " + SIMPLE_INDEX);
+    String parameters = SIMPLE_INDEX + "," + EXAMPLE_REGION + ",JIVE,lastName,-1,false";
+    Execution execution = FunctionService.onRegion(region).setArguments(parameters);
+    ResultCollector<?, ?> rc = execution.execute("LuceneSearchIndexFunction");
+    displayResults(rc);
+
+    System.out.println("\nClient calls a function at server to query using " + NESTEDOBJECT_INDEX);
+    LuceneQueryInfo queryInfo = new LuceneQueryInfo(NESTEDOBJECT_INDEX, EXAMPLE_REGION,
+        "5035330001 AND 5036430001", "contacts.phoneNumbers", -1, false);
+    execution = FunctionService.onRegion(region).setArguments(queryInfo);
+    rc = execution.execute("LuceneSearchIndexFunction");
+    displayResults(rc);
+  }
+
+  private static void displayResults(ResultCollector<?, ?> rc) {
+    ArrayList functionResults = (ArrayList) ((ArrayList) rc.getResult()).get(0);
+
+    System.out.println("\nClient Function found " + functionResults.size() + " results");
+    functionResults.stream().forEach(result -> {
+      System.out.println(result);
+    });
   }
 
   private static void query(ClientCache cache) throws LuceneQueryException {
