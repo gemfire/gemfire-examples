@@ -1,5 +1,3 @@
-// Copyright (c) VMware, Inc. 2022.
-// All rights reserved. SPDX-License-Identifier: Apache-2.0
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -19,63 +17,70 @@
 apply plugin: "org.nosphere.apache.rat"
 
 rat {
+  substringMatcher("VMware", "VMware", "VMware, Inc.", "vmware-eula")
+  approvedLicense("VMware")
+  approvedLicense("Apache License Version 2.0")
+
   excludes = [
-    // git
-    '.git/**',
-    '**/.gitignore',
-    '**/.gitkeep',
+          // git
+          '.git/**',
+          '**/.gitignore',
+          '**/.gitkeep',
 
-    // gradle
-    '**/.gradle/**',
-    '**/gradlew',
-    '**/gradlew.bat',
-    '**/gradle/wrapper/gradle-wrapper.properties',
-    'caches/**',
-    'daemon/**',
-    'native/**',
-    'wrapper/**',
-    '**/build/**',
-    '.buildinfo',
+          // gradle
+          '**/.gradle/**',
+          '**/gradlew',
+          '**/gradlew.bat',
+          '**/gradle/wrapper/gradle-wrapper.properties',
+          'caches/**',
+          'daemon/**',
+          'native/**',
+          'wrapper/**',
+          '**/build/**',
+          '.buildinfo',
 
-    // IDE
-    'etc/eclipse-java-google-style.xml',
-    'etc/intellij-java-google-style.xml',
-    'etc/eclipseOrganizeImports.importorder',
-    'etc/intellij-vmware-copyright-notice.xml',
-    '**/.project',
-    '**/.classpath',
-    '**/.settings/**',
-    '**/build-eclipse/**',
-    '**/*.iml',
-    '**/*.ipr',
-    '**/*.iws',
-    '**/.idea/**',
-    '**/tags',
+          // IDE
+          'etc/eclipse-java-google-style.xml',
+          'etc/intellij-java-google-style.xml',
+          'etc/eclipseOrganizeImports.importorder',
+          '**/.project',
+          '**/.classpath',
+          '**/.settings/**',
+          '**/build-eclipse/**',
+          '**/*.iml',
+          '**/*.ipr',
+          '**/*.iws',
+          '**/.idea/**',
+          '**/tags',
 
-    // text files
-    '**/*.log',
-    '**/*.patch',
-    '**/*.diff',
-    '**/*.rej',
-    '**/*.orig',
-    '**/*.json',
+          // text files
+          '**/*.log',
+          '**/*.patch',
+          '**/*.diff',
+          '**/*.rej',
+          '**/*.orig',
+          '**/*.json',
 
-    // image files
-    '**/*.svg',
+          // image files
+          '**/*.svg',
 
-    // working directories
-    '**/locator/**',
-    '**/server/**',
-    '**/server1/**',
-    '**/server2/**',
-    '**/locator-ln/**',
-    '**/server-ln-1/**',
-    '**/server-ln-2/**',
-    '**/locator-ny/**',
-    '**/server-ny-1/**',
-    '**/server-ny-2/**',
+          // GemFire extensions
+          '**/*.gfm',
+          'vmware-gemfire-1*/**',
 
-    '**/META-INF/**'
+          // working directories
+          '**/locator/**',
+          '**/server/**',
+          '**/server1/**',
+          '**/server2/**',
+          '**/locator-ln/**',
+          '**/server-ln-1/**',
+          '**/server-ln-2/**',
+          '**/locator-ny/**',
+          '**/server-ny-1/**',
+          '**/server-ny-2/**',
+
+          '**/META-INF/**'
   ]
 }
 
