@@ -45,19 +45,12 @@ allprojects {
 }
 
 def installDir = "${System.env.GEODE_HOME}"
-def extensionsDirs = "${System.env.GEMFIRE_EXTENSIONS_REPOSITORY_PATH}"
 
 task checkEnv {
     if (installDir=="null" || installDir.isEmpty()) {
         throw new GradleException("Please set GEODE_HOME to the directory where you have downloaded and extracted GemFire .tgz")
     } else {
         println("GEODE_HOME=$installDir")
-    }
-
-    if (extensionsDirs=="null" || extensionsDirs.isEmpty()) {
-        println("WARNING: Please set GEMFIRE_EXTENSIONS_REPOSITORY_PATH to the directory where you have downloaded required .gfm file(s)")
-    } else {
-        println("GEMFIRE_EXTENSIONS_REPOSITORY_PATH=$extensionsDirs")
     }
 }
 
