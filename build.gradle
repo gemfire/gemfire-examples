@@ -37,8 +37,7 @@ allprojects {
     }
 }
 
-def installDir = "$buildDir/apache-geode"
-
+def installDir = System.getenv('GEMFIRE_HOME') ?: System.getenv('GEODE_HOME')
 configurations {
     geodeDistribution
 }
@@ -49,20 +48,6 @@ dependencies {
         targetConfiguration = 'compositeTarget'
       }
     }
-}
-
-task installGeode(type: Copy) {
-    if (gradle.usingGeodeCompositeBuild) {
-        dependsOn(gradle.includedBuild('geode').task(':geode-assembly:distTar'))
-    }
-    from {
-        tarTree(configurations.geodeDistribution.singleFile)
-    }
-    eachFile { fcp ->
-        fcp.path = fcp.path.replaceFirst("^apache-geode-[a-zA-Z0-9\\.\\-]+\\/", "apache-geode/")
-    }
-    into buildDir
-    includeEmptyDirs false
 }
 
 subprojects {
@@ -109,16 +94,14 @@ subprojects {
     clean.finalizedBy cleanServer
 
     def geodePath = "${System.env.PATH}${System.getProperty('path.separator')}${installDir}/bin"
-    task start(type: Exec, dependsOn: [installGeode, build, cleanServer]) {
+    task start(type: Exec, dependsOn: [build, cleanServer]) {
         workingDir projectDir
-        environment 'GEODE_HOME', installDir
         environment 'PATH', geodePath
         commandLine 'sh', '-c', "gfsh run --file=${projectDir}/scripts/start.gfsh"
     }
 
-    task stop(type: Exec, dependsOn: installGeode) {
+    task stop(type: Exec) {
         workingDir projectDir
-        environment 'GEODE_HOME', installDir
         environment 'PATH', geodePath
         commandLine 'sh', '-c', "gfsh run --file=${projectDir}/scripts/stop.gfsh"
     }
@@ -131,7 +114,6 @@ subprojects {
 
     task waitForExitingMembers(type: Exec) {
         workingDir projectDir
-        environment 'GEODE_HOME', installDir
         environment 'PATH', geodePath
         ignoreExitValue true
         commandLine 'sh', '-c', "" +
@@ -159,7 +141,6 @@ subprojects {
 
     task verifyNoMembersRunning(type: Exec) {
         workingDir projectDir
-        environment 'GEODE_HOME', installDir
         environment 'PATH', geodePath
         ignoreExitValue true
         commandLine 'sh', '-c', "echo \"Looking for existing member processes...\" ; " +
