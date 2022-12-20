@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Cache Writer Example
+# GemFire Cache Writer Example
 
 This is a simple example that demonstrates the use of a cache writer to validate modifications to a region.
 
@@ -27,7 +27,7 @@ A cache writer is added to a region as the region is created. _Before_ an event 
 
 In this example, a cache writer is installed that vets all of the creation events for the region for proper formatting of Social Security numbers. A number of entries are created in the region. The cache writer vets the supplied key for valid formatting. In other applications, the event could either be persisted to some other data store (i.e., write-ahead) or a notification about the activity could be sent via some other mechanism.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

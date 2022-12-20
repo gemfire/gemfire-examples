@@ -109,8 +109,8 @@ spotless {
     // 4.7.1 works, but had different default whitespace rules, notably with mid-ternary linebreak.
     // 4.7.2 exists but is currently incompatible with our style file, raising NPEs.
 
-    // The format file is relative to geode-core and not the root project as the root project would change
-    // if Geode and submodules are included as part of a different gradle project.
+    // The format file is relative to gemfire-core and not the root project as the root project would change
+    // if GemFire and submodules are included as part of a different gradle project.
     eclipse('4.6.3').configFile "${rootDir}/etc/eclipse-java-google-style.xml"
     trimTrailingWhitespace()
     endWithNewline()

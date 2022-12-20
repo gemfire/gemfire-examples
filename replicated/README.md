@@ -19,12 +19,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode replicated region example
+# GemFire replicated region example
 
 This is a simple example that demonstrates putting values into a
 replicated region, checking the size, and retrieving the values.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

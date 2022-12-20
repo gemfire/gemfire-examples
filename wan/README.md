@@ -19,18 +19,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode WAN replication example
+# GemFire WAN replication example
 
-This example demonstrates Geode support for asynchronous WAN 
-replication between clusters.  WAN replication allows remote Geode 
+This example demonstrates GemFire support for asynchronous WAN 
+replication between clusters.  WAN replication allows remote GemFire 
 clusters to automatically keep their region data consistent through
 the use of gateway senders and receivers. A gateway sender distributes 
-region events to another, remote Geode cluster. A gateway receiver 
+region events to another, remote GemFire cluster. A gateway receiver 
 configures a physical connection for receiving region events from 
-gateway senders in remote Geode clusters. The gateway senders and 
+gateway senders in remote GemFire clusters. The gateway senders and 
 receivers can be configured in several different topologies based on 
 specific business needs. For more information on example topologies 
-and associated use cases see Geode documentation on 
+and associated use cases see GemFire documentation on 
 [Multi-site WAN Configuration](http://geode.apache.org/docs/guide/topologies_and_comm/multi_site_configuration/chapter_overview.html)
 
 In this example, two clusters are created on your local machine, each
@@ -49,7 +49,7 @@ This example runs a single client that connects to the London cluster and
 puts 10 entries into the example-region and prints them.  After the client
 app has run, both clusters will contain the data.
 
-This example assumes that Java and Geode are installed.
+This example assumes that JDK11 and GemFire are installed.
 
 ## Steps
 

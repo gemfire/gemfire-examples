@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Asynchronous Event Queues & Listeners Example
+# GemFire Asynchronous Event Queues & Listeners Example
 
 This is a simple example that demonstrates asynchronous event queues and listeners.
 
@@ -27,7 +27,7 @@ An asynchronous event queue is an ordered collection of events that occurred on 
 
 In this example, an asynchronous event queue is created for the region of incoming words. An asynchronous event listener is specified for that asynchronous event queue. Whenever the `processEvents` method is invoked on the listener, it uses the Levenshtein distance for each word to perform simplistic spell-checking. The proposed revision is the put in the outgoing region. A cache listener is installed that captures all of the creation events for the outgoing region and displays the proposal on the terminal. In other applications, the asynchronous event listener could perform some other calculation on the data.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

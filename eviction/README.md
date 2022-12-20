@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Eviction Example
+# GemFire Eviction Example
 
 This is a simple example that demonstrates eviction of entries from a region. This allows control
 over the system resources consumed by any given region.
@@ -35,7 +35,7 @@ limits on its in-memory resource consumption. When an operation would exceed tho
 region will take an action to assure that the limits will not be exceeded after the operation
 completes. The region can either destroy one or more entries or overflow one or more entries to disk.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

@@ -72,10 +72,10 @@ subprojects {
     dependencies {
         // All callouts to com.vmware.gemfire here, need to be specified in settings.gradle
         // for composite build to work
-        api(platform("com.vmware.gemfire:geode-all-bom:$geodeVersion"))
-        implementation("com.vmware.gemfire:geode-core")
-        implementation("com.vmware.gemfire:geode-cq")
-        implementation("com.vmware.gemfire:geode-logging")
+        api(platform("com.vmware.gemfire:gemfire-all-bom:$gemfireVersion"))
+        implementation("com.vmware.gemfire:gemfire-core")
+        implementation("com.vmware.gemfire:gemfire-cq")
+        implementation("com.vmware.gemfire:gemfire-logging")
         implementation('com.google.guava:guava')
         implementation('org.apache.commons:commons-lang3')
         implementation("org.apache.logging.log4j:log4j-core")

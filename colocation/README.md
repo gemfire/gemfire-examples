@@ -19,11 +19,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode colocation example
+# GemFire colocation example
 
 This is a simple example that illustrates how to colocate the data of two regions.
 
-By default, Geode selects the data locations for a partitioned region independent of the data locations for any other partitioned region using a hashing policy on the key. This example shows how to modify this policy in order to store related data from two regions (`order`and `customer`) in the same member.
+By default, GemFire selects the data locations for a partitioned region independent of the data locations for any other partitioned region using a hashing policy on the key. This example shows how to modify this policy in order to store related data from two regions (`order`and `customer`) in the same member.
 
 `customer` region stores `Customer` objects using an `int` as key:
  
@@ -36,7 +36,7 @@ Region<Integer, Customer> customerRegion
 ```
 Region<OrderKey, Order> accountRegion
 ```
-In order to store `Order` objects in the same member than their related customer info, a custom partition-resolved is needed: `OrderPartitionResolved`. When this partition resolver receives an `OrderKey` object, it returns the same key (the customer id) that was used to store the related customer. In this way, Geode applies the hashing policy over the same key for `Order`and `Customer` related objects and as a consequence, they are stored in the same member. 
+In order to store `Order` objects in the same member than their related customer info, a custom partition-resolved is needed: `OrderPartitionResolved`. When this partition resolver receives an `OrderKey` object, it returns the same key (the customer id) that was used to store the related customer. In this way, GemFire applies the hashing policy over the same key for `Order`and `Customer` related objects and as a consequence, they are stored in the same member. 
 
 ## Steps
 

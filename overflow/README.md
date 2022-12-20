@@ -19,14 +19,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Overflow Example
+# GemFire Overflow Example
 
 This examples demonstrates how to use Geode's Overflow to disk.
 
 In this example, a server hosts a partitioned region that stores strings. 
 The example shows entry values being overflowed to disk and removed from memory.
 
-This example assumes that Geode is installed.
+This example assumes that GemFire is installed.
 
 ## Set up the region
 1. Set directory ```gemfire-examples/overflow``` to be the

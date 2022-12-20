@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Querying Example
+# GemFire Querying Example
 
 This example demonstrates simple queries on a region.
 
@@ -28,7 +28,7 @@ that represent employee information.
 The example does queries through the API and presents example queries
 to be invoked through the `gfsh` command-line interface.
 
-This example assumes that Java and Geode are installed.
+This example assumes that JDK11 and GemFire are installed.
 
 ## Set up the cluster 
 1. Set directory ```gemfire-examples/queries``` to be the

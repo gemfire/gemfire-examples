@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode OQL Indexing Example
+# GemFire OQL Indexing Example
 
 This example demonstrates an index for OQL
 [queries](https://geode.apache.org/docs/guide/11/developing/query_index/query_index.html)
@@ -39,7 +39,7 @@ Since flight code objects are contained within a passenger object, the index on 
 nested field. After randomly populating the mock database, this example shows the results of queries
 that use no index, a top-level index, and a nested index.
 
-This example assumes that Java and Geode are installed.
+This example assumes that JDK11 and GemFire are installed.
 
 ## Steps
 

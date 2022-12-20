@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Expiration Example
+# GemFire Expiration Example
 
 This is a simple example that demonstrates expiration of entries from a region. This can be used to
 prevent stale entries from lingering in a region. This also allows control over the system resources
@@ -36,7 +36,7 @@ This example creates a region where the entries are destroyed after ten seconds 
 updated. The example first puts ten random integers into the region. Then the example loops,
 printing the number of entries in the region, until the region is empty.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

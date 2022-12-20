@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Lucene Index Example
+# GemFire Lucene Index Example
 
 This example demonstrates the use of a simple Lucene index. Lucene provides
 a powerful text search and analysis. 
@@ -28,7 +28,7 @@ In this example, two servers host a single partitioned region with entries
 that represent employee information. The example indexes the first and last
 names of employees.
 
-This example assumes that Java and Geode are installed.
+This example assumes that JDK11 and GemFire are installed.
 The minimum java version is jdk 11.
 
 ## Set up the Lucene index and region

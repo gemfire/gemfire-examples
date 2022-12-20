@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode serialization example
+# GemFire serialization example
 
 This is a simple example that demonstrates auto-serialization of objects of classes that do *not*
 use Java serialization, PDX serialization, or data serialization. Reflection-based auto-serialization
@@ -43,7 +43,7 @@ instance. This obviates modifying classes to implement a serialization interface
 the objects to be queried by way of PDX without the classes being preset on the server's class
 path.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

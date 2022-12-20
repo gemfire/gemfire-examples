@@ -19,12 +19,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode REST API example
+# GemFire REST API example
 
 This is a simple example that demonstrates putting values into a
-replicated region and retrieving the values using the Geode REST API. For enabling the REST API you can follow the official [document](https://geode.apache.org/docs/guide/19/rest_apps/setup_config.html#setup_config_enabling_rest).
+replicated region and retrieving the values using the GemFire REST API. For enabling the REST API you can follow the official [document](https://geode.apache.org/docs/guide/19/rest_apps/setup_config.html#setup_config_enabling_rest).
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

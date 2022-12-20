@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Functions Example
+# GemFire Functions Example
 
 This is a simple example that calculates which integers in the region are prime numbers. The determination of the primes occurs inside the server by way of a function and the client displays the primes on the console.
 
@@ -29,7 +29,7 @@ A function is implemented by creating a Java class that implements `org.apache.g
 
 The `deploy` command in `gfsh` deploys all the functions in the specified JAR file. A function's implementation of `execute()` will be run inside the server when `org.apache.geode.cache.execute.Execution.execute()` is invoked for that function.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

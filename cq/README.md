@@ -19,9 +19,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Continuous Query Example
+# GemFire Continuous Query Example
 
-This is a simple example that demonstrates Apache Geode's Continuous Queries(CQs) feature.  CQs allow clients to subscribe
+This is a simple example that demonstrates VMware GemFire's Continuous Queries(CQs) feature.  CQs allow clients to subscribe
 to server-side events using a SQL-like query.  When a client registers a CQ, the client will receive all events that
 modify the query results.
 
@@ -35,7 +35,7 @@ which prints to stdout.
 
 The client will generate data for 20 seconds, close the CQ and Cache, and then exit.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

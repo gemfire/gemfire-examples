@@ -19,11 +19,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Put Multiple Values at Once Example
+# GemFire Put Multiple Values at Once Example
 
 This is a simple example that demonstrates putting a map of values into a region, checking the size, and retrieving the values.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

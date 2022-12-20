@@ -46,28 +46,28 @@ include 'compression'
 include 'rest'
 include 'json'
 
-// Logic for defining a custom Geode clone for integration with this project
-// Define `-PgeodeCompositeDirectory` to your geode root, default `../gemfire`
+// Logic for defining a custom GemFire clone for integration with this project
+// Define `-PgemfireCompositeDirectory` to your geode root, default `../gemfire`
 // Define `-Dcomposite` to enable Gradle includeBuild feature
-def geodeCompositePropertyName = 'geodeCompositeDirectory'
-def geodePath = hasProperty(geodeCompositePropertyName) ? geodeCompositeDirectory : '../gemfire'
-def geodeDirectory = file(geodePath).absolutePath
-def geodeDirectoryExists = file(geodeDirectory).exists()
+def gemfireCompositePropertyName = 'gemfireCompositeDirectory'
+def gemfirePath = hasProperty(gemfireCompositePropertyName) ? gemfireCompositeDirectory : '../gemfire'
+def gemfireDirectory = file(gemfirePath).absolutePath
+def gemfireDirectoryExists = file(gemfireDirectory).exists()
 def compositeBuildEnabled = System.getProperty("composite") != null
-gradle.ext.usingGeodeCompositeBuild = compositeBuildEnabled && geodeDirectoryExists
-def geodeProject = compositeBuildEnabled ? geodeDirectory.toString().replaceFirst(".*[/\\\\]", "") : "gemfire"
-gradle.ext.geodeProject = geodeProject
+gradle.ext.usingGeodeCompositeBuild = compositeBuildEnabled && gemfireDirectoryExists
+def gemfireProject = compositeBuildEnabled ? gemfireDirectory.toString().replaceFirst(".*[/\\\\]", "") : "gemfire"
+gradle.ext.gemfireProject = gemfireProject
 
 
 if (gradle.ext.usingGeodeCompositeBuild) {
-  includeBuild(geodeDirectory) {
+  includeBuild(gemfireDirectory) {
     it.dependencySubstitution {
       // Any submodule used by examples must be listed here
-      it.substitute it.module("com.vmware.gemfire:geode-all-bom") with project(':boms:geode-all-bom')
-      it.substitute it.module("com.vmware.gemfire:geode-cq") with it.project(':geode-cq')
-      it.substitute it.module("com.vmware.gemfire:geode-core") with it.project(':geode-core')
-      it.substitute it.module("com.vmware.gemfire:geode-logging") with it.project(':geode-logging')
-      it.substitute it.module("com.vmware.gemfire:vmware-gemfire") with it.project(':geode-assembly')
+      it.substitute it.module("com.vmware.gemfire:gemfire-all-bom") with project(':boms:gemfire-all-bom')
+      it.substitute it.module("com.vmware.gemfire:gemfire-cq") with it.project(':gemfire-cq')
+      it.substitute it.module("com.vmware.gemfire:gemfire-core") with it.project(':gemfire-core')
+      it.substitute it.module("com.vmware.gemfire:gemfire-logging") with it.project(':gemfire-logging')
+      it.substitute it.module("com.vmware.gemfire:vmware-gemfire") with it.project(':gemfire-assembly')
     }
   }
 }

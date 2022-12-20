@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Cache Listener Example
+# GemFire Cache Listener Example
 
 This is a simple example that demonstrates the use of a cache listener to capture modifications to a region.
 
@@ -27,7 +27,7 @@ A cache listener is added to a region when the region is created. _After_ an eve
 
 In this example, a cache listener is installed that captures all of the creation events for the region. A number of entries are created in the region. The cache listener is notified of each creation and adds it to its queue of events. In other applications, the event could either be persisted to some other data store (i.e., write-behind) or a notification about the activity could be sent via some other mechanism.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

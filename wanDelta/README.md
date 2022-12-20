@@ -3,18 +3,18 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 
-# Geode WAN Delta replication example
+# GemFire WAN Delta replication example
 
-This example demonstrates Geode support for asynchronous WAN 
+This example demonstrates GemFire support for asynchronous WAN 
 replication between clusters using Delta objects.  WAN replication allows
-remote Geode clusters to automatically keep their region data consistent
+remote GemFire clusters to automatically keep their region data consistent
 through the use of gateway senders and receivers. A gateway sender distributes 
-region events to another, remote Geode cluster. A gateway receiver 
+region events to another, remote GemFire cluster. A gateway receiver 
 configures a physical connection for receiving region events from 
-gateway senders in remote Geode clusters. The gateway senders and 
+gateway senders in remote GemFire clusters. The gateway senders and 
 receivers can be configured in several different topologies based on 
 specific business needs. For more information on example topologies 
-and associated use cases see Geode documentation on 
+and associated use cases see GemFire documentation on 
 [Multi-site WAN Configuration](http://geode.apache.org/docs/guide/topologies_and_comm/multi_site_configuration/chapter_overview.html) 
 and [WAN Delta](http://geode.apache.org/docs/guide/topologies_and_comm/multi_site_configuration/chapter_overview.html).
 
@@ -38,7 +38,7 @@ Delta object with a small change.  Each Delta update event will only cause
 the changes to be replicated across the WAN.  After the client app has run, 
 both clusters will contain the data.
 
-This example assumes that Java and Geode are installed.
+This example assumes that JDK11 and GemFire are installed.
 
 ## Steps
 

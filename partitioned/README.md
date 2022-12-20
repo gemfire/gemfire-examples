@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode partitioned region example
+# GemFire partitioned region example
 
 This example demonstrates the basic property of partitioning.  The basic
 property of partitioning is that data entries are distributed across all
@@ -34,7 +34,7 @@ region.  Since there is no redundancy of the data within the region, when one
 of the servers goes away, the entries hosted within that server are also gone;
 the example demonstrates this.
 
-This example assumes that Java and Geode are installed.
+This example assumes that JDK11 and GemFire are installed.
 
 ## Demonstration of Partitioning
 1. Set directory ```gemfire-examples/partitioned``` to be the

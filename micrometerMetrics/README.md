@@ -19,10 +19,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Micrometer Metrics Example
+# GemFire Micrometer Metrics Example
 
-This example demonstrates publishing metrics from Geode to a monitoring system comprised of
-Prometheus and Grafana. For more details about how this works, see [Publishing Geode Metrics to
+This example demonstrates publishing metrics from GemFire to a monitoring system comprised of
+Prometheus and Grafana. For more details about how this works, see [Publishing GemFire Metrics to
 External Monitoring
 Systems](https://cwiki.apache.org/confluence/display/GEODE/Publishing+Geode+Metrics+to+External+Monitoring+Systems).
 
@@ -60,7 +60,7 @@ Systems](https://cwiki.apache.org/confluence/display/GEODE/Publishing+Geode+Metr
    The provided `prometheus.yml` file configures Prometheus to scrape Geode's Prometheus endpoints
    at two-second intervals.
         
-1. In a browser, navigate to <http://localhost:9090/targets>. This page shows Geode's Prometheus
+1. In a browser, navigate to <http://localhost:9090/targets>. This page shows GemFire's Prometheus
    endpoints, and their state should be "UP" as shown below:
    
    ![Prometheus targets](prometheus-targets.png "Prometheus targets")

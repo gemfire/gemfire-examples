@@ -19,11 +19,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Apache Geode JDBC Connector Example
+# VMware GemFire JDBC Connector Example
 
-The JDBC Connector allows Apache Geode to connect to external data sources with JDBC.
+The JDBC Connector allows VMware GemFire to connect to external data sources with JDBC.
 
-![Apache Geode JDBC Connector](connector.svg)
+![VMware GemFire JDBC Connector](connector.svg)
 
 ## Steps:
 
@@ -36,9 +36,9 @@ download it from https://dev.mysql.com/downloads/connector/j/
 Use `mysql` CLI to create database, table and populate the table:
 
 ```
-create database geode_db;
+create database gemfire_db;
 
-use geode_db;
+use gemfire_db;
 
 create table parent(id bigint, name varchar(100), income double);
 
@@ -56,29 +56,29 @@ e.g.
 export CLASSPATH=/path/to/mysql-connector-java-8.0.15.jar:/path/to/gemfire-examples/jdbc/build/libs/jdbc.jar
 ```
 
-5. Start the Geode cluster with `gfsh run --file=scripts/start.gfsh`.
+5. Start the GemFire cluster with `gfsh run --file=scripts/start.gfsh`.
 
 This will start the locator and two servers. And create `Parent` region, data source and JDBC mapping.
 
-6. Create data source and map the Apache Geode region and MySQL table.
+6. Create data source and map the VMware GemFire region and MySQL table.
 
 ```
 gfsh
 
 connect
 
-create data-source --name=mysql_data_source --url="jdbc:mysql://localhost/geode_db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC" --username=root --password="changeme"
+create data-source --name=mysql_data_source --url="jdbc:mysql://localhost/gemfire_db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC" --username=root --password="changeme"
 
-create jdbc-mapping --data-source=mysql_data_source --region=Parent --table=parent --pdx-name=org.apache.geode_examples.jdbc.Parent --catalog=geode_db --id=id
+create jdbc-mapping --data-source=mysql_data_source --region=Parent --table=parent --pdx-name=org.apache.geode_examples.jdbc.Parent --catalog=gemfire_db --id=id
 
 ```
 
 7. Run the example with `../gradlew run`.
 
 This will first `put` an entry with key 1 in `Parent` region. 
-The entry will be propagated to MySQL's `parent` table in database `geode_db`.
+The entry will be propagated to MySQL's `parent` table in database `gemfire_db`.
 Then it will invoke a `get` with key 2. Since `Parent` region does not have an entry with key equals 2, 
-it will trigger JDBC Connector to load the entry from `parent` table in database `geode_db` from MySQL.
+it will trigger JDBC Connector to load the entry from `parent` table in database `gemfire_db` from MySQL.
  
 You can also use `gfsh` to connect to cluster and run the following commands:
 `list data-source`

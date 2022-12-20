@@ -19,14 +19,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode cache loader example
+# GemFire cache loader example
 
 This is a simple example that demonstrates loading values using a
 `CacheLoader`.  Invoking `Region.get()` causes the `CacheLoader` to
 produce a value that is stored in the region.  This approach is
 commonly used to fetch data from other systems like a database.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

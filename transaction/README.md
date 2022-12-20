@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode Transaction Example
+# GemFire Transaction Example
 
 This is a simple example that demonstrates the use of [transactions](https://geode.apache.org/docs/guide/11/developing/transactions/working_with_transactions.html)
 to protect consistency during concurrent access and modification of data. Since a region may
@@ -42,7 +42,7 @@ incremented the value _or_ if another child is simultaenously trying to incremen
 example, which should take about a dozen seconds, reports the final value of the counter to show
 that all of the children's increments were consistently applied.
 
-This example assumes you have installed Java and Geode.
+This example assumes you have installed JDK11 and GemFire.
 
 ## Steps
 

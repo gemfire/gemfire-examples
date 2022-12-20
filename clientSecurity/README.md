@@ -19,15 +19,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Geode security example - Client
+# GemFire security example - Client
 
 This example demonstrates basic command security and user authentication in a client application
-backed by a secured Geode cluster. It also demonstrates use of secure sockets (SSL) between all
+backed by a secured GemFire cluster. It also demonstrates use of secure sockets (SSL) between all
 members and between a client and a server.  This example assumes that Java is installed.
 
 ## Security Basics
 
-Geode security is based on Apache Shiro.
+GemFire security is based on Apache Shiro.
 Permissions are defined by
 
 1. the resource accessed (`DATA` and `CLUSTER`)
@@ -57,7 +57,7 @@ For more information on what permission is required for a given operation,
 
 ## Required Implementations
 
-  Two interfaces must be implemented to secure a Geode cluster: `AuthInitialize`
+  Two interfaces must be implemented to secure a GemFire cluster: `AuthInitialize`
    and `SecurityManager`.
   
   Your implementation of `org.apache.geode.security.AuthInitialize` should handle the interaction
