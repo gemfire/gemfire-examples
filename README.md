@@ -19,19 +19,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 # VMware GemFire examples
+The examples in this project are showcase features of GemFire and demonstrate their basic usage. For details an all GemFire featues, see [our documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/index.html) 
 
-This is the home of VMware GemFire examples.
-
-# VMware GemFire Version
-
+## VMware GemFire Version
 VMware GemFire client code must link against the _same or older_ version of VMware GemFire as the VMware GemFire server it will connect to.
 
-Add `-PgemfireRepositoryUrl=https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire -PgemfireVersion=9.10.15` to your `./gradlew` command to specify which VMware GemFire client libraries to link, otherwise the default may be too new.
+Add `-PgemfireRepositoryUrl=https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire -PgemfireVersion=10.0.0` to your `./gradlew` command to specify which VMware GemFire client libraries to link, otherwise the default may be too new.
 
 ## Running an example
-
-The gradle build will automatically download and install a VMware GemFire release in the
-`build` directory. You can run an example with the following gradle targets:
+In order to execute the examples in this project, follow these steps:
+1. Download the version of GemFire that you want to use as the server from [Tanzu Network](https://network.tanzu.vmware.com/products/pivotal-gemfire/)
+2. Unpack the GemFire TAR file and set your `GEMFIRE_HOME` to point at the directory. If you use bash that might look like this: `export GEMFIRE_HOME=<GemFire directory>`
+3. You can now run an example with the following gradle targets:
 
 * `build` - compiles the example and runs unit tests
 * `start` - initializes the VMware GemFire cluster
@@ -39,14 +38,14 @@ The gradle build will automatically download and install a VMware GemFire releas
 * `stop` - shuts down the cluster
 * `runAll` - invokes start, run, stop
 
-The commands you need to invoke will be given in the `README.md` file. Sample
+The commands you need to run a specific example will be given in the `README.md` file. Sample
 usage:
 
     $ ./gradlew :replicated:start
     $ ./gradlew :replicated:run
     $ ./gradlew :replicated:stop
     $ ./gradlew runAll
-    $ ./gradlew runAll -PgemfireRepositoryUrl=https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire -PgemfireVersion=9.10.15
+    $ ./gradlew runAll -PgemfireRepositoryUrl=https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire -PgemfireVersion=10.0.0
 
 ## Catalog of examples
 

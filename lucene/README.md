@@ -31,6 +31,8 @@ names of employees.
 This example assumes that JDK11 and GemFire are installed.
 The minimum java version is jdk 11.
 
+Note: These example use the GemFire Search extension which requires GemFire 10 to work
+
 ## Set up the Lucene index and region
 1. Set directory ```gemfire-examples/lucene``` to be the
 current working directory.
@@ -72,27 +74,41 @@ will also be retrieved from the region and printed to the console.
 
     Note that each server that holds partitioned data for this region has both the ```simpleIndex``` , ```analyzerIndex``` and the ```nestedObjectIndex```. Each Lucene index is stored as a co-located region with the partitioned data region.
 
-     // Search for an exact name match
-        gfsh>search lucene --name=simpleIndex --region=example-region --queryStrings="Jive" --defaultField=lastName
+    Search for an exact name match 
+    ```
+    gfsh>search lucene --name=simpleIndex --region=example-region --queryStrings="Jive" --defaultField=lastName
+    ```
 
-     // Search for last name using fuzzy logic: sounds like 'chive'
-        gfsh>search lucene --name=simpleIndex --region=example-region --queryStrings="chive~" --defaultField=lastName
+    Search for last name using fuzzy logic: sounds like 'chive'
+    ```
+    gfsh>search lucene --name=simpleIndex --region=example-region --queryStrings="chive~" --defaultField=lastName
+    ```
 
-     // Do a compound search on first and last name using fuzzy sounds like logic
-        gfsh>search lucene --name=simpleIndex --region=example-region --queryStrings="firstName:cat~ OR lastName:chive~" --defaultField=lastName
+    Do a compound search on first and last name using fuzzy sounds like logic
+    ```
+    gfsh>search lucene --name=simpleIndex --region=example-region --queryStrings="firstName:cat~ OR lastName:chive~" --defaultField=lastName
+    ```
+    
+    Do a compound search on last name and email using analyzerIndex
+    ```
+    gfsh>search lucene --name=analyzerIndex --region=example-region --queryStrings="lastName:hall~ AND email:Kris.Call\@example.com" --defaultField=lastName
+    ```
 
-     // Do a compound search on last name and email using analyzerIndex
-        gfsh>search lucene --name=analyzerIndex --region=example-region --queryStrings="lastName:hall~ AND email:Kris.Call\@example.com" --defaultField=lastName
+    Do a compound search on nested object with both 5035330001 AND 5036430001 in contacts
+    Note: 5035330001 is the phone number of one of the contacts, 5036430001 is phone number of another contact. Since they are both contacts of this employee, it will lead to this employee.
+    ```
+    gfsh>search lucene --name=nestedObjectIndex --region=/example-region --queryString="5035330001 AND 5036430001" --defaultField=contacts.phoneNumbers
+    ```
 
-     // Do a compound search on nested object with both 5035330001 AND 5036430001 in contacts
-     // Note: 5035330001 is the phone number of one of the contacts, 5036430001 is phone number of another contact. Since they are both contacts of this employee, it will lead to this employee. 
-        gfsh>search lucene --name=nestedObjectIndex --region=/example-region --queryString="5035330001 AND 5036430001" --defaultField=contacts.phoneNumbers
+    If query on 5035330001 AND 5036430002, it will not find the person, because the 2 phone numbers belong to different people's contacts.
+    ``` 
+    gfsh>search lucene --name=nestedObjectIndex --region=/example-region --queryString="5035330001 AND 5036430002" --defaultField=contacts.phoneNumbers
+    ```
 
-     // If query on 5035330001 AND 5036430002, it will not find the person, because the 2 phone numbers belong to different people's contacts. 
-        gfsh>search lucene --name=nestedObjectIndex --region=/example-region --queryString="5035330001 AND 5036430002" --defaultField=contacts.phoneNumbers
-
-     // If query on 5035330001 OR 5036430002, it will find 2 people's entries
-        gfsh>search lucene --name=nestedObjectIndex --region=/example-region --queryString="5035330001 OR 5036430002" --defaultField=contacts.phoneNumbers
+    If query on 5035330001 OR 5036430002, it will find 2 people's entries
+    ``` 
+    gfsh>search lucene --name=nestedObjectIndex --region=/example-region --queryString="5035330001 OR 5036430002" --defaultField=contacts.phoneNumbers
+    ```
 
 3. Examine the Lucene index statistics
 

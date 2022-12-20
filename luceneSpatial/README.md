@@ -36,6 +36,8 @@ Fourth example is SearchIntersectingCoordinates, it finds the location that coin
 
 These example assumes that Java 11 and GemFire are installed. Minimum java version is jdk11. 
 
+Note: These example use the GemFire Search extension which requires GemFire 10 to work
+
 ## Set up the Lucene index and region
 1. Set directory ```gemfire-examples/luceneSpatial``` to be the current working directory.
 Each step in this example specifies paths relative to that directory.

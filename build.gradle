@@ -44,13 +44,13 @@ allprojects {
     }
 }
 
-def installDir = "${System.env.GEODE_HOME}"
+def installDir = System.getenv('GEMFIRE_HOME') ?: System.getenv('GEODE_HOME')
 
 task checkEnv {
     if (installDir=="null" || installDir.isEmpty()) {
-        throw new GradleException("Please set GEODE_HOME to the directory where you have downloaded and extracted GemFire .tgz")
+        throw new GradleException("Please set GEMFIRE_HOME to the directory where you have downloaded and extracted GemFire .tgz")
     } else {
-        println("GEODE_HOME=$installDir")
+        println("GemFire directory is $installDir")
     }
 }
 
