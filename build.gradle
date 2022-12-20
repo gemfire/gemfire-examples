@@ -25,13 +25,13 @@ allprojects {
     repositories {
         if (!gradle.usingGeodeCompositeBuild) {
           maven {
-            if (project.findProperty('geodeRepositoryUrl').contains('commercial-repo.pivotal.io')||project.findProperty('geodeRepositoryUrl').isEmpty()) {
+            if (project.findProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')||project.findProperty('gemfireRepositoryUrl').isEmpty()) {
               credentials {
                 username "your_commercial_repo_email"
                 password "your_commercial_repo_pwd"
               }
             }
-            url project.findProperty('geodeRepositoryUrl') ?: 'https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire'
+            url project.findProperty('gemfireRepositoryUrl') ?: 'https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire'
             content {
               includeGroup 'com.vmware.gemfire'
             }
