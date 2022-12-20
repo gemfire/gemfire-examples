@@ -17,7 +17,7 @@
 
 plugins {
     id "org.nosphere.apache.rat" version "0.6.0"
-    id "com.diffplug.spotless" version "6.4.1"
+    id "com.diffplug.gradle.spotless" version "3.0.0"
     id "de.undercouch.download" version "3.1.2"
 }
 
@@ -25,13 +25,13 @@ allprojects {
     repositories {
         if (!gradle.usingGeodeCompositeBuild) {
           maven {
-            if (project.findProperty('geodeRepositoryUrl').contains('commercial-repo.pivotal.io')||project.findProperty('geodeRepositoryUrl').isEmpty()) {
+            if (project.findProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')||project.findProperty('gemfireRepositoryUrl').isEmpty()) {
               credentials {
                 username "your_commercial_repo_email"
                 password "your_commercial_repo_pwd"
               }
             }
-            url project.findProperty('geodeRepositoryUrl') ?: 'https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire'
+            url project.findProperty('gemfireRepositoryUrl') ?: 'https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire'
             content {
               includeGroup 'com.vmware.gemfire'
             }
@@ -44,20 +44,13 @@ allprojects {
     }
 }
 
-def installDir = "${System.env.GEODE_HOME}"
-def extensionsDirs = "${System.env.GEMFIRE_EXTENSIONS_REPOSITORY_PATH}"
+def installDir = System.getenv('GEMFIRE_HOME') ?: System.getenv('GEODE_HOME')
 
 task checkEnv {
     if (installDir=="null" || installDir.isEmpty()) {
-        throw new GradleException("Please set GEODE_HOME to the directory where you have downloaded and extracted GemFire .tgz")
+        throw new GradleException("Please set GEMFIRE_HOME to the directory where you have downloaded and extracted GemFire .tgz")
     } else {
-        println("GEODE_HOME=$installDir")
-    }
-
-    if (extensionsDirs=="null" || extensionsDirs.isEmpty()) {
-        println("WARNING: Please set GEMFIRE_EXTENSIONS_REPOSITORY_PATH to the directory where you have downloaded required .gfm file(s)")
-    } else {
-        println("GEMFIRE_EXTENSIONS_REPOSITORY_PATH=$extensionsDirs")
+        println("GemFire directory is $installDir")
     }
 }
 
