@@ -24,7 +24,7 @@ The examples in this project are showcase features of GemFire and demonstrate th
 ## VMware GemFire Version
 VMware GemFire client code must link against the _same or older_ version of VMware GemFire as the VMware GemFire server it will connect to.
 
-Add `-PgemfireRepositoryUrl=https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire -PgemfireVersion=9.15.3` to your `./gradlew` command to specify which VMware GemFire client libraries to link, otherwise the default may be too new.
+Add `-PgemfireRepositoryUrl=https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire -PgemfireVersion=9.15.+` to your `./gradlew` command to specify which VMware GemFire client libraries to link, otherwise the default may be too new.
 
 ## Running an example
 In order to execute the examples in this project, follow these steps:
@@ -45,7 +45,6 @@ usage:
     $ ./gradlew :replicated:run
     $ ./gradlew :replicated:stop
     $ ./gradlew runAll
-    $ ./gradlew runAll -PgemfireRepositoryUrl=https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire -PgemfireVersion=9.15.3
 
 ## Catalog of examples
 
