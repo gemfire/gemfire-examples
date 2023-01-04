@@ -27,8 +27,8 @@ allprojects {
           maven {
             if (project.findProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')||project.findProperty('gemfireRepositoryUrl').isEmpty()) {
               credentials {
-                username "your_commercial_repo_email"
-                password "your_commercial_repo_pwd"
+                username "$gemfireReleaseRepoUser"
+                password "$gemfireReleaseRepoPassword"
               }
             }
             url project.findProperty('gemfireRepositoryUrl') ?: 'https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire'
