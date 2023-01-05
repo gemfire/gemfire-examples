@@ -22,15 +22,15 @@ limitations under the License.
 The examples in this project are showcase features of GemFire and demonstrate their basic usage. For details an all GemFire featues, see [our documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/index.html) 
 
 ## VMware GemFire Version
-VMware GemFire client code must link against the _same or older_ version of VMware GemFire as the VMware GemFire server it will connect to.
+VMware GemFire client code must link against the _same or older_ version (ignoring patch versions) of VMware GemFire as the VMware GemFire server it will connect to.
 
-For running against older versions of GemFire you can add the version like this `-PgemfireVersion=9.15.+` to your `./gradlew` command to specify which VMware GemFire client libraries to link.
+For compiling against older versions of GemFire you can add the version like this `-PgemfireVersion=9.15.+` to your `./gradlew` command to specify which VMware GemFire client libraries to link.
 
 ## Running an example
 In order to execute the examples in this project, follow these steps:
 1. Download the version of GemFire that you want to use as the server from [Tanzu Network](https://network.tanzu.vmware.com/products/pivotal-gemfire/)
-2. Unpack the GemFire TAR file and set your `GEMFIRE_HOME` to point at the directory. If you use bash that might look like this: `export GEMFIRE_HOME=<GemFire directory>`
-3. Sign up for the GemFire Maven repo and follow the instructions there to set your authentication credentials for the repo in Gradle 
+2. Unpack the GemFire TAR file and set your `GEMFIRE_HOME` to point at it. `GEMFIRE_HOME` will be the top level directory inside the extracted GemFire. If you extracted in /tmp/downloads, GEMFIRE_HOME=/tmp/downloads/vmware-gemfire-10.0.0
+3. Sign up for the GemFire Maven repo and follow the instructions there to set your authentication credentials for the repo in Gradle
 4. You can now run an example with the following gradle targets:
 
 * `build` - compiles the example and runs unit tests
