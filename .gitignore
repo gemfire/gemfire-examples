@@ -20,6 +20,8 @@ l1
 server
 *server1
 *server2
+wan/locator-*
+wan/server-*
 
 *.iml
 *.ipr
