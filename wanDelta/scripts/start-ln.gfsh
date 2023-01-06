@@ -1,0 +1,40 @@
+# Copyright (c) VMware, Inc. 2022. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Start the locator
+start locator --name=locator-ln --port=10332 --locators=localhost[10332] --mcast-port=0 --log-level=config \
+	--J=-Dgemfire.remote-locators=localhost[10331] --J=-Dgemfire.distributed-system-id=2 \
+	--J=-Dgemfire.jmx-manager-start=true --J=-Dgemfire.jmx-manager-http-port=8082 \
+	--J=-Dgemfire.jmx-manager-port=1092
+
+# Start server 1
+start server --name=server-ln-1 --locators=localhost[10332] --mcast-port=0 --log-level=config \
+	--enable-time-statistics=true --statistic-archive-file=cacheserver.gfs --server-port=0 \
+	--classpath=../build/classes/java/main --J=-Dgemfire.statistic-sampling-enabled=true \
+	--J=-Dgemfire.distributed-system-id=2 --J=-Dgemfire.conserve-sockets=false \
+	--J=-Dgemfire.log-file=cacheserver.log
+
+# Start server 2
+start server --name=server-ln-2 --locators=localhost[10332] --mcast-port=0 --log-level=config \
+	--enable-time-statistics=true --statistic-archive-file=cacheserver.gfs --server-port=0 \
+	--classpath=../build/classes/java/main --J=-Dgemfire.statistic-sampling-enabled=true \
+	--J=-Dgemfire.distributed-system-id=2 --J=-Dgemfire.conserve-sockets=false \
+	--J=-Dgemfire.log-file=cacheserver.log
+
+# Create the gateway receiver
+create gateway-receiver
+
+# Create the gateway sender to send updates to the New York site
+create gateway-sender --id="ny" --parallel="true" --remote-distributed-system-id="1" 
+
+# Sleep so that the gateway sender is registered with the locator
+sleep --time=5
+
+# Create the region that will share data with the New York site
+create region --name=example-region --type=PARTITION_REDUNDANT --gateway-sender-id="ny"
+
+# List the members
+list members
+
+# Describe the region
+describe region --name=example-region

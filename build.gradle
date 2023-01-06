@@ -1,0 +1,182 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+plugins {
+    id "org.nosphere.apache.rat" version "0.6.0"
+    id "com.diffplug.spotless" version "6.4.1"
+    id "de.undercouch.download" version "3.1.2"
+}
+
+allprojects {
+    repositories {
+        if (!gradle.usingGeodeCompositeBuild) {
+          maven {
+            if (project.findProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')||project.findProperty('gemfireRepositoryUrl').isEmpty()) {
+              credentials {
+                username "$gemfireReleaseRepoUser"
+                password "$gemfireReleaseRepoPassword"
+              }
+            }
+            url project.findProperty('gemfireRepositoryUrl') ?: 'https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire'
+            content {
+              includeGroup 'com.vmware.gemfire'
+            }
+          }
+        }
+        if(project.hasProperty("useMavenLocal")) {
+            mavenLocal()
+        }
+        mavenCentral()
+    }
+}
+
+def installDir = System.getenv('GEMFIRE_HOME') ?: System.getenv('GEODE_HOME')
+
+task checkEnv {
+    if (installDir=="null" || installDir.isEmpty()) {
+        throw new GradleException("Please set GEMFIRE_HOME to the directory where you have downloaded and extracted GemFire .tgz")
+    } else {
+        println("GemFire directory is $installDir")
+    }
+}
+
+configurations {
+    compositeTarget
+    gemfireDistribution
+}
+
+subprojects {
+    apply plugin: 'java-library'
+
+    dependencies {
+        // All callouts to com.vmware.gemfire here, need to be specified in settings.gradle
+        // for composite build to work
+        api(platform("com.vmware.gemfire:gemfire-all-bom:$gemfireVersion"))
+        implementation("com.vmware.gemfire:gemfire-core")
+        implementation("com.vmware.gemfire:gemfire-cq")
+        implementation("com.vmware.gemfire:gemfire-logging")
+        implementation('com.google.guava:guava')
+        implementation('org.apache.commons:commons-lang3')
+        implementation("org.apache.logging.log4j:log4j-core")
+
+        testImplementation("org.awaitility:awaitility")
+        testImplementation("junit:junit")
+        testImplementation("org.mockito:mockito-core")
+        testImplementation("com.github.stefanbirkner:system-rules")
+        testImplementation("org.assertj:assertj-core")
+        testImplementation('org.apache.httpcomponents:httpcore')
+        testImplementation('org.apache.httpcomponents:httpclient')
+        runtimeOnly "org.apache.logging.log4j:log4j-slf4j-impl"
+    }
+
+    jar {
+        archiveName "${baseName}.${extension}"
+    }
+
+    task cleanServer {
+        doLast {
+            delete 'locator'
+            delete 'locator-ln'
+            delete 'locator-ny'
+            delete 'server1'
+            delete 'server2'
+            delete 'server-ln-1'
+            delete 'server-ln-2'
+            delete 'server-ny-1'
+            delete 'server-ny-2'
+        }
+    }
+    clean.finalizedBy cleanServer
+
+    task start(type: Exec, dependsOn: [checkEnv, build, cleanServer]) {
+        workingDir projectDir
+        environment 'GEODE_HOME', installDir
+        commandLine 'sh', '-c', "$installDir/bin/gfsh run --file=${projectDir}/scripts/start.gfsh"
+    }
+
+    task stop(type: Exec, dependsOn: checkEnv) {
+        workingDir projectDir
+        environment 'GEODE_HOME', installDir
+        commandLine 'sh', '-c', "$installDir/bin/gfsh run --file=${projectDir}/scripts/stop.gfsh"
+    }
+
+    task run(type: JavaExec, dependsOn: build) {
+        description = 'Run example'
+        classpath = sourceSets.main.runtimeClasspath
+        main = "org.apache.geode_examples.${project.name}.Example"
+    }
+
+    task waitForExitingMembers(type: Exec) {
+        workingDir projectDir
+        environment 'GEODE_HOME', installDir
+        ignoreExitValue true
+        commandLine 'sh', '-c', "" +
+                "TIMEOUT=120 ;" +
+                "echo \"Waiting at most \$TIMEOUT seconds for all members to shut down...\" ;" +
+                "while pgrep -f \"(Server|Locator)Launcher\" > /dev/null ; do" +
+                "  printf \".\" ; " +
+                "  sleep 1 ;" +
+                "  TIMEOUT=\$((\$TIMEOUT - 1)) ;" +
+                "  if [ \$TIMEOUT -eq 0 ] ; then" +
+                "    echo \"\" ;" +
+                "    exit 10 ;" +
+                "  fi ;" +
+                "done ;" +
+                "echo \"\""
+        doLast {
+            // We use exit code 10 to avoid conflict with pgrep exit codes.
+            if (execResult.exitValue == 10) {
+                throw new GradleException("A member process persisted beyond permitted timeout.  Aborting.")
+            } else if (execResult.exitValue != 0) {
+                throw new GradleException("waitForExistingMembers failed with exit code: " + execResult.exitValue)
+            }
+        }
+    }
+
+    task verifyNoMembersRunning(type: Exec) {
+        workingDir projectDir
+        environment 'GEODE_HOME', installDir
+        ignoreExitValue true
+        commandLine 'sh', '-c', "echo \"Looking for existing member processes...\" ; " +
+                "pgrep -f \"(Server|Locator)Launcher\" ; "
+        doLast {
+            if (execResult.exitValue == 0) {
+                throw new GradleException("Existing members detected.  Examples expect a clean environment in which to run.")
+            }
+        }
+    }
+    if (gradle.usingGeodeCompositeBuild) {
+        tasks.withType(JavaCompile) {
+            options.fork = true
+            options.forkOptions.jvmArgs += ['-Xmx3g']
+        }
+    }
+
+    task runAll(dependsOn: [verifyNoMembersRunning, start, run, stop, waitForExitingMembers])
+    start.mustRunAfter verifyNoMembersRunning
+    run.mustRunAfter start
+    stop.mustRunAfter run
+    waitForExitingMembers.mustRunAfter stop
+}
+
+apply from: "gradle/spotless.gradle"
+apply from: "gradle/ide.gradle"
+apply from: "gradle/rat.gradle"
+apply from: "gradle/release.gradle"
+
+project.tasks.check.dependsOn(gradle.includedBuilds*.task(":check"))
+project.tasks.clean.dependsOn(gradle.includedBuilds*.task(":clean"))

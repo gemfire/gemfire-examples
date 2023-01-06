@@ -1,0 +1,73 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+rootProject.name = 'gemfire-examples'
+
+include 'replicated'
+include 'partitioned'
+include 'queries'
+include 'lucene'
+include 'loader'
+include 'putall'
+include 'durableMessaging'
+include 'cq'
+include 'clientSecurity'
+include 'functions'
+include 'persistence'
+include 'writer'
+include 'listener'
+include 'async'
+include 'luceneSpatial'
+include 'eviction'
+include 'serialization'
+include 'expiration'
+include 'indexes'
+include 'transaction'
+include 'wan'
+include 'wanDelta'
+include 'jdbc'
+include 'sessionState'
+include 'colocation'
+include 'micrometerMetrics'
+include 'compression'
+include 'rest'
+include 'json'
+
+// Logic for defining a custom GemFire clone for integration with this project
+// Define `-PgemfireCompositeDirectory` to your geode root, default `../gemfire`
+// Define `-Dcomposite` to enable Gradle includeBuild feature
+def gemfireCompositePropertyName = 'gemfireCompositeDirectory'
+def gemfirePath = hasProperty(gemfireCompositePropertyName) ? gemfireCompositeDirectory : '../gemfire'
+def gemfireDirectory = file(gemfirePath).absolutePath
+def gemfireDirectoryExists = file(gemfireDirectory).exists()
+def compositeBuildEnabled = System.getProperty("composite") != null
+gradle.ext.usingGeodeCompositeBuild = compositeBuildEnabled && gemfireDirectoryExists
+def gemfireProject = compositeBuildEnabled ? gemfireDirectory.toString().replaceFirst(".*[/\\\\]", "") : "gemfire"
+gradle.ext.gemfireProject = gemfireProject
+
+
+if (gradle.ext.usingGeodeCompositeBuild) {
+  includeBuild(gemfireDirectory) {
+    it.dependencySubstitution {
+      // Any submodule used by examples must be listed here
+      it.substitute it.module("com.vmware.gemfire:gemfire-all-bom") with project(':boms:gemfire-all-bom')
+      it.substitute it.module("com.vmware.gemfire:gemfire-cq") with it.project(':gemfire-cq')
+      it.substitute it.module("com.vmware.gemfire:gemfire-core") with it.project(':gemfire-core')
+      it.substitute it.module("com.vmware.gemfire:gemfire-logging") with it.project(':gemfire-logging')
+      it.substitute it.module("com.vmware.gemfire:vmware-gemfire") with it.project(':gemfire-assembly')
+    }
+  }
+}

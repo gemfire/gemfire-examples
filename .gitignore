@@ -1,0 +1,33 @@
+# This file should contain patterns all developers want to ignore
+# If you have workspace specific files, add them 
+# to .git/info/exclude.
+#
+# see git help gitignore for more details
+build/
+.idea/
+.gradle/
+.classpath
+.project
+.settings/
+.idea/
+build-eclipse/
+/tags
+out/
+
+locator
+locator1
+l1
+server
+*server1
+*server2
+
+*.iml
+*.ipr
+*.iws
+*.swp
+*.log
+*.patch
+*.diff
+*.dat
+*.rej
+*.orig
