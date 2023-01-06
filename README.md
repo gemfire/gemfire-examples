@@ -24,7 +24,7 @@ The examples in this project are showcase features of GemFire and demonstrate th
 ## VMware GemFire Version
 VMware GemFire client code must link against the _same or older_ version (ignoring patch versions) of VMware GemFire as the VMware GemFire server it will connect to.
 
-For compiling against older versions of GemFire you can add the version like this `-PgemfireVersion=9.15.+` to your `./gradlew` command to specify which VMware GemFire client libraries to link.
+For compiling against older versions of GemFire you can add the version like this `-PgemfireVersion=10.0.+` to your `./gradlew` command to specify which VMware GemFire client libraries to link.
 
 ## Running an example
 In order to execute the examples in this project, follow these steps:
