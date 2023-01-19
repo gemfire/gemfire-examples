@@ -22,7 +22,7 @@ limitations under the License.
 The examples in this project are showcase features of GemFire and demonstrate their basic usage. For details an all GemFire featues, see [our documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/index.html) 
 
 ## VMware GemFire Version
-VMware GemFire client code must link against the _same or older_ version (ignoring patch versions) of VMware GemFire as the VMware GemFire server it will connect to.
+Your client code must link against the _same or older_ version (ignoring patch versions) of VMware GemFire as the VMware GemFire server it will connect to.
 
 For compiling against older versions of GemFire you can add the version like this `-PgemfireVersion=10.0.+` to your `./gradlew` command to specify which VMware GemFire client libraries to link.
 
@@ -45,7 +45,6 @@ usage:
     $ ./gradlew :replicated:start
     $ ./gradlew :replicated:run
     $ ./gradlew :replicated:stop
-    $ ./gradlew runAll
 
 ## Catalog of examples
 
