@@ -176,6 +176,3 @@ subprojects {
 apply from: "gradle/spotless.gradle"
 apply from: "gradle/ide.gradle"
 apply from: "gradle/rat.gradle"
-
-project.tasks.check.dependsOn(gradle.includedBuilds*.task(":check"))
-project.tasks.clean.dependsOn(gradle.includedBuilds*.task(":clean"))
