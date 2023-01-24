@@ -3,9 +3,9 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 
-The new JSON related APIs allows you to convert a JSON String into a binary form that can be stored in a GemFire region. 
+The new JSON related APIs allow you to convert a JSON String into a binary form that can be stored in a GemFire region. 
 This example starts a GemFire cluster with one locator and two servers with a replicated region called `example-region`.
-It then uses the JSON related APIs to create a `JsonDocumentFactory` which converts a JSON string into a binary form.
+It then uses the JSON related APIs to create a `JsonDocumentFactory` which converts a JSON string into a JsonDocument.
 The converted JSON strings are stored as region entry values.
 
 The example uses JSON strings that contain fields of different types. For example:
@@ -25,7 +25,7 @@ The example uses JSON strings that contain fields of different types. For exampl
 }
 ```
 
-The `JsonDocument` API is used to get the values of fields of a JSON document. e.g. `JsonDocument.getField()`.
+The `JsonDocument` API is used to get the values of fields of a JSON document. For example, `JsonDocument.getField()`.
 
 For details about `JsonDocumentFactory` and `JsonDocument`. Please refer to the Javadoc or GemFire documentation.
 
@@ -50,13 +50,13 @@ $ ../gradlew run
 ```
 
 It first creates a GemFire client with a proxy client cache. 
-Then it converts a number of JSON strings to binary form and put to the `example-region`.
+Then it converts a number of JSON strings to a binary form called JsonDocument and put them to the `example-region`.
 
-`JsonDocument.toJson()` is used to convert the binary form back to JSON string.
+`JsonDocument.toJson()` is used to convert the binary form back to a JSON string.
 
 `JsonDocument.getField()` is used to get the value of a specific JSON field, including a nested field.
 
-OQL query can be used to query JSON fields as well. e.g.
+OQL query can be used to query JSON fields as well. For example:
 
 Query: `select * from /example-region where name='name5'`
 
