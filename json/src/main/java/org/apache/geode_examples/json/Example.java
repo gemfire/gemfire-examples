@@ -42,18 +42,18 @@ public class Example {
 
     System.out.println("The JSON string is:\n\n" + jsonDocument.toJson());
 
-    System.out.println("\nUsing Document.getField(), the value of JSON intField is: "
+    System.out.println("\nUsing JsonDocument.getField(), the value of JSON intField is: "
         + jsonDocument.getField("intField"));
 
     JsonDocument nestedField = (JsonDocument) jsonDocument.getField("nestedField");
-    System.out
-        .println("\nUsing Document.getField(), the value of JSON nestedField is: " + nestedField);
+    System.out.println(
+        "\nUsing JsonDocument.getField(), the value of JSON nestedField is: " + nestedField);
 
-    System.out.println("\nUsing Document.getField() to get field2 of nestedField: "
+    System.out.println("\nUsing JsonDocument.getField() to get field2 of nestedField: "
         + nestedField.getField("field2"));
 
     List arrayField = (List) jsonDocument.getField("arrayField");
-    System.out.println("\nUsing Document.getField() to get arrayField: " + arrayField);
+    System.out.println("\nUsing JsonDocument.getField() to get arrayField: " + arrayField);
 
     System.out
         .println("\nUsing List.get(), the value of JSON arrayField[1] is: " + arrayField.get(1));
