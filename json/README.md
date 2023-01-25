@@ -6,7 +6,7 @@
 # GemFire JSON Example
 
 The GemFire JSON-related APIs allow you to convert a JSON String into a binary form called `JsonDocument` that can be stored in a GemFire region.
-`JsonDocument` uses less memory and has better performance than JSON string.
+`JsonDocument`s use less memory and have better performance than JSON strings.
 
 This example starts a GemFire cluster with one locator and two servers with a replicated region called `example-region`.
 It then uses the JSON-related APIs to create a `JsonDocumentFactory` which converts a JSON string into a `JsonDocument`.
@@ -57,9 +57,9 @@ It first creates a GemFire client with a proxy client cache.
 Then it converts a number of JSON strings to `JsonDocument`s with the default BSON storage format and put them to the `example-region`.
 
 BSON and PDX are two underlying storage formats for `JsonDocument`.
-For the details, benefits and use cases of BSON and PDX, please refer to the GemFire documentation.
+For the details, benefits and use cases of BSON and PDX storage formats, please refer to the GemFire documentation.
 
-`JsonDocument.toJson()` is used to convert the `JsonDocument` back to a JSON string.
+`JsonDocument.toJson()` is used to convert a `JsonDocument` back to a JSON string.
 
 `JsonDocument.getField()` is used to get the value of a specific JSON field, including a nested field.
 
