@@ -1,9 +1,10 @@
+# GemFire JSON Example
+
 <!--
   ~ Copyright (c) VMware, Inc. 2023. All rights reserved.
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 
-# GemFire JSON Example
 
 The GemFire JSON-related APIs allow you to convert a JSON String into a binary form called `JsonDocument` that can be stored in a GemFire region.
 `JsonDocument`s use less memory and have better performance than JSON strings.
