@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 # VMware GemFire examples
-The examples in this project are showcase features of GemFire and demonstrate their basic usage. For details an all GemFire featues, see [our documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/index.html) 
+The examples in this project are showcase features of GemFire and demonstrate their basic usage. For details an all GemFire featues, see [our documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/index.html)
 
 ## VMware GemFire Version
 Your client code must link against the _same or older_ version (ignoring patch versions) of VMware GemFire as the VMware GemFire server it will connect to.
@@ -49,6 +49,12 @@ usage:
 ## Catalog of examples
 
 The following sections call out ready-made examples.  You may want to start your journey with the [VMware GemFire Documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/9.15/tgf/GUID-about_gemfire.html).
+
+### Quick Start
+
+* [Client-Server Intoduction](quickstart/001_client_server_introduction/README.md)
+* [Client Object Instances](quickstart/002_client_server_user_objects/README.md)
+* [Client JSON](quickstart/003_client_server_json/README.md)
 
 ### Basics
 
