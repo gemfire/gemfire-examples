@@ -25,7 +25,7 @@ allprojects {
     repositories {
         if (!gradle.usingGeodeCompositeBuild) {
           maven {
-            if (project.getProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')||project.findProperty('gemfireRepositoryUrl').isEmpty()) {
+            if (project.getProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')) {
               credentials {
                 username "$gemfireReleaseRepoUser"
                 password "$gemfireReleaseRepoPassword"
@@ -53,11 +53,13 @@ task checkEnv {
         println("GemFire directory is $installDir")
     }
 
-    if (!project.hasProperty("gemfireReleaseRepoUser") || gemfireReleaseRepoUser.isEmpty()) {
-        throw new GradleException("Please set gemfireReleaseRepoUser in gradle.properties to the email address you registered at https://commercial-repo.pivotal.io/")
-    }
-    if (!project.hasProperty("gemfireReleaseRepoPassword") || gemfireReleaseRepoPassword.isEmpty()) {
-        throw new GradleException("Please set gemfireReleaseRepoPassword in gradle.properties to the https://commercial-repo.pivotal.io/ password for $gemfireReleaseRepoUser")
+    if (project.getProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')) {
+        if (!project.hasProperty("gemfireReleaseRepoUser") || gemfireReleaseRepoUser.isEmpty()) {
+            throw new GradleException("Please set gemfireReleaseRepoUser in gradle.properties to the email address you registered at https://commercial-repo.pivotal.io/")
+        }
+        if (!project.hasProperty("gemfireReleaseRepoPassword") || gemfireReleaseRepoPassword.isEmpty()) {
+            throw new GradleException("Please set gemfireReleaseRepoPassword in gradle.properties to the https://commercial-repo.pivotal.io/ password for $gemfireReleaseRepoUser")
+        }
     }
 }
 
