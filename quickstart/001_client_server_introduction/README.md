@@ -8,7 +8,7 @@ The goal of this quickstart tutorial is to introduce GemFire basics, including s
 
 ## Download Examples and Configure Environment
 
-Download and install VMware GemFire from [Tanzu Network](https://network.pivotal.io). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/index.html).
+Download and install VMware GemFire from [Tanzu Network](https://network.pivotal.io). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
 
 Clone the GemFire examples repository from GitHub.
 
@@ -16,7 +16,7 @@ Clone the GemFire examples repository from GitHub.
 $ git clone git@github.com:gemfire/gemfire-examples.git
 ```
 
-Set Gemfire home environment variable to top of GemFire install directory. Note for this example Gemfire is installed in the home directory of the user - adjust as necessary for local environment and install directory location.
+Set GEMFIRE_HOME environment variable to top of GemFire install directory. Note for this example Gemfire is installed in the home directory of the user - adjust as necessary for local environment and install directory location.
 
 ```text
 $ export GEMFIRE_HOME=${HOME}/gemfire
@@ -182,13 +182,13 @@ server | test-javaclient(server:534075)<v1>:41001
 The above response of the "list members" command should show two members in the cluster.
 
 There are multiple useful commands provided by gfsh to configure and manage GemFire clusters,
-the *help* command will list them and the gfsh interactive shell has tab completion to help with determining options for each command. For additional information checkout the [GFSH documation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/9.15/tgf/GUID-tools_modules-gfsh-chapter_overview.html) .
+the *help* command will list them and the gfsh interactive shell has tab completion to help with determining options for each command. For additional information checkout the [GFSH documation](https://docs.vmware.com/en/VMware-GemFire/9.15/gf/tools_modules-gfsh-chapter_overview.html) .
 
 ## Create a server Region
 
-A [Region](https://docs.vmware.com/en/VMware-Tanzu-GemFire/9.15/tgf/GUID-developing-region_options-chapter_overview.html) is the core structure in the server for holding and managing key-value data in GemFire, it is similar to a hashmap but is distributed across the server members.
+A [Region](https://docs.vmware.com/en/VMware-GemFire/9.15/gf/developing-region_options-chapter_overview.html) is the core structure in the server for holding and managing key-value data in GemFire, it is similar to a hashmap but is distributed across the server members.
 
-While still in the gfsh interactive shell, create a [partition region](https://docs.vmware.com/en/VMware-Tanzu-GemFire/9.15/tgf/GUID-developing-partitioned_regions-chapter_overview.html).
+While still in the gfsh interactive shell, create a [partition region](https://docs.vmware.com/en/VMware-GemFire/9.15/gf/developing-partitioned_regions-chapter_overview.html).
 
 ```text
 gfsh>create region --name=petnames --type=PARTITION

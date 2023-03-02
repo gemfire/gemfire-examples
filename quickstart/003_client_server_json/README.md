@@ -15,7 +15,7 @@ The goal of this quickstart tutorial is to introduce using and storing JSON docu
 
 ## Download Examples and Configure Environment
 
-Download and install VMware GemFire from [Tanzu Network](https://network.pivotal.io). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/index.html).
+Download and install VMware GemFire from [Tanzu Network](https://network.pivotal.io). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
 
 Clone the GemFire examples repository from GitHub.
 
