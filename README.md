@@ -30,10 +30,11 @@ To link against an older version of GemFire, edit the `gemfireVersion=` line in 
 
 ## Running an example
 In order to execute the examples in this project, follow these steps:
+1. Ensure [JDK 11](https://bell-sw.com/pages/downloads/) is installed (and set JAVA_HOME if it's not the default).  You _can__ also use JDK8, but some individual examples will fail.  JDK17 is not yet supported.
 1. Download the version of GemFire that you want to use as the server from [Tanzu Network](https://network.tanzu.vmware.com/products/pivotal-gemfire/)
-2. Unpack the GemFire TAR file and set your `GEMFIRE_HOME` to point at it. `GEMFIRE_HOME` will be the top level directory inside the extracted GemFire.  For example, if you extracted in /tmp/downloads, export GEMFIRE_HOME=/tmp/downloads/vmware-gemfire-10.0.0
-3. Sign up for the [GemFire Maven repo](https://commercial-repo.pivotal.io/) and follow the instructions there to set up gemfire-examples to use your authentication credentials.  Note: be sure to click on the Gradle tab for gradle-specific instruction; the steps shown by default are for mvn projects only.
-4. You can now run an example with the following gradle targets:
+1. Unpack the GemFire TAR file and set your `GEMFIRE_HOME` to point at it. `GEMFIRE_HOME` will be the top level directory inside the extracted GemFire.  For example, if you extracted in /tmp/downloads, export GEMFIRE_HOME=/tmp/downloads/vmware-gemfire-10.0.0
+1. Sign up for the [GemFire Maven repo](https://commercial-repo.pivotal.io/) and follow the instructions there to set up gemfire-examples to use your authentication credentials.  Note: be sure to click on the Gradle tab for gradle-specific instruction; the steps shown by default are for mvn projects only.
+1. You can now run an example with the following gradle targets:
 
 * `build` - compiles the example and runs unit tests
 * `start` - initializes the VMware GemFire cluster
