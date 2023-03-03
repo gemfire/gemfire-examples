@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) VMware, Inc. 2023. All rights reserved.
+ */
+
 package com.vmware.gemfire.examples.quickstart;
 
 import org.apache.geode.cache.client.ClientCacheFactory;

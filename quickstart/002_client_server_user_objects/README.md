@@ -1,3 +1,8 @@
+<!--
+  ~ Copyright (c) VMware, Inc. 2023. All rights reserved.
+  ~ SPDX-License-Identifier: Apache-2.0
+  -->
+
 # Quickstart Tutorial -002- Introduction To User Objects and PDX
 
 VMware GemFire is an in-memory distributed Key-Value datastore.  As a datastore, GemFire provides a real-time, consistent and distributed service for modern applications with data-intensive needs and low latency response requirements. Because of GemFire's distributed peer-to-peer nature it can take advantage of multiples servers to pool memory, cpu and disk storage for improved performance, scalability and fault tolerance to build applications needing caching, management of in-flight data or the key-value database of record.
