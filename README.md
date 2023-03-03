@@ -32,7 +32,7 @@ To link against an older version of GemFire, edit the `gemfireVersion=` line in 
 ## Prerequisites
 
 In order to execute the examples in this project, follow these steps:
-1. Ensure [JDK 11](https://bell-sw.com/pages/downloads/) is installed (and set JAVA_HOME if it's not the default).  You _can__ also use JDK8, but some individual examples will fail.  JDK17 is not yet supported.
+1. Ensure [JDK 11](https://bell-sw.com/pages/downloads/) or JDK17 is installed (and set JAVA_HOME if it's not the default).  JDK *can* be used, but some examples such as lucene and luceneSpatial will not work.
 1. Download the version of GemFire that you want to use as the server from [Tanzu Network](https://network.tanzu.vmware.com/products/pivotal-gemfire/)
 1. Unpack the GemFire TGZ file (e.g. `tar xzf vmware-gemfire-10.0.0.tgz`)
 1. `export GEMFIRE_HOME` to point to the top level directory inside the extracted GemFire. For example, if you extracted in /tmp/downloads, `export GEMFIRE_HOME=/tmp/downloads/vmware-gemfire-10.0.0`.

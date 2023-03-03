@@ -19,9 +19,9 @@
  * limitations under the License.
  */
 dependencies {
-  compile("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion"){
+  implementation("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion"){
     exclude(group:"com.vmware.gemfire")
   }
 
-  compile("org.apache.lucene:lucene-spatial-extras:9.3.0")
+  implementation("org.apache.lucene:lucene-spatial-extras:9.3.0")
 }
