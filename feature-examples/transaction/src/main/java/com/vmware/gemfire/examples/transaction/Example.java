@@ -78,7 +78,7 @@ public class Example {
     command[0] = constructJVMPath();
     command[1] = "-classpath";
     command[2] = System.getProperty("java.class.path") + ":build/libs/transaction.jar";
-    command[3] = "org.apache.geode_examples.transaction.Incrementer";
+    command[3] = "com.vmware.gemfire.examples.transaction.Incrementer";
     command[4] = Integer.toString(id);
     try {
       children.put(id, Runtime.getRuntime().exec(command));

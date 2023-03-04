@@ -69,7 +69,7 @@ connect
 
 create data-source --name=mysql_data_source --url="jdbc:mysql://localhost/gemfire_db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC" --username=root --password="changeme"
 
-create jdbc-mapping --data-source=mysql_data_source --region=Parent --table=parent --pdx-name=org.apache.geode_examples.jdbc.Parent --catalog=gemfire_db --id=id
+create jdbc-mapping --data-source=mysql_data_source --region=Parent --table=parent --pdx-name=com.vmware.gemfire.examples.jdbc.Parent --catalog=gemfire_db --id=id
 
 ```
 

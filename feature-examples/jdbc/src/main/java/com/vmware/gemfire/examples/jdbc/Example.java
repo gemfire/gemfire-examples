@@ -38,7 +38,7 @@ public class Example {
     ClientCache cache =
         new ClientCacheFactory().addPoolLocator("127.0.0.1", 10334)
             .setPdxSerializer(
-                new ReflectionBasedAutoSerializer("org.apache.geode_examples.jdbc.Parent"))
+                new ReflectionBasedAutoSerializer("com.vmware.gemfire.examples.jdbc.Parent"))
             .create();
 
     // create a local region that connects to the server region

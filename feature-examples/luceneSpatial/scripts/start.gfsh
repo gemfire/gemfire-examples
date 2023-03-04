@@ -23,7 +23,7 @@ start server --name=server1 --locators=127.0.0.1[10334] --server-port=0 --classp
 start server --name=server2 --locators=127.0.0.1[10334] --server-port=0 --classpath=../build/libs/${STAR} --statistic-archive-file=lucene2.gfs
 
 ## Create a lucene index with our custom serializer
-create lucene index --name=simpleIndex --region=locationRegion --field=name --serializer=org.apache.geode_examples.luceneSpatial.LocationInfoSerializer
+create lucene index --name=simpleIndex --region=locationRegion --field=name --serializer=com.vmware.gemfire.examples.luceneSpatial.LocationInfoSerializer
 
 create region --name=locationRegion --type=PARTITION_PERSISTENT
 

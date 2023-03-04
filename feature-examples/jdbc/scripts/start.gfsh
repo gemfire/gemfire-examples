@@ -17,7 +17,7 @@
 
 start locator --name=locator --bind-address=127.0.0.1
 
-configure pdx --auto-serializable-classes=org.apache.geode_examples.jdbc.Parent
+configure pdx --auto-serializable-classes=com.vmware.gemfire.examples.jdbc.Parent
 
 start server --name=server1 --locators=127.0.0.1[10334] --server-port=0
 

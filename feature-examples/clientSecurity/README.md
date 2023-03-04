@@ -62,7 +62,7 @@ For more information on what permission is required for a given operation,
   
   Your implementation of `org.apache.geode.security.AuthInitialize` should handle the interaction
    with any existing security infrastructure (e.g., ldap).  In this example, we provide a trivial
-   implementation in `org.apache.geode_examples.clientSecurity.ExampleAuthInit`.
+   implementation in `com.vmware.gemfire.examples.clientSecurity.ExampleAuthInit`.
 
   These credentials are then given to your implementation
    of `org.apache.geode.security.SecurityManager`
@@ -87,7 +87,7 @@ Each step in this example specifies paths relative to that directory.
  When starting a secure cluster, you must specify a *security manager*
   that implements authorization.
  In this example, we use the security manager
-  `org.apache.geode.examples.clientSecurity.ExampleSecurityManager`.
+  `com.vmware.gemfire.examples.clientSecurity.ExampleSecurityManager`.
  This security manager reads a JSON file that defines which roles are granted which permissions,
  as well as each user's username, password, and roles.
  The JSON is present in `src/main/resources/example_security.json`.

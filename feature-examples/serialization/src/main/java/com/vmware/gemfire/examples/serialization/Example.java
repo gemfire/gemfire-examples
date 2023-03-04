@@ -48,7 +48,7 @@ public class Example {
     ClientCache cache = new ClientCacheFactory().addPoolLocator("127.0.0.1", 10334)
         .set("log-level", "WARN")
         .setPdxSerializer(
-            new ReflectionBasedAutoSerializer("org.apache.geode_examples.serialization.Country"))
+            new ReflectionBasedAutoSerializer("com.vmware.gemfire.examples.serialization.Country"))
         .create();
 
     // create a local region that matches the server region

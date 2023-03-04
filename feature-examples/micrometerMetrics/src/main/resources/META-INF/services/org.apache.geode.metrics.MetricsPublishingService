@@ -3,4 +3,4 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-org.apache.geode_examples.micrometerMetrics.SimpleMetricsPublishingService
+com.vmware.gemfire.examples.micrometerMetrics.SimpleMetricsPublishingService
