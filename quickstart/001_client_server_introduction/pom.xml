@@ -36,8 +36,8 @@
 
     <dependency>
       <groupId>com.vmware.gemfire</groupId>
-      <artifactId>geode-core</artifactId>
-      <version>9.15.3</version>
+      <artifactId>gemfire-core</artifactId>
+      <version>10.0.0-beta.1</version>
     </dependency>
 
     <dependency>
@@ -54,8 +54,8 @@
 
     <dependency>
       <groupId>com.vmware.gemfire</groupId>
-      <artifactId>geode-log4j</artifactId>
-      <version>9.15.3</version>
+      <artifactId>gemfire-log4j</artifactId>
+      <version>10.0.0-beta.1</version>
     </dependency>
 
     <dependency>
