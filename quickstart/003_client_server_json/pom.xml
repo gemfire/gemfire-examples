@@ -14,7 +14,7 @@
   <version>1.0-EXAMPLE</version>
 
   <name>GemFireClient</name>
-  <url>https://tanzu.vmware.com/gemfire</url>
+  <url>https://docs.vmware.com/en/VMware-GemFire</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

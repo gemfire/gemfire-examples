@@ -16,8 +16,8 @@ To link against a different version of GemFire, edit the `<version>` tag for eac
 ## Prerequisites
 
 In order to execute the examples in this project, follow these steps:
-1. Ensure [JDK 11](https://bell-sw.com/pages/downloads/) or JDK17 is installed.
-1. Ensure [Maven 3.6](https://maven.apache.org/download.cgi) or later is installed according to mvn [installation instructions](https://maven.apache.org/install.html).
+1. Ensure [JDK 11](https://bell-sw.com/pages/downloads/) or JDK 17 is installed.
+1. Ensure [Maven 3.8.3](https://maven.apache.org/download.cgi) or later is installed according to mvn [installation instructions](https://maven.apache.org/install.html).
 1. Each quickstart below will guide you through remaining setup steps such as downloading GemFire, setting GEMFIRE_HOME, and configuring a "commercial repo" account.
 
 ### Quick Starts

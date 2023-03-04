@@ -13,8 +13,7 @@
   <version>1.0-EXAMPLE</version>
 
   <name>GemFireClient</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://docs.vmware.com/en/VMware-GemFire</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
