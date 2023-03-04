@@ -7,7 +7,7 @@
 
 This repository contains two types of examples:
 
-* [Quick Start](quickstart/README.md) examples are practical guides to getting started with GemFire.
-* [Feature Examples](feature-examples/README.md) showcase features of GemFire and demonstrate their basic usage.
+* [Quick Start](quickstart) examples are practical guides to getting started with GemFire.
+* [Feature Examples](feature-examples) showcase features of GemFire and demonstrate their basic usage.
 
 See [VMware GemFire Documentation](https://docs.vmware.com/en/VMware-GemFire) for further detail.

@@ -22,6 +22,6 @@ In order to execute the examples in this project, follow these steps:
 
 ### Quick Starts
 
-* [Client-Server Intoduction](quickstart/001_client_server_introduction/README.md)
-* [Client Object Instances](quickstart/002_client_server_user_objects/README.md)
-* [Client JSON](quickstart/003_client_server_json/README.md)
+* [Client-Server Intoduction](001_client_server_introduction/)
+* [Client Object Instances](002_client_server_user_objects/)
+* [Client JSON](003_client_server_json/)
