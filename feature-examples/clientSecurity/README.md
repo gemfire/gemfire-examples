@@ -87,7 +87,7 @@ Each step in this example specifies paths relative to that directory.
  When starting a secure cluster, you must specify a *security manager*
   that implements authorization.
  In this example, we use the security manager
-  `com.vmware.gemfire.examples.clientSecurity.ExampleSecurityManager`.
+  `org.apache.geode.examples.clientSecurity.ExampleSecurityManager`.
  This security manager reads a JSON file that defines which roles are granted which permissions,
  as well as each user's username, password, and roles.
  The JSON is present in `src/main/resources/example_security.json`.
