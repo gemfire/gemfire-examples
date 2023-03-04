@@ -20,7 +20,7 @@ limitations under the License.
 -->
 
 # VMware GemFire feature examples
-The examples in this project are showcase features of GemFire and demonstrate their basic usage.
+The examples in this folder are showcase features of GemFire and demonstrate their basic usage.
 
 For details on all GemFire features, see [VMware GemFire Documentation](https://docs.vmware.com/en/VMware-GemFire).
 

@@ -2,7 +2,6 @@
   ~ Copyright (c) VMware, Inc. 2023. All rights reserved.
   ~ SPDX-License-Identifier: Apache-2.0
   -->
-<!--
 
 # VMware GemFire Quick Start examples
 The examples in this folder are practical guides to getting started with GemFire.
@@ -17,9 +16,9 @@ To link against a different version of GemFire, edit the `<version>` tag for eac
 ## Prerequisites
 
 In order to execute the examples in this project, follow these steps:
-1. Ensure [JDK 11](https://bell-sw.com/pages/downloads/) or JDK17 is installed (and set JAVA_HOME if it's not the default).
-1. Ensure [Maven 3.9](https://maven.apache.org/download.cgi) or later is installed according to mvn [installation instructions](https://maven.apache.org/install.html).
-1. The README for each quickstart will guide you through remaining setup steps such as downloading GemFire, setting GEMFIRE_HOME, and configuring a "commercial repo" account.
+1. Ensure [JDK 11](https://bell-sw.com/pages/downloads/) or JDK17 is installed.
+1. Ensure [Maven 3.6](https://maven.apache.org/download.cgi) or later is installed according to mvn [installation instructions](https://maven.apache.org/install.html).
+1. Each quickstart below will guide you through remaining setup steps such as downloading GemFire, setting GEMFIRE_HOME, and configuring a "commercial repo" account.
 
 ### Quick Starts
 
