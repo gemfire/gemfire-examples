@@ -73,8 +73,7 @@ password with those used during sign-up.
         <server>
             <id>gemfire-release-repo</id>
             <username> <!-- Email sign-up--> </username>
-            <password> <!-- Replace with your password-->
-            </password>
+            <password> <!-- Replace with your password--> </password>
         </server>
     </servers>
 </settings>
