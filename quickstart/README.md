@@ -11,7 +11,7 @@ For details on all GemFire features, see [VMware GemFire Documentation](https://
 ## VMware GemFire Version
 Your client code must link against the _same or older_ version (ignoring patch versions) of VMware GemFire as the VMware GemFire server it will connect to.
 
-To link against a different version of GemFire, edit the `<version>` tag for each com.vmware.gemfire dependency in `pom.xml` in each quickstart.
+To link against a different version of GemFire, edit the `<version>` tag for `gemfire-all-bom` in `pom.xml` in each quickstart.
 
 ## Prerequisites
 
