@@ -44,7 +44,7 @@ application with GemFire 9 for comparison and upgrade examples. Notice the use o
 `geode-dependencies.jar` along with your application classes on the Java classpath.
 
 ```shell
-$ java -classpath gedoe-dependencies.jar:[classes:jars:...] \ 
+$ java -classpath geode-dependencies.jar:[classes:jars:...] \ 
     <application class> \
     [application arguments ...]
 ```
