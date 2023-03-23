@@ -10,7 +10,7 @@ if [ -z "${GEODE_HOME}" ]; then
   exit 1
 fi
 
-# Find the GemFire dDependencies Jar file
+# Find the GemFire Dependencies Jar file
 GEMFIRE_DEPENDENCIES="${GEODE_HOME}"/lib/geode-dependencies.jar
 if [ ! -e "${GEMFIRE_DEPENDENCIES}" ]; then
   echo "Environment GEODE_HOME does not reference a GemFire installation."
