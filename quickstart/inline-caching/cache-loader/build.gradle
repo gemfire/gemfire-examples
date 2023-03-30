@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.vmware.gemfire.inlineCaching'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+jar {
+    archiveBaseName = 'gemfire-inlineCaching'
+
+    from {
+        configurations.runtimeClasspath.filter({(it.name =~ /jooq.*\.jar/ )}).collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        credentials {
+            username "$gemfireRepoUsername"
+            password "$gemfireRepoPassword"
+        }
+        url = uri("https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire")
+    }
+}
+
+dependencies {
+    implementation 'com.vmware.gemfire:geode-core:9.15.4'
+    implementation group: 'org.jooq', name: 'jooq', version: '3.6.2'
+}
+

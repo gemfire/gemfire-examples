@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.10'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.vmware.gemfire.inlineCaching'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+jar {
+    archiveBaseName = 'gemfire-inlineCaching'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        credentials {
+            username "$gemfireRepoUsername"
+            password "$gemfireRepoPassword"
+        }
+        url = uri("https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire")
+    }
+}
+
+bootRun {
+    systemProperties System.properties
+}
+
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation ("com.vmware.gemfire:spring-boot-2.7-gemfire-9.15:1.1.0")
+}
+
