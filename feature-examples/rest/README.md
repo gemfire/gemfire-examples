@@ -22,7 +22,7 @@ limitations under the License.
 # GemFire REST API example
 
 This is a simple example that demonstrates putting values into a
-replicated region and retrieving the values using the GemFire REST API. For enabling the REST API you can follow the official [document](https://geode.apache.org/docs/guide/19/rest_apps/setup_config.html#setup_config_enabling_rest).
+replicated region and retrieving the values using the GemFire REST API. For enabling the REST API you can follow the official [document](https://docs.vmware.com/en/VMware-GemFire/10.0/gf/rest_apps-setup_config.html).
 
 This example assumes you have installed JDK11 and GemFire.
 

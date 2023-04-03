@@ -22,9 +22,7 @@ limitations under the License.
 # GemFire Micrometer Metrics Example
 
 This example demonstrates publishing metrics from GemFire to a monitoring system comprised of
-Prometheus and Grafana. For more details about how this works, see [Publishing GemFire Metrics to
-External Monitoring
-Systems](https://cwiki.apache.org/confluence/display/GEODE/Publishing+Geode+Metrics+to+External+Monitoring+Systems).
+Prometheus and Grafana. For more details see [VMware GemFire Micrometer](https://docs.vmware.com/en/VMware-GemFire/10.0/gf/tools_modules-micrometer-micrometer-overview.html).
 
 ## Steps to Run and Validate the Example
 
