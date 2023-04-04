@@ -1,94 +1,209 @@
-# Quickstart Tutorial - Inline Cache Loader
-This demonstrates how to create a spring boot app that connects to GemFire that is configured as an inline cache.
-More details for this configuration can be found in the [GemFire documentation](https://docs.pivotal.io/p-cloud-cache/1-12/inline-setup.html).
+# Inline Cache with GemFire
 
-## Download Examples and Configure Environment
+Using an inline cache with a database can help improve performance, reduce database scaling limits, and provide greater flexibility in terms of data retrieval. 
+It is an important tool for any application that relies heavily on database access, and can help ensure that critical data is always available when it is needed.
 
+GemFire's inline cache is a mechanism for temporarily storing frequently accessed data in memory, rather than querying a database every time the data is needed. 
+This can significantly improve the performance of database-driven applications, especially when dealing with large amounts of data or complex queries.
+
+One of the main reasons to use GemFire with a database is to address scaling limits of the database itself. 
+As the size and complexity of a database grows, it can become increasingly difficult to maintain fast and efficient access to the data. 
+This is especially true in situations where multiple users or applications are simultaneously accessing the database, leading to contention and slowdowns.
+
+By using GemFire's inline cache, frequently accessed data can be stored in GemFire's memory, reducing the number of queries that need to be made 
+to the database. This can help alleviate some of the scaling limits of the database, as it reduces the amount of load placed on the database server. 
+It can also help reduce network latency and improve overall system performance, as data can be retrieved locally rather than over a network connection.
+
+# Implementation
+Setting up an inline cache with GemFire and a database involves several steps. Here's an overview of the process.
+
+## Install and Configure GemFire
+
+The first step is to install and configure GemFire on your system.
 Download and install VMware GemFire from [Tanzu Network](https://network.pivotal.io). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
 
---------
+## Clone the GemFire examples repository from GitHub.
 
-setup postgres
+There is a working code examples for how to setup an inline cache here.
+```text
+$ git clone git@github.com:gemfire/gemfire-examples.git
+```
 
-    brew install postgresql
-    brew services start postgresql
-    pgbench -i -s 50 postgres
+## Configure Access to GemFire Maven Repository
 
-    psql postgres
-    create user myuser with encrypted password 'mypass';
-    grant all privileges on database postgres to myuser;
-    grant all privileges on all tables in schema public to myuser;
+The quickstart tutorial requires access to the VMware Commercial Maven Repository for the GemFire product jars. Please sign-up for access to repo at <https://commercial-repo.pivotal.io/register>.
 
-create postgres example data
+Create a `gradle.properties` file in this directory with the following information:
 
-    psql postgres -U myuser;
-    update pgbench_tellers set filler = 'hello' where tid = 1;
+```plain
+gemfireRepoUsername=<your commercial maven repository username>
+gemfireRepoPassword=<your commercial maven repository password>
+```
 
-download postgres driver
+These properties will be used in the `web` and `cache-loader` gradle projects. 
 
-    curl https://jdbc.postgresql.org/download/postgresql-42.6.0.jar > postgresql-42.6.0.jar
+We can now build our example with 
+```bash
+./gradlew build
+```
 
-build project
+## Database setup
 
-    ./gradlew build
+### Install Postgres
+You can use any database you want that has a JDBC driver for it. For this example, we will be using Postgres. 
+You can either download postgres from https://www.postgresql.org/download/ and install it manually or if on a Mac, use brew install.
 
-configure gemfire
+```bash
+brew install postgresql
+brew services start postgresql
+```
 
-    ./<location of gemfire>/bin/gfsh
-    start locator --name locator
-    start server --name='server' --classpath="<directory for postgres jar downloaded above>/postgresql-42.6.0.jar:<project root directory>/cache-loader/build/libs/gemfire-inlineCaching-0.0.1-SNAPSHOT.jar" --J="-Dpostgres.username=myuser" --J="-Dpostgres.password=mypass"
-    create async-event-queue --listener=io.vmware.event.ItemAsyncEventListener --id=item-writebehind-queue --batch-size=10 --batch-time-interval="20"
-    create region --name=item --type=REPLICATE --cache-loader=io.vmware.event.ItemCacheLoader --async-event-queue-id=item-writebehind-queue
+### Configure Postgres
+
+Now that postgres is running, we will want to create some tables and a user. One of the easier ways to do this
+is to use the test datbase that postgres provides for benchmarking via `pgbench`.
+
+```bash
+pgbench -i -s 50 postgres
+```
+
+This will create a few tables for us that we can manipulate. We will also need a user that our GemFire client can use to access the database
+
+```bash
+psql postgres
+create user myuser with encrypted password 'mypass';
+grant all privileges on database postgres to myuser;
+grant all privileges on all tables in schema public to myuser;
+```
+
+### Download Postrgres JDBC driver
+
+This will be necessary for GemFire to communicate to Postgres in our example
+
+```bash
+curl https://jdbc.postgresql.org/download/postgresql-42.6.0.jar > postgresql-42.6.0.jar
+```
+
+## Configure GemFire
+
+Once GemFire is installed, you need to configure GemFire to use Postgres as a data source. 
+This involves starting a GemFire cluster with all of the necessary class files as well as creating regions to store cached data and the data source to be used.
+
+This `cache-loader` project contains an implementation of `AsyncEventListener` and `CacheLoader` interfaces. 
+GemFire's AsyncEventListener and CacheLoader are useful features that can help improve the performance and scalability of your application by allowing you to asynchronously process write events and read data within your GemFire cluster.
+
+### AsyncEventListener
+The AsyncEventListener interface provides a way for your application to send write events to your database asynchronously in a batch operation, without blocking the sender. 
+This can help improve the throughput and performance of your application by allowing it to process events in parallel, while the sender continues to send more write events.
+This also helps keep the data in GemFire in sync with what is in the database.  
+
+In order to simplify the SQL necessary to write data to Postgres, the [JOOQ library](https://www.jooq.org/) is used.
+
+```java
+int result = create.update(table)
+                    .set(filler, value)
+                    .where(tid.eq(itemId))
+                    .execute();
+```
+
+The table `pgbench_tellers` and column `filler` is something we get when postgres created our benchmark database. 
+It's just a place to store data for our example.
+
+We are getting our postgres credentials from System properties
+```java
+		String userName = System.getProperty("postgres.username");
+		String password = System.getProperty("postgres.password");
+```
+
+These properties will be passed in later when we create our GemFire region below.
 
 
-start webservice
+### CacheLoader
+GemFire's CacheLoader is used to fetch data from external systems and load it into the GemFire cache. 
+Our CacheLoader implementation also uses JOOQ for connecting to Postgres and Java system properties to retrieve Postgres' user name and password.
 
-    ./gradlew bootRun
+### Create a region with an AsyncEventListener and a CacheLoader
 
-## test cache read
+To create a region with an AsyncEventListener and a CacheLoader using GemFire, you can use `gfsh`. 
+Be sure that you have already built our example project and downloaded the necessary JDBC drivers as outlined above. 
+We will be creating a GemFire region with the name `item`.
+```bash
+./<location of gemfire>/bin/gfsh
+start locator --name locator
+start server --name='server' --classpath="<directory for postgres jar downloaded above>/postgresql-42.6.0.jar:<project root directory>/cache-loader/build/libs/gemfire-inlineCaching-0.0.1-SNAPSHOT.jar" --J="-Dpostgres.username=myuser" --J="-Dpostgres.password=mypass"
+create async-event-queue --listener=io.vmware.event.ItemAsyncEventListener --id=item-writebehind-queue --batch-size=10 --batch-time-interval="20"
+create region --name=item --type=REPLICATE --cache-loader=io.vmware.event.ItemCacheLoader --async-event-queue-id=item-writebehind-queue
+```
 
-retrieve value from webservice
+Notice that the jars are passed into the classpath for our JDBC Postgres driver and the jar that contains our CacheLoader and AsyncEventListener implementations.
+These classes will be used by GemFire whenever we interact with our newly created `item` region.
 
-    curl localhost:8080/1          # should see the value hello
+## Define the data model
 
-change value on the postgres database
+The data model that will be used to represent data in GemFire typically involves defining a set of Java classes that represent the data model entities.
+For our example, we are just going to use a simple String, but any Java object can be used. 
 
-    psql postgres -U myuser;
-    update pgbench_tellers set filler = 'goodbye' where tid = 1;
+Here is an example for how to define a data model using GemFire's repositories that is mapped to our `item` region that we created above
 
-retrieve value from webservice
+```java
+@Region("/item")
+public interface Repository extends GemfireRepository<String, String> {
+}
+```
 
-    curl localhost:8080/1          # should still see the value hello because it is cached
+Again, we are using Java Strings here for simplicity, but we can use any Java object to store data in GemFire. 
 
-clear the cache in gemfire
+## Web Project
 
-    remove --key=1 --region=item
-
-retrieve value from webservice
-
-    curl localhost:8080/1          # should see the value goodbye
-
-## test cache write
-
-retrieve value from webservice
-
-    curl localhost:8080/1          # should see the value goodbye (or hello if you didn't run the read test)
-
-write value to webservice
-
-    curl localhost:8080/1/potato -X PUT
-
-see value in postgres
-
-    psql postgres -U myuser;
-    select filler from pgbench_tellers where tid=1;  -- should see potato
-
-retrieve value from webservice
-
-    curl localhost:8080/1          # should see the value potato
+Our `web` project consists of 4 objects:
+1. Application - spring configuration for our app
+2. Controller - handles the web traffic and interacts with the Service
+3. Repository - defines key and value of our data model
+4. Service - uses a Repository and can utilize business logic to adapt GemFire data into a nicer format 
 
 
-## Notes
+The web application will retrieve a request from the user, and then ask GemFire for the data in it's `item` region. 
+For read operations to the region, if the data exists, the data will be retrieved via the CacheLoader interface defined above.
+For write operations to the region, the AsyncEventListener will be used. 
 
-* if you just want a 1:1 mapping for a region to a database table, see the [jdbc example](https://github.com/gemfire/gemfire-examples/tree/main/feature-examples/jdbc)
-* if you want the cache to expire after a certain amount of time, see the [expiration example](https://github.com/gemfire/gemfire-examples/blob/main/feature-examples/expiration)
+## Start the SpringBoot web service with GemFire integration
+
+Connecting a GemFire client to an existing GemFire cluster is easy. In our web projects `application.properties` file, 
+we have the following line
+
+```plain
+spring.data.gemfire.pool.locators=localhost[10334]
+```
+This tells the GemFire client the location of our GemFire cluster that we created above. 
+The port `10334` is the default port, but any port can be used if configured to do so.
+
+Starting the spring boot app with GemFire can be done via
+
+```bash
+./gradlew bootRun
+```
+
+When the application starts, you should see in the Tomcat log files that the GemFire client has discovered a locator
+
+```plain
+AutoConnectionSource discovered new locators [...:10334]
+```
+
+This means that our application is connected and ready to handle requests. 
+
+## Performing Requests
+
+To test the example project, the following web requests can be made
+
+```bash
+curl localhost:8080/<key>
+curl localhost:8080/<key>/<value> -X PUT
+```
+
+The webservice is implemented to retrieve data from a postgres database and cache values using GemFire.
+
+For a more streamlined approach to this example, as well as a more information to how a use this webservice, see the [TESTING.md](TESTING.md) file in this folder.
+
+
+
+
