@@ -61,7 +61,7 @@ brew services start postgresql
 ### Configure Postgres
 
 Now that postgres is running, we will want to create some tables and a user. One of the easier ways to do this
-is to use the test datbase that postgres provides for benchmarking via `pgbench`.
+is to use the test database that postgres provides for benchmarking via `pgbench`.
 
 ```bash
 pgbench -i -s 50 postgres
@@ -120,7 +120,7 @@ These properties will be passed in later when we create our GemFire region below
 
 ### CacheLoader
 GemFire's CacheLoader is used to fetch data from external systems and load it into the GemFire cache. 
-Our CacheLoader implementation also uses JOOQ for connecting to Postgres and Java system properties to retrieve Postgres' user name and password.
+Our CacheLoader implementation also uses JOOQ for connecting to Postgres and Java system properties to retrieve Postgres' username and password.
 
 ### Create a region with an AsyncEventListener and a CacheLoader
 
@@ -136,7 +136,8 @@ create region --name=item --type=REPLICATE --cache-loader=io.vmware.event.ItemCa
 ```
 
 Notice that the jars are passed into the classpath for our JDBC Postgres driver and the jar that contains our CacheLoader and AsyncEventListener implementations.
-These classes will be used by GemFire whenever we interact with our newly created `item` region.
+These classes will be used by GemFire whenever we interact with our newly created `item` region. Our new region also utilizes the options `--cache-loader` and `--async-event-queue-id`. 
+These point to the implementation of the AsyncEventListener and CacheLoader that were referenced earlier.
 
 ## Define the data model
 
@@ -183,7 +184,7 @@ Starting the spring boot app with GemFire can be done via
 ./gradlew bootRun
 ```
 
-When the application starts, you should see in the Tomcat log files that the GemFire client has discovered a locator
+When the application starts, you should see in the Tomcat log files that the GemFire client has discovered a locator.
 
 ```plain
 AutoConnectionSource discovered new locators [...:10334]
