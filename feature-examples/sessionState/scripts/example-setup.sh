@@ -24,9 +24,9 @@
 set -eux
 
 GEMFIRE_DOWNLOAD_TAR_LOCATION=${1%/}
-CATALINA_HOME=/Users/bkazavenkata/Documents/apache-tomcat-10.0.27
+CATALINA_HOME=/Users/bkazavenkata/Documents/apache-tomcat-9.0.73
 CATALINA_LOCATION=${CATALINA_HOME%/}
-TOMCAT_VERSION=Tomcat10
+TOMCAT_VERSION=Tomcat9
 
 BASE_DIR=$(pwd)
 mkdir "${BASE_DIR}"/vmware-gemfire
@@ -37,20 +37,18 @@ pushd vmware-gemfire
   cp tools/Modules/${TOMCAT_VERSION}/*.gfm extensions
   pwd
   unzip -o tools/Modules/${TOMCAT_VERSION}/*.zip -d ${CATALINA_LOCATION}/lib
+  cp -a ${CATALINA_LOCATION}/lib/conf/. ${CATALINA_LOCATION}/conf/
+  rm -rf ${CATALINA_LOCATION}/lib/conf/
   pwd
 popd
 
 export GEMFIRE_LOCATION=${BASE_DIR}/vmware-gemfire
+${GEMFIRE_LOCATION}/bin/gfsh -e "start locator --name=locator1" -e "start server --name=server1 --server-port=40404 --locators=localhost[10334]"
 
-export CLASSPATH=${CATALINA_LOCATION}/lib/*
-
-sh $GEMFIRE_LOCATION/bin/gfsh "start locator --name=l1"
-
-sh $GEMFIRE_LOCATION/bin/gfsh "start server --name=server1 --server-port=40404 --locators=localhost[10334]"
-
+pwd
 #Build sample webapp
 pushd feature-examples/sessionState/webapp
-./gradlew build
+./gradlew clean build
 popd
 
 pushd feature-examples/sessionState/scripts
@@ -58,5 +56,3 @@ pushd feature-examples/sessionState/scripts
 rm -rf ${CATALINA_LOCATION}/webapps/SessionStateDemo*
 cp ${BASE_DIR}/feature-examples/sessionState/webapp/build/libs/SessionStateDemo-1.0-SNAPSHOT.war ${CATALINA_LOCATION}/webapps/SessionStateDemo.war
 popd
-
-rm-rf ${BASE_DIR}/vmware-gemfire

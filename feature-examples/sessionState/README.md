@@ -43,7 +43,7 @@ Tomcat convention, so in some cases this may have already been set.
   and to the file context.xml add the line:
 
   ```
-<Manager className="org.apache.geode.modules.session.catalina.Tomcat10DeltaSessionManager"/> 
+<Manager className="org.apache.geode.modules.session.catalina.Tomcat9DeltaSessionManager"/> 
   ```
 
 3. Run the setup script:
