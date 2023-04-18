@@ -24,7 +24,7 @@
 set -eux
 
 GEMFIRE_DOWNLOAD_TAR_LOCATION=${1%/}
-CATALINA_HOME=/Users/bkazavenkata/Documents/apache-tomcat-9.0.73
+# Set CATALINA_HOME to the root folder of Apache Tomcat9 installation
 CATALINA_LOCATION=${CATALINA_HOME%/}
 TOMCAT_VERSION=Tomcat9
 
