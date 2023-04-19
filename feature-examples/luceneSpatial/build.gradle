@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 dependencies {
-  implementation("com.vmware.gemfire:gemfire-lucene:$gemfireLuceneVersion"){
+  implementation("com.vmware.gemfire:gemfire-search:$gemfireLuceneVersion"){
     exclude(group:"com.vmware.gemfire")
   }
 
