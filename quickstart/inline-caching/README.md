@@ -164,8 +164,10 @@ Our `web` project consists of 4 objects:
 
 
 The web application will retrieve a request from the user, and then ask GemFire for the data in it's `item` region. 
-For read operations to the region, if the data exists, the data will be retrieved via the CacheLoader interface defined above.
-For write operations to the region, the AsyncEventListener will be used. 
+For read operations to the region, if the data exists in the GemFire region, the data will be retrieved without using the CacheLoader. 
+If the data does **not** exist in the GemFire region, the data will be fetched via the CacheLoader interface defined above.
+
+For write operations to the GemFire region, the data is written to the GemFire region first and then batched up to be written to postgres using the AsyncEventListener.
 
 ## Start the SpringBoot web service with GemFire integration
 
