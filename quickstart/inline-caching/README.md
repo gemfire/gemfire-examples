@@ -139,12 +139,12 @@ Notice that the jars are passed into the classpath for our JDBC Postgres driver 
 These classes will be used by GemFire whenever we interact with our newly created `item` region. Our new region also utilizes the options `--cache-loader` and `--async-event-queue-id`. 
 These point to the implementation of the AsyncEventListener and CacheLoader that were referenced earlier.
 
-## Define the data model
+## Define the data model using Spring Data
 
-The data model that will be used to represent data in GemFire typically involves defining a set of Java classes that represent the data model entities.
+The Spring Data model that will be used to represent data in GemFire typically involves defining a set of Java classes that represent the Spring Data model entities.
 For our example, we are just going to use a simple String, but any Java object can be used. 
 
-Here is an example for how to define a data model using GemFire's repositories that is mapped to our `item` region that we created above
+Here is an example for how to define a Spring Data model using GemFire's repositories that is mapped to our `item` region that we created above
 
 ```java
 @Region("/item")
