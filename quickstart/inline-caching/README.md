@@ -76,7 +76,7 @@ grant all privileges on database postgres to myuser;
 grant all privileges on all tables in schema public to myuser;
 ```
 
-### Download Postrgres JDBC driver
+### Download Postgres JDBC driver
 
 This will be necessary for GemFire to communicate to Postgres in our example
 
