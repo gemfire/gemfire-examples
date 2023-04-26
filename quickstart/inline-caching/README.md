@@ -171,7 +171,12 @@ For write operations to the GemFire region, the data is written to the GemFire r
 
 ## Start the SpringBoot web service with GemFire integration
 
-Connecting a GemFire client to an existing GemFire cluster is easy. In our web projects `application.properties` file, 
+Connecting a GemFire client to an existing GemFire cluster is easy. 
+In this example, we have a simple client that passes all reads an writes to the web server. 
+The web server is a SpringBoot web service configured to delegate all read and write operations
+to a GemFire cluster using SpringBoot.  
+
+In our web projects `application.properties` file, 
 we have the following line
 
 ```plain
