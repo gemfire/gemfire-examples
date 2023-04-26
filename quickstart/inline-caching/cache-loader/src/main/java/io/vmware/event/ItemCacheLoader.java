@@ -50,7 +50,4 @@ public class ItemCacheLoader implements CacheLoader<String, String> {
 			throw new RuntimeException(e);
 		}
     }
-
-	@Override
-	public void close() {}
 }
