@@ -196,14 +196,49 @@ This means that our application is connected and ready to handle requests.
 
 ## Performing Requests
 
-To test the example project, the following web requests can be made
+**The following web requests can be made to test the Cache Loader**
 
-```bash
-curl localhost:8080/<key>
-curl localhost:8080/<key>/<value> -X PUT
-```
+Add a value to postgres database
 
-The webservice is implemented to retrieve data from a postgres database and cache values using GemFire.
+    psql postgres -U myuser;
+    update pgbench_tellers set filler = 'hello' where tid = 1;
+
+Retrieve value from webservice
+
+    curl localhost:8080/1          # should see the value hello
+
+Change value on the postgres database
+
+    psql postgres -U myuser;
+    update pgbench_tellers set filler = 'goodbye' where tid = 1;
+
+Retrieve value from webservice
+
+    curl localhost:8080/1          # should still see the value hello because it is cached
+
+Clear the cache in gemfire
+
+    remove --key=1 --region=item
+
+Retrieve value from webservice
+
+    curl localhost:8080/1          # should see the new value goodbye
+
+**The following web requests can be made to test the Async Event Listener**
+
+Write value to webservice
+
+    curl localhost:8080/1/potato -X PUT
+
+See value in postgres
+
+    psql postgres -U myuser;
+    select filler from pgbench_tellers where tid=1;  -- should see potato
+
+Retrieve value from webservice
+
+    curl localhost:8080/1          # should see the value potato
+
 
 For a more streamlined approach to this example, as well as a more information to how a use this webservice, see the [TESTING.md](TESTING.md) file in this folder.
 
