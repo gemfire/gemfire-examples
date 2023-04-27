@@ -169,12 +169,12 @@ If the data does **not** exist in the GemFire region, the data will be fetched v
 
 For write operations to the GemFire region, the data is written to the GemFire region first and then batched up to be written to postgres using the AsyncEventListener.
 
-## Start the SpringBoot web service with GemFire integration
+## Start the Spring Boot web service with GemFire integration
 
 Connecting a GemFire client to an existing GemFire cluster is easy. 
 In this example, we have a simple client that passes all reads an writes to the web server. 
-The web server is a SpringBoot web service configured to delegate all read and write operations
-to a GemFire cluster using SpringBoot.  
+The web server is a Spring Boot web service configured to delegate all read and write operations
+to a GemFire cluster using Spring Boot and Spring Data.  
 
 In our web projects `application.properties` file, 
 we have the following line
@@ -197,56 +197,56 @@ When the application starts, you should see in the Tomcat log files that the Gem
 AutoConnectionSource discovered new locators [...:10334]
 ```
 
-This means that our application is connected and ready to handle requests. 
+This means that our Spring Boot web application is connected and ready to handle requests. 
 
 ## Performing Requests
 
 **The following web requests can be made to test the Cache Loader**
 
-Add a value to postgres database
+Add a value to postgres database. This will bypass GemFire but will change a value in postgres.
 
     psql postgres -U myuser;
     update pgbench_tellers set filler = 'hello' where tid = 1;
 
-Retrieve value from webservice
+Retrieve value from webservice. This will invoke GemFire's CacheLoader. GemFire shouldn't know of this 
+data with the cooresponding key `1` and therefore will reach out to postgres.
 
     curl localhost:8080/1          # should see the value hello
 
-Change value on the postgres database
+Change value on the postgres database. Again, this will bypass GemFire but will update the value in the backing database. 
+This will setup a demonstration that GemFire is indeed caching values. 
 
     psql postgres -U myuser;
     update pgbench_tellers set filler = 'goodbye' where tid = 1;
 
-Retrieve value from webservice
+Retrieve value from webservice. This will still show the originally set value because the web service / GemFire was not involved. 
 
     curl localhost:8080/1          # should still see the value hello because it is cached
 
-Clear the cache in gemfire
+Clear the cache in GemFire
 
     remove --key=1 --region=item
 
-Retrieve value from webservice
+Retrieve the value from the webservice after clearing the GemFire cache so that the CacheLoader will be invoked again. 
 
     curl localhost:8080/1          # should see the new value goodbye
 
 **The following web requests can be made to test the Async Event Listener**
 
-Write value to webservice
+Write value to webservice. This will write a value to GemFire first, and then the AsyncEventListener will pick up the write event and 
+persist the value to postgres. 
 
     curl localhost:8080/1/potato -X PUT
 
-See value in postgres
+See value in postgres. We can see here that the value has been written. 
 
     psql postgres -U myuser;
     select filler from pgbench_tellers where tid=1;  -- should see potato
 
-Retrieve value from webservice
+Retrieve value from webservice. Just to be certain, we can see the new value has been updated for reads as well. 
+The AsyncEventListener and CacheLoader work together. 
 
     curl localhost:8080/1          # should see the value potato
 
 
-For a more streamlined approach to this example, as well as a more information to how a use this webservice, see the [TESTING.md](TESTING.md) file in this folder.
-
-
-
-
+For a more streamlined approach to this example see the [TESTING.md](TESTING.md) file in this folder.
