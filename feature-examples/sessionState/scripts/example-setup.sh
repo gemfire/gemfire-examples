@@ -20,45 +20,39 @@
 
 #!/bin/bash
 
-GEMFIRE_LOCATION=${1%/}
+# enable tracing
+set -eux
+
+GEMFIRE_DOWNLOAD_TAR_LOCATION=${1%/}
+# Set CATALINA_HOME to the root folder of Apache Tomcat9 installation
 CATALINA_LOCATION=${CATALINA_HOME%/}
+TOMCAT_VERSION=Tomcat9
 
-#Copy all nessessary lib files into tomcats lib directory
-cp $GEMFIRE_LOCATION/lib/commons-io-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/commons-lang3-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/commons-validator-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/fastutil-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/gemfire-core-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/gemfire-logging-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/javax.transaction-api-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/jgroups-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/log4j-api-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/log4j-core-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/log4j-jul-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/shiro-core-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/gemfire-common-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/gemfire-management-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/gemfire-tcp-server-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/gemfire-membership-*.jar $CATALINA_LOCATION/lib/
-cp $GEMFIRE_LOCATION/lib/micrometer-core-*.jar $CATALINA_LOCATION/lib/
-cp $CATALINA_HOME/bin/tomcat-juli.jar $CATALINA_HOME/lib/
+BASE_DIR=$(pwd)
+mkdir "${BASE_DIR}"/vmware-gemfire
+tar zxvf "${GEMFIRE_DOWNLOAD_TAR_LOCATION}"/*.tgz --strip-components=1 -C "${BASE_DIR}"/vmware-gemfire
+ls -l "${BASE_DIR}"/vmware-gemfire
+pushd vmware-gemfire
+  mkdir extensions
+  cp tools/Modules/${TOMCAT_VERSION}/*.gfm extensions
+  pwd
+  unzip -o tools/Modules/${TOMCAT_VERSION}/*.zip -d ${CATALINA_LOCATION}/lib
+  cp -a ${CATALINA_LOCATION}/lib/conf/. ${CATALINA_LOCATION}/conf/
+  rm -rf ${CATALINA_LOCATION}/lib/conf/
+  pwd
+popd
 
-#Unzip Tomcat Module conf/lib files into tomcats conf/lib directories
-unzip -o $1/tools/Modules/Apache_Geode_Modules-*-Tomcat.zip -d $CATALINA_HOME/
+export GEMFIRE_LOCATION=${BASE_DIR}/vmware-gemfire
+${GEMFIRE_LOCATION}/bin/gfsh -e "start locator --name=locator1" -e "start server --name=server1 --server-port=40404 --locators=localhost[10334]"
 
-export CLASSPATH=$CATALINA_HOME/lib/*
-
-sh $GEMFIRE_LOCATION/bin/gfsh "start locator --name=l1"
-
-sh $GEMFIRE_LOCATION/bin/gfsh "start server --name=server1 --locators=localhost[10334] --server-port=0 \
-    --classpath=$CLASSPATH"
-
+pwd
 #Build sample webapp
-cd ../webapp/
-./gradlew build
-cd ../scripts/
+pushd feature-examples/sessionState/webapp
+./gradlew clean build
+popd
 
+pushd feature-examples/sessionState/scripts
 #Place freshly built version of webapp into Tomcats webapps directory
-rm -rf $CATALINA_HOME/webapps/SessionStateDemo*
-cp ../webapp/build/libs/SessionStateDemo-1.0-SNAPSHOT.war $CATALINA_LOCATION/webapps/SessionStateDemo.war
-
+rm -rf ${CATALINA_LOCATION}/webapps/SessionStateDemo*
+cp ${BASE_DIR}/feature-examples/sessionState/webapp/build/libs/SessionStateDemo-1.0-SNAPSHOT.war ${CATALINA_LOCATION}/webapps/SessionStateDemo.war
+popd
