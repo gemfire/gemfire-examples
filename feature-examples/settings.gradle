@@ -45,6 +45,8 @@ include 'micrometerMetrics'
 include 'compression'
 include 'rest'
 include 'json'
+include 'launchers:server'
+include 'launchers:locator'
 
 // Logic for defining a custom GemFire clone for integration with this project
 // Define `-PgemfireCompositeDirectory` to your geode root, default `../gemfire`
