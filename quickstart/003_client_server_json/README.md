@@ -20,7 +20,7 @@ The goal of this quickstart tutorial is to introduce using and storing JSON docu
 
 ## Download Examples and Configure Environment
 
-Download and install VMware GemFire from [Tanzu Network](https://network.pivotal.io). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
+Download and install VMware GemFire from [Tanzu Network](https://network.tanzu.vmware.com). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
 
 Clone the GemFire examples repository from GitHub.
 
@@ -72,14 +72,14 @@ password with those used during sign-up.
     <servers>
         <server>
             <id>gemfire-release-repo</id>
-            <username> <!-- Email sign-up--> </username>
-            <password> <!-- Replace with your password--> </password>
+            <username>EXAMPLE-USERNAME@example.com</username>
+            <password>EXAMPLE-PLAINTEXT-PASSWORD</password>
         </server>
     </servers>
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.0.0 beta 1 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.0.2 version of the product.
 
 ## Start a Developer GemFire Cluster
 
