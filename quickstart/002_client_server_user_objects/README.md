@@ -79,7 +79,7 @@ password with those used during sign-up.
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.0.0-beta.1 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.0.2 version of the product.
 
 ## Start a Developer GemFire Cluster
 

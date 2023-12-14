@@ -72,7 +72,7 @@ password with those used during sign-up.
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.0.0-beta.1 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.0.2 version of the product.
 
 ## What is a GemFire Cluster, Locators and Servers?
 
@@ -93,11 +93,11 @@ $ gfsh start locator --name=locator --dir=${HOME}/locator
 Locator in /home/<username>/locator on test-javaclient.localdomain[10334] as locator is currently online.
 Process ID: 532579
 Uptime: 10 seconds
-Geode Version: 10.0.0-beta.1
+Geode Version: 10.0.2
 Java Version: 11.0.17
 Log File: /home/<username>/test/locator/locator.log
 JVM Arguments: --add-exports=java.management/com.sun.jmx.remote.security=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED -Dgemfire.enable-cluster-configuration=true -Dgemfire.load-cluster-configuration-from-dir=false -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
-Class-Path: /home/<username>/vmware-gemfire-10.0.0-beta.1/lib/gemfire-core-10.0.0-beta.1.jar:/home/<username>/vmware-gemfire-10.0.0-beta.1/lib/gemfire-server-all-10.0.0-beta.1.jar
+Class-Path: /home/<username>/vmware-gemfire-10.0.2/lib/gemfire-core-10.0.2.jar:/home/<username>/vmware-gemfire-10.0.2/lib/gemfire-server-all-10.0.2.jar
 
 Successfully connected to: JMX Manager [host=test-javaclient.localdomain, port=1099]
 
@@ -116,7 +116,7 @@ Connecting to Locator at [host=localhost, port=10334] ..
 Connecting to Manager at [host=test-javaclient.localdomain, port=1099] ..
 Successfully connected to: [host=test-javaclient.localdomain, port=1099]
 
-You are connected to a cluster of version 10.0.0-beta.1.
+You are connected to a cluster of version 10.0.2.
 
 
 (2) Executing - start server --dir=test/server --name=server
@@ -125,11 +125,11 @@ You are connected to a cluster of version 10.0.0-beta.1.
 Server in /home/<username>/server on test-javaclient.localdomain[40404] as server is currently online.
 Process ID: 534075
 Uptime: 3 seconds
-Geode Version: 10.0.0-beta.1
+Geode Version: 10.0.2
 Java Version: 11.0.17
 Log File: /home/<username>/test/server/server.log
 JVM Arguments: --add-exports=java.management/com.sun.jmx.remote.security=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED -Dgemfire.default.locators=192.168.0.38[10334] -Dgemfire.start-dev-rest-api=false -Dgemfire.use-cluster-configuration=true -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
-Class-Path: /home/<username>/vmware-gemfire-10.0.0-beta.1/lib/gemfire-core-10.0.0-beta.1.jar:/home/<username>/vmware-gemfire-10.0.0-beta.1/lib/gemfire-server-all-10.0.0-beta.1.jar
+Class-Path: /home/<username>/vmware-gemfire-10.0.2/lib/gemfire-core-10.0.2.jar:/home/<username>/vmware-gemfire-10.0.2/lib/gemfire-server-all-10.0.2.jar
 
 ```
 
@@ -147,7 +147,7 @@ $ gfsh
    / _____/ ______/ ______/ /____/ /
   / /  __/ /___  /_____  / _____  /
  / /__/ / ____/  _____/ / /    / /
-/______/_/      /______/_/    /_/    10.0.0-beta.1
+/______/_/      /______/_/    /_/    10.0.2
 
 Monitor and Manage VMware GemFire
 gfsh>
@@ -162,7 +162,7 @@ Connecting to Locator at [host=localhost, port=10334] ..
 Connecting to Manager at [host=test-javaclient.localdomain, port=1099] ..
 Successfully connected to: [host=test-javaclient.localdomain, port=1099]
 
-You are connected to a cluster of version 10.0.0-beta.1.
+You are connected to a cluster of version 10.0.2.
 
 ```
 
@@ -346,7 +346,7 @@ Connecting to Locator at [host=localhost, port=10334] ..
 Connecting to Manager at [host=test-javaclient.localdomain, port=1099] ..
 Successfully connected to: [host=test-javaclient.localdomain, port=1099]
 
-You are connected to a cluster of version 10.0.0-beta.1.
+You are connected to a cluster of version 10.0.2.
 
 
 (2) Executing - shutdown --include-locators=true
