@@ -12,7 +12,7 @@ An image search webapp that uses VMware GemFire and the VMware GemFire Vector Da
    2. Determine if the precomputed embeddings file exists. If it does not, then it will download the file.
    3. The precomputed embeddings are then loaded into GemFire.
 
-Now that the index has been created, images are available, and the embeddings have been loaded into GemFire, you can search for images.
+3. Now that the index has been created, images are available, and the embeddings have been loaded into GemFire, you can search for images.
 
 The full image set can also be downloaded here if needed:
 [Image Data Set](https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/datasets/unsplash-25k-photos.zip)
