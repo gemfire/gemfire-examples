@@ -20,7 +20,10 @@ configurations {
 }
 
 dependencies {
-  dependenciesToIncludeInEndpointJar "io.micrometer:micrometer-registry-prometheus:$micrometerVersion"
+  dependenciesToIncludeInEndpointJar("io.micrometer:micrometer-registry-prometheus:$micrometerVersion") {
+    exclude group: 'io.micrometer', module: 'micrometer-core'
+  }
+  compileOnly('io.micrometer:micrometer-core')
   configurations.implementation.extendsFrom(configurations.dependenciesToIncludeInEndpointJar)
 }
 
