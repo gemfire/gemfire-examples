@@ -1,6 +1,6 @@
 # GemFire Image Search
 An image search webapp that uses VMware GemFire and the VMware GemFire Vector Database extension.
-
+Download the extension from the Tanzu Network: [GemFire Vector Database extension](https://network.tanzu.vmware.com/products/gemfire-vectordb/)
 
 ## Using the Application
 
@@ -37,8 +37,8 @@ The application currently expects to find the GemFire `--http-service-port`  at 
 
 ## Requirements
 
-- GemFire 10.0+
-- GemFire Vector Database extension 1.0+
+- [GemFire 10.0+](https://network.tanzu.vmware.com/products/pivotal-gemfire/)
+- [GemFire Vector Database extension 1.0+](https://network.tanzu.vmware.com/products/gemfire-vectordb/)
 - React
 - Flask (python webserver)
 - Python 3.9+
