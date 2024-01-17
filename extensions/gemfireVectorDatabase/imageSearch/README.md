@@ -1,6 +1,6 @@
 # GemFire Image Search
 An image search webapp that uses VMware GemFire and the VMware GemFire Vector Database extension.
-Download the extension from the Tanzu Network: [GemFire Vector Database extension](https://network.pivotal.io/products/gemfire-vectordb/)
+Download the extension from the Tanzu Network: [GemFire Vector Database extension](https://network.tanzu.vmware.com/products/gemfire-vectordb/)
 
 ## Using the Application
 
