@@ -34,8 +34,8 @@ To link against an older version of GemFire, edit the `gemfireVersion=` line in 
 In order to execute the examples in this project, follow these steps:
 1. Ensure [JDK 11](https://bell-sw.com/pages/downloads/) or JDK 17 is installed (and set JAVA_HOME if it's not the default).  JDK 8 *can* be used, but some examples such as lucene and luceneSpatial will not work.
 1. Download the version of GemFire that you want to use as the server from [Tanzu Network](https://network.tanzu.vmware.com/products/pivotal-gemfire/)
-1. Unpack the GemFire TGZ file (e.g. `tar xzf vmware-gemfire-10.0.2.tgz`)
-1. `export GEMFIRE_HOME` to point to the top level directory inside the extracted GemFire. For example, if you extracted in /tmp/downloads, `export GEMFIRE_HOME=/tmp/downloads/vmware-gemfire-10.0.2`.
+1. Unpack the GemFire TGZ file (e.g. `tar xzf vmware-gemfire-10.1.0.tgz`)
+1. `export GEMFIRE_HOME` to point to the top level directory inside the extracted GemFire. For example, if you extracted in /tmp/downloads, `export GEMFIRE_HOME=/tmp/downloads/vmware-gemfire-10.1.0`.
 1. Sign up for the [GemFire Maven repo](https://commercial-repo.pivotal.io/) and follow the instructions there to set up gemfire-examples to use your authentication credentials (be sure to click on the **Gradle** tab for gradle-specific instruction; the steps shown by default are for mvn projects only).
 
 ## Running an example

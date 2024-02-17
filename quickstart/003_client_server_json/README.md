@@ -51,7 +51,7 @@ OpenJDK 64-Bit Server VM (build 11.0.17+8-post-Ubuntu-1ubuntu2, mixed mode, shar
 
 $ mvn --version
 
-Apache Maven 3.6.3
+Apache Maven 3.8.3
 Maven home: /usr/share/maven
 Java version: 11.0.17, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
 Default locale: en_US, platform encoding: UTF-8
@@ -79,7 +79,7 @@ password with those used during sign-up.
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.0.2 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.1.0 version of the product.
 
 ## Start a Developer GemFire Cluster
 
@@ -138,7 +138,7 @@ A JsonDocument can be converted back to a JSON string with the toJson() method. 
 | "null" | null |
 | Number | Integer, Long, BigInteger, or Double |
 
-For additional details on using JSON with GemFire see [documentation](https://docs.vmware.com/en/VMware-GemFire/10.0/gf/developing-data_serialization-jsonformatter_pdxinstances.html)
+For additional details on using JSON with GemFire see [documentation](https://docs.vmware.com/en/VMware-GemFire/10.1/gf/developing-data_serialization-jsonformatter_pdxinstances.html)
 
 For class details see JavaDocs for [JsonDocument](https://gemfire.docs.pivotal.io/apidocs/gf-100/org/apache/geode/json/JsonDocument.html) and
 [JsonDocumentFactory](https://gemfire.docs.pivotal.io/apidocs/gf-100/org/apache/geode/json/JsonDocumentFactory.html).
