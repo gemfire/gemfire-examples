@@ -15,8 +15,15 @@
 # limitations under the License.
 #
 
+#run wan-copy commands before stop the wan examples
+run --file=scripts/wan-copy.gfsh
+
 #shutdown london site
 connect --locator=localhost[10332]
+shutdown --include-locators=true
+disconnect
+
+connect --locator=localhost[10333]
 shutdown --include-locators=true
 disconnect
 
