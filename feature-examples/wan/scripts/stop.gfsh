@@ -16,7 +16,7 @@
 #
 
 #run wan-copy commands before stop the wan examples
-run --file=scripts/wan-copy.gfsh
+#run --file=scripts/wan-copy.gfsh
 
 #shutdown london site
 connect --locator=localhost[10332]

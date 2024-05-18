@@ -166,6 +166,8 @@ as well as printed to the console.
         # cancel all wan-copy region operations belong to that wan-copy-id, including unstarted wan-copy region operations
         Cluster-2 gfsh>cancel wan-copy region --wan-copy-id=5d1e7efd-bd16-4fa7-b925-635c797ac9ad
 
+        # Note: step 12 has to work with gemfire 10.2+
+
 13. Exit gfsh in each terminal and shutdown the cluster using the stop.gfsh script
  
         $ gfsh run --file=scripts/stop.gfsh
