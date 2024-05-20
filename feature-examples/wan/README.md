@@ -113,7 +113,7 @@ as well as printed to the console.
         ...
         Cluster-2 gfsh>connect --locator=localhost[10332]
 
-        # Backward compatibility, previous wan-copy region command is still supported
+        # previous single region wan-copy region command is still supported
         Cluster-2 gfsh>wan-copy region --region=example-region --sender-id=ny
 
         # 2 colocated regions can use the same sender id
@@ -144,7 +144,7 @@ as well as printed to the console.
         # describe a wan-copy region operation in verbose format
         Cluster-2 gfsh>describe wan-copy region --wan-copy-id=5d1e7efd-bd16-4fa7-b925-635c797ac9ad --verbose
 
-    While wan-copy is on-going, connect to Cluter-2 in another terminal and cancel the wan-copy
+    While wan-copy is on-going, connect to Cluster-2 in another terminal and cancel the wan-copy
         $ gfsh
         ...
         Cluster-2 gfsh>connect --locator=localhost[10332]
