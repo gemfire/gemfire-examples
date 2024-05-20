@@ -108,6 +108,7 @@ as well as printed to the console.
         ../gradlew run
 
 12. Do wan-copy region with wild card
+    # Note: step 12 has to work with gemfire 10.2+.
         $ gfsh
         ...
         Cluster-2 gfsh>connect --locator=localhost[10332]
@@ -166,7 +167,7 @@ as well as printed to the console.
         # cancel all wan-copy region operations belong to that wan-copy-id, including unstarted wan-copy region operations
         Cluster-2 gfsh>cancel wan-copy region --wan-copy-id=5d1e7efd-bd16-4fa7-b925-635c797ac9ad
 
-        # Note: step 12 has to work with gemfire 10.2+
+        # After set up gemfire cluster with 10.2+. Edit scripts/stop.gfsh to uncomment the line "run --file=scripts/wan-copy.gfsh", or run "gfsh run --file=scripts/wan-copy.gfsh" in command line.
 
 13. Exit gfsh in each terminal and shutdown the cluster using the stop.gfsh script
  
