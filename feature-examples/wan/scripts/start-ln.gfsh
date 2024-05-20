@@ -50,7 +50,6 @@ create gateway-receiver
 # Create the gateway sender to send updates to the New York site
 create gateway-sender --id="ny" --parallel="true" --remote-distributed-system-id="1" --enable-persistence=true
 create gateway-sender --id="ny2" --parallel="true" --remote-distributed-system-id="1" --enable-persistence=true
-#create gateway-sender --id="ny3" --parallel="true" --remote-distributed-system-id="1" --enable-persistence=true
 
 # Sleep so that the gateway sender is registered with the locator
 sleep --time=5
