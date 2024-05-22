@@ -73,7 +73,7 @@ rat {
     '**/server/**',
     '**/server1/**',
     '**/server2/**',
-    '**/locator-ln/**',
+    '**/locator-ln**/**',
     '**/server-ln-1/**',
     '**/server-ln-2/**',
     '**/locator-ny/**',

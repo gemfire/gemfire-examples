@@ -104,11 +104,76 @@ as well as printed to the console.
 
         Cluster-2 gfsh>query --query="select e.key, e.value from /example-region.entries e"
 
-11. Exit gfsh in each terminal and shutdown the cluster using the stop.gfsh script
+11. Feed data into regions
+        ../gradlew run
+
+12. Do wan-copy region with wild card
+    # Note: step 12 has to work with gemfire 10.2+.
+        $ gfsh
+        ...
+        Cluster-2 gfsh>connect --locator=localhost[10332]
+
+        # previous single region wan-copy region command is still supported
+        Cluster-2 gfsh>wan-copy region --region=example-region --sender-id=ny
+
+        # 2 colocated regions can use the same sender id
+        Cluster-2 gfsh>wan-copy region --region=example-region2,example-region3 --sender-id=ny2
+
+        # region name with wild card
+        Cluster-2 gfsh>wan-copy region --region=example-region* --sender-id=ny*
+        Cluster-2 gfsh>wan-copy region --region=example-region? --sender-id=ny*
+
+        # all regions
+        Cluster-2 gfsh>wan-copy region --region=* --sender-id=*
+
+        # sender id becomes optional
+        Cluster-2 gfsh>wan-copy region --region=example-region*
+
+        # --simulate: list out all the region and sender id pairs, but not to do copy
+        Cluster-2 gfsh>wan-copy region --region=example-region* --sender-id=ny* --simulate
+
+        # --background: run wan-copy region operation in background and return the wan-copy-id immediately
+        Cluster-2 gfsh>wan-copy region --region=example-region* --sender-id=ny* --background
+
+        # list running and finished wan-copy region operations
+        Cluster-2 gfsh>list wan-copy region
+
+        # describe a wan-copy region operation via its id
+        Cluster-2 gfsh>describe wan-copy region --wan-copy-id=5d1e7efd-bd16-4fa7-b925-635c797ac9ad
+
+        # describe a wan-copy region operation in verbose format
+        Cluster-2 gfsh>describe wan-copy region --wan-copy-id=5d1e7efd-bd16-4fa7-b925-635c797ac9ad --verbose
+
+    While wan-copy is on-going, connect to Cluster-2 in another terminal and cancel the wan-copy
+        $ gfsh
+        ...
+        Cluster-2 gfsh>connect --locator=localhost[10332]
+
+        # Without --wan-copy-id parameter, only cancel the current running wan-copy region operation
+        Cluster-2 gfsh>wan-copy region --region=example-region --sender-id=ny --cancel
+        Cluster-2 gfsh>wan-copy region --region=example-region* --sender-id=ny* --cancel
+        Cluster-2 gfsh>wan-copy region --region=* --sender-id=* --cancel
+
+        # cancel with wan-copy-id
+        # cancel one region senderid pair (example-region,ny) in the wan-copy-id
+        Cluster-2 gfsh>wan-copy region --region=example-region --sender-id=ny --cancel --wan-copy-id=5d1e7efd-bd16-4fa7-b925-635c797ac9ad
+
+        # cancel all combination of (example-region*,ny*) belong to that wan-copy-id, including unstarted wan-copy region operations
+        Cluster-2 gfsh>wan-copy region --region=example-region* --sender-id=ny* --cancel --wan-copy-id=5d1e7efd-bd16-4fa7-b925-635c797ac9ad
+
+        # cancel all wan-copy region operations belong to that wan-copy-id, including unstarted wan-copy region operations
+        Cluster-2 gfsh>wan-copy region --region=* --sender-id=* --cancel --wan-copy-id=5d1e7efd-bd16-4fa7-b925-635c797ac9ad
+
+        # cancel all wan-copy region operations belong to that wan-copy-id, including unstarted wan-copy region operations
+        Cluster-2 gfsh>cancel wan-copy region --wan-copy-id=5d1e7efd-bd16-4fa7-b925-635c797ac9ad
+
+        # After set up gemfire cluster with 10.2+. Edit scripts/stop.gfsh to uncomment the line "run --file=scripts/wan-copy.gfsh", or run "gfsh run --file=scripts/wan-copy.gfsh" in command line.
+
+13. Exit gfsh in each terminal and shutdown the cluster using the stop.gfsh script
  
         $ gfsh run --file=scripts/stop.gfsh
 
-12. Clean up any generated directories and files.
+14. Clean up any generated directories and files.
 
     	$ ../gradlew cleanServer
 

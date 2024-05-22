@@ -19,7 +19,7 @@
 
 # Start the locator
 start locator --name=locator-ny --port=10331 --locators=localhost[10331] --mcast-port=0 --log-level=config \
-	--J=-Dgemfire.remote-locators=localhost[10332] --J=-Dgemfire.distributed-system-id=1 \
+	--J=-Dgemfire.remote-locators=localhost[10332],localhost[10333] --J=-Dgemfire.distributed-system-id=1 \
 	--J=-Dgemfire.jmx-manager-start=true --J=-Dgemfire.jmx-manager-http-port=8081 \
 	--J=-Dgemfire.jmx-manager-port=1091
 
@@ -41,16 +41,22 @@ start server --name=server-ny-2 --locators=localhost[10331] --mcast-port=0 --log
 create gateway-receiver
 
 # Create the gateway sender to send updates to the London site
-create gateway-sender --id="ln" --parallel="true" --remote-distributed-system-id="2" 
+create gateway-sender --id="ln" --parallel="true" --remote-distributed-system-id="2" --enable-persistence=true
 
 # Sleep so that the gateway sender is registered with the locator
 sleep --time=5
 
 # Create the region that will share data with the London site
-create region --name=example-region --type=PARTITION_REDUNDANT --gateway-sender-id="ln"
+create region --name=example-region --type=PARTITION_REDUNDANT_PERSISTENT --gateway-sender-id="ln"
+
+# Create a group of region to do wan-copy
+create region --name=example-region2 --type=PARTITION_REDUNDANT_PERSISTENT
+create region --name=example-region3 --type=PARTITION_REDUNDANT_PERSISTENT
 
 # List the members
 list members
 
 # Describe the region
 describe region --name=example-region
+describe region --name=example-region2
+describe region --name=example-region3
