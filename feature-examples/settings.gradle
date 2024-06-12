@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -45,6 +50,7 @@ include 'micrometerMetrics'
 include 'compression'
 include 'rest'
 include 'json'
+include 'launchers'
 
 // Logic for defining a custom GemFire clone for integration with this project
 // Define `-PgemfireCompositeDirectory` to your geode root, default `../gemfire`
