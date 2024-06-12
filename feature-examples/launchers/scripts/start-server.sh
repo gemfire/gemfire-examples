@@ -41,7 +41,7 @@ JAVA_OPTIONS=("-Xmx64g" "-Dgemfire.default.locators=localhost[12345]")
 # MUST only include gemfire-bootstrap jar on the Java -classpath option.
 # MUST double quote $@ for properly forward option values with spaces.
 "${JAVA_HOME}"/bin/java "${JAVA_OPTIONS[@]}" \
-  -classpath "${GEMFIRE_HOME}"/lib/gemfire-bootstrap-*.jar \
+  -classpath "${GEMFIRE_HOME}"/lib/gemfire-bootstrap.jar \
   com.vmware.gemfire.bootstrap.Main \
   com.vmware.gemfire.examples.launchers.CustomServerApplication \
   --automatic-module-classpath="${AUTOMATIC_MODULE_CLASSPATH}" \
