@@ -1,0 +1,28 @@
+/*
+ * Copyright 2019 - 2021 VMware, Inc.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+@font-face {
+    font-family: 'proxima_nova_reg';
+    src: local("proxima_nova_reg-reg"), url('./../../public/resources/fonts/proxima_nova_reg/proximanova-reg.woff2') format('woff2'),
+    url('./../../public/resources/fonts/proxima_nova_reg/proximanova-reg.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'proxima_nova_bold';
+    src: local("proxima_nova_bold"), url('./../../public/resources/fonts/proxima_nova_bold/proximanova-bold.woff2') format('woff2'),
+    url('./../../public/resources/fonts/proxima_nova_bold/proximanova-bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'proxima_nova_semibold';
+    src: local("proxima_nova_semibold"), url('./../../public/resources/fonts/proxima_nova_semibold/proximanova-semibold.woff2') format('woff2'),
+    url('./../../public/resources/fonts/proxima_nova_semibold/proximanova-semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}

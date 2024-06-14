@@ -44,8 +44,24 @@ public class Example {
             .create("example-region");
 
     Example example = new Example(region);
-    example.insertValues(10);
+    example.insertValues(10000);
     example.printValues(example.getValues());
+
+    Region<Integer, String> region2 =
+        cache.<Integer, String>createClientRegionFactory(ClientRegionShortcut.PROXY)
+            .create("example-region2");
+
+    Example example2 = new Example(region2);
+    example2.insertValues(12000);
+    example2.printValues(example2.getValues());
+
+    Region<Integer, String> region3 =
+        cache.<Integer, String>createClientRegionFactory(ClientRegionShortcut.PROXY)
+            .create("example-region3");
+
+    Example example3 = new Example(region3);
+    example3.insertValues(13000);
+    example3.printValues(example3.getValues());
 
     cache.close();
   }
@@ -59,6 +75,10 @@ public class Example {
   }
 
   void printValues(Set<Integer> values) {
-    values.forEach(key -> System.out.println(String.format("%d:%s", key, region.get(key))));
+    if (values.size() <= 10) {
+      values.forEach(key -> System.out.println(String.format("%d:%s", key, region.get(key))));
+    } else {
+      System.out.println("Total entries: " + values.size());
+    }
   }
 }

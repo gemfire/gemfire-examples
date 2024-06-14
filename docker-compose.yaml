@@ -1,0 +1,62 @@
+version: '3.5'
+
+name: gemfire-cluster
+services:
+  gemfire-locator-0:
+    image: gemfire/gemfire-all:10.1-jdk17
+    command: gfsh start locator --name=locator-0 --hostname-for-clients=localhost --J='-Dgemfire.jmx-manager-hostname-for-clients=localhost'
+    environment:
+      - ACCEPT_TERMS=y
+    ports:
+      - "10334:10334"
+      - "7070:7070"
+      - "1099:1099"
+    expose:
+      - 10334
+      - 7070
+      - 1099
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7070/management/v1/members/locator-0"]
+      interval: 30s
+      start_interval: 5s
+      start_period: 20s
+      retries: 5
+    networks: [gemfire-cluster-networks]
+  gemfire-server-0:
+    image: gemfire/gemfire-all:10.1-jdk17
+    depends_on:
+      gemfire-locator-0:
+        condition: service_healthy
+    command: gfsh start server --name=server-0 --locators=gemfire-locator-0[10334] --start-rest-api --http-service-port=7070
+    environment:
+      - ACCEPT_TERMS=y
+    ports:
+      - "7071:7070"
+      - "40405:40405"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7070/gemfire-api/v1/ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    links:
+      - gemfire-locator-0
+    networks: [gemfire-cluster-networks]
+  management-console:
+    image: gemfire/gemfire-management-console:latest
+    ports:
+      - "7072:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      start_interval: 5s
+      start_period: 20s
+      retries: 5
+    depends_on:
+      gemfire-locator-0:
+        condition: service_healthy
+    links:
+      - gemfire-locator-0
+    networks: [gemfire-cluster-networks]
+networks:
+  gemfire-cluster-networks:
+    driver: bridge

@@ -1,4 +1,9 @@
 /*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -19,6 +24,8 @@ apply plugin: "org.nosphere.apache.rat"
 rat {
   substringMatcher("VMware", "VMware", "VMware, Inc.", "vmware-eula")
   approvedLicense("VMware")
+  substringMatcher("Broadcom", "Broadcom", "Broadcom")
+  approvedLicense("Broadcom")
   approvedLicense("Apache License Version 2.0")
 
   excludes = [
@@ -73,7 +80,7 @@ rat {
     '**/server/**',
     '**/server1/**',
     '**/server2/**',
-    '**/locator-ln/**',
+    '**/locator-ln**/**',
     '**/server-ln-1/**',
     '**/server-ln-2/**',
     '**/locator-ny/**',

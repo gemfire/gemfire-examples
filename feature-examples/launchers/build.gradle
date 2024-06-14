@@ -1,0 +1,16 @@
+/*
+ * Copyright 2024 Broadcom. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+tasks.named("start") {
+  it.enabled = false
+}
+
+tasks.named("run") {
+  it.enabled = false
+}
+
+tasks.named("stop") {
+  it.enabled = false
+}

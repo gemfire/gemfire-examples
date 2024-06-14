@@ -13,7 +13,7 @@ The goal of this quickstart tutorial is to introduce GemFire basics, including s
 
 ## Download Examples and Configure Environment
 
-Download and install VMware GemFire from [Tanzu Network](https://network.pivotal.io). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
+Download and install VMware GemFire from [Tanzu Network](https://network.tanzu.vmware.com). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
 
 Clone the GemFire examples repository from GitHub.
 
@@ -44,7 +44,7 @@ OpenJDK 64-Bit Server VM (build 11.0.17+8-post-Ubuntu-1ubuntu2, mixed mode, shar
 
 $ mvn --version
 
-Apache Maven 3.6.3
+Apache Maven 3.8.3
 Maven home: /usr/share/maven
 Java version: 11.0.17, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
 Default locale: en_US, platform encoding: UTF-8
@@ -65,14 +65,14 @@ password with those used during sign-up.
     <servers>
         <server>
             <id>gemfire-release-repo</id>
-            <username> <!-- Email sign-up--> </username>
-            <password> <!-- Replace with your password--> </password>
+            <username>EXAMPLE-USERNAME@example.com</username>
+            <password>EXAMPLE-PLAINTEXT-PASSWORD</password>
         </server>
     </servers>
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.0.0-beta.1 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.1.0 version of the product.
 
 ## What is a GemFire Cluster, Locators and Servers?
 
@@ -93,11 +93,11 @@ $ gfsh start locator --name=locator --dir=${HOME}/locator
 Locator in /home/<username>/locator on test-javaclient.localdomain[10334] as locator is currently online.
 Process ID: 532579
 Uptime: 10 seconds
-Geode Version: 10.0.0-beta.1
+GemFire Version: 10.1.0
 Java Version: 11.0.17
 Log File: /home/<username>/test/locator/locator.log
 JVM Arguments: --add-exports=java.management/com.sun.jmx.remote.security=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED -Dgemfire.enable-cluster-configuration=true -Dgemfire.load-cluster-configuration-from-dir=false -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
-Class-Path: /home/<username>/vmware-gemfire-10.0.0-beta.1/lib/gemfire-core-10.0.0-beta.1.jar:/home/<username>/vmware-gemfire-10.0.0-beta.1/lib/gemfire-server-all-10.0.0-beta.1.jar
+Class-Path: /home/<username>/vmware-gemfire-10.1.0/lib/gemfire-core-10.1.0.jar:/home/<username>/vmware-gemfire-10.1.0/lib/gemfire-server-all-10.1.0.jar
 
 Successfully connected to: JMX Manager [host=test-javaclient.localdomain, port=1099]
 
@@ -116,7 +116,7 @@ Connecting to Locator at [host=localhost, port=10334] ..
 Connecting to Manager at [host=test-javaclient.localdomain, port=1099] ..
 Successfully connected to: [host=test-javaclient.localdomain, port=1099]
 
-You are connected to a cluster of version 10.0.0-beta.1.
+You are connected to a cluster of version 10.1.0.
 
 
 (2) Executing - start server --dir=test/server --name=server
@@ -125,11 +125,11 @@ You are connected to a cluster of version 10.0.0-beta.1.
 Server in /home/<username>/server on test-javaclient.localdomain[40404] as server is currently online.
 Process ID: 534075
 Uptime: 3 seconds
-Geode Version: 10.0.0-beta.1
+GemFire Version: 10.1.0
 Java Version: 11.0.17
 Log File: /home/<username>/test/server/server.log
 JVM Arguments: --add-exports=java.management/com.sun.jmx.remote.security=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED -Dgemfire.default.locators=192.168.0.38[10334] -Dgemfire.start-dev-rest-api=false -Dgemfire.use-cluster-configuration=true -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
-Class-Path: /home/<username>/vmware-gemfire-10.0.0-beta.1/lib/gemfire-core-10.0.0-beta.1.jar:/home/<username>/vmware-gemfire-10.0.0-beta.1/lib/gemfire-server-all-10.0.0-beta.1.jar
+Class-Path: /home/<username>/vmware-gemfire-10.1.0/lib/gemfire-core-10.1.0.jar:/home/<username>/vmware-gemfire-10.1.0/lib/gemfire-server-all-10.1.0.jar
 
 ```
 
@@ -147,7 +147,7 @@ $ gfsh
    / _____/ ______/ ______/ /____/ /
   / /  __/ /___  /_____  / _____  /
  / /__/ / ____/  _____/ / /    / /
-/______/_/      /______/_/    /_/    10.0.0-beta.1
+/______/_/      /______/_/    /_/    10.1.0
 
 Monitor and Manage VMware GemFire
 gfsh>
@@ -162,7 +162,7 @@ Connecting to Locator at [host=localhost, port=10334] ..
 Connecting to Manager at [host=test-javaclient.localdomain, port=1099] ..
 Successfully connected to: [host=test-javaclient.localdomain, port=1099]
 
-You are connected to a cluster of version 10.0.0-beta.1.
+You are connected to a cluster of version 10.1.0.
 
 ```
 
@@ -186,13 +186,13 @@ server | test-javaclient(server:534075)<v1>:41001
 The above response of the "list members" command should show two members in the cluster.
 
 There are multiple useful commands provided by gfsh to configure and manage GemFire clusters,
-the *help* command will list them and the gfsh interactive shell has tab completion to help with determining options for each command. For additional information checkout the [GFSH documation](https://docs.vmware.com/en/VMware-GemFire/9.15/gf/tools_modules-gfsh-chapter_overview.html) .
+the *help* command will list them and the gfsh interactive shell has tab completion to help with determining options for each command. For additional information checkout the [GFSH documation](https://docs.vmware.com/en/VMware-GemFire/10.1/gf/tools_modules-gfsh-chapter_overview.html) .
 
 ## Create a server Region
 
-A [Region](https://docs.vmware.com/en/VMware-GemFire/9.15/gf/developing-region_options-chapter_overview.html) is the core structure in the server for holding and managing key-value data in GemFire, it is similar to a hashmap but is distributed across the server members.
+A [Region](https://docs.vmware.com/en/VMware-GemFire/10.1/gf/developing-region_options-chapter_overview.html) is the core structure in the server for holding and managing key-value data in GemFire, it is similar to a hashmap but is distributed across the server members.
 
-While still in the gfsh interactive shell, create a [partition region](https://docs.vmware.com/en/VMware-GemFire/9.15/gf/developing-partitioned_regions-chapter_overview.html).
+While still in the gfsh interactive shell, create a [partition region](https://docs.vmware.com/en/VMware-GemFire/10.1/gf/developing-partitioned_regions-chapter_overview.html).
 
 ```text
 gfsh>create region --name=petnames --type=PARTITION
@@ -346,7 +346,7 @@ Connecting to Locator at [host=localhost, port=10334] ..
 Connecting to Manager at [host=test-javaclient.localdomain, port=1099] ..
 Successfully connected to: [host=test-javaclient.localdomain, port=1099]
 
-You are connected to a cluster of version 10.0.0-beta.1.
+You are connected to a cluster of version 10.1.0.
 
 
 (2) Executing - shutdown --include-locators=true
