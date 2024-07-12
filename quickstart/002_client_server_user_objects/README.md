@@ -5,7 +5,7 @@
 
 # Quickstart Tutorial -002- Introduction To User Objects and PDX
 
-VMware GemFire is an in-memory distributed Key-Value datastore.  As a datastore, GemFire provides a real-time, consistent and distributed service for modern applications with data-intensive needs and low latency response requirements. Because of GemFire's distributed peer-to-peer nature it can take advantage of multiples servers to pool memory, cpu and disk storage for improved performance, scalability and fault tolerance to build applications needing caching, management of in-flight data or the key-value database of record.
+Tanzu GemFire is an in-memory distributed Key-Value datastore.  As a datastore, GemFire provides a real-time, consistent and distributed service for modern applications with data-intensive needs and low latency response requirements. Because of GemFire's distributed peer-to-peer nature it can take advantage of multiples servers to pool memory, cpu and disk storage for improved performance, scalability and fault tolerance to build applications needing caching, management of in-flight data or the key-value database of record.
 
 ## Goal
 
@@ -13,14 +13,14 @@ The goal of this quickstart tutorial is to introduce building and using user cre
 
 ## Prerequisite Required Software
 
-* VMware GemFire 9.15.0 or later
+* Tanzu GemFire 9.15.0 or later
 * Apache Maven
 * Java Developer Kit (JDK) 11
 * (optional) Integrated Development Environment (IDE) such as Microsoft Visual Studio Code (vscode) or JetBrains IntelliJ IDEA
 
 ## Download Examples and Configure Environment
 
-Download and install VMware GemFire from [Tanzu Network](https://network.tanzu.vmware.com). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
+Download and install Tanzu GemFire from [Tanzu Network](https://network.tanzu.vmware.com). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
 
 Clone the GemFire examples repository from GitHub.
 
@@ -62,7 +62,7 @@ In some environments it may be helpful to configure the JAVA_HOME environmental 
 
 ## Configure Access to GemFire Maven Repository
 
-The quickstart tutorial requires access to the VMware Commercial Maven Repository for the GemFire product jars. Please sign-up for access to repo at <https://commercial-repo.pivotal.io/register>.
+The quickstart tutorial requires access to the Broadcom Maven Repository for the GemFire product jars. Please sign-up for access to repo at <https://support.broadcom.com/>.
 
 Once sign-up is completed, add the following to the settings.xml file in .m2 directory within the home directory. Make sure to replace the email and
 password with those used during sign-up.
@@ -79,7 +79,7 @@ password with those used during sign-up.
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.1.0 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the Tanzu GemFire maven repository and makes use of the GemFire 10.1.0 version of the product.
 
 ## Start a Developer GemFire Cluster
 

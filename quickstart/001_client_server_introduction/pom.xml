@@ -20,8 +20,8 @@
   <repositories>
     <repository>
       <id>gemfire-release-repo</id>
-      <name>VMware GemFire Release Repository</name>
-      <url>https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire</url>
+      <name>Tanzu GemFire Release Repository</name>
+      <url>https://packages.broadcom.com/artifactory/gemfire/</url>
     </repository>
   </repositories>
 

@@ -21,7 +21,7 @@ limitations under the License.
 
 # GemFire Durable Messaging Example
 
-This example demonstrates VMware GemFire's Durable Messaging feature.
+This example demonstrates Tanzu GemFire's Durable Messaging feature.
 Use durable messaging for subscriptions that you need maintained for your clients even when your clients are down or disconnected.
 You can configure any of your event subscriptions as durable. Events for durable queries and subscriptions are saved in a queue when the client
 is disconnected and played back when the client reconnects. Other queries and subscriptions are removed from the queue.

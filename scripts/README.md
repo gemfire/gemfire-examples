@@ -3,7 +3,7 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 
-# VMware GemFire Script Examples
+# Tanzu GemFire Script Examples
 
 * [run-gfsh.sh](run-gfsh.sh) - Example `gfsh` wrapper to include custom application classes.
 * [start-locator.sh](start-locator.sh) - Example script to start a locator with custom application classes.

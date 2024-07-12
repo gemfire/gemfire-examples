@@ -19,13 +19,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# VMware GemFire feature examples
+# Tanzu GemFire feature examples
 The examples in this folder are showcase features of GemFire and demonstrate their basic usage.
 
-For details on all GemFire features, see [VMware GemFire Documentation](https://docs.vmware.com/en/VMware-GemFire).
+For details on all GemFire features, see [Tanzu GemFire Documentation](https://docs.vmware.com/en/VMware-GemFire).
 
-## VMware GemFire Version
-Your client code must link against the _same or older_ version (ignoring patch versions) of VMware GemFire as the VMware GemFire server it will connect to.
+## Tanzu GemFire Version
+Your client code must link against the _same or older_ version (ignoring patch versions) of Tanzu GemFire as the Tanzu GemFire server it will connect to.
 
 To link against an older version of GemFire, edit the `gemfireVersion=` line in `gradle.properties`.
 
@@ -33,17 +33,17 @@ To link against an older version of GemFire, edit the `gemfireVersion=` line in 
 
 In order to execute the examples in this project, follow these steps:
 1. Ensure [JDK 11](https://bell-sw.com/pages/downloads/) or JDK 17 is installed (and set JAVA_HOME if it's not the default).  JDK 8 *can* be used, but some examples such as lucene and luceneSpatial will not work.
-1. Download the version of GemFire that you want to use as the server from [Tanzu Network](https://network.tanzu.vmware.com/products/pivotal-gemfire/)
+1. Download the version of GemFire that you want to use as the server from [Broadcom Customer Support](https://support.broadcom.com/)
 1. Unpack the GemFire TGZ file (e.g. `tar xzf vmware-gemfire-10.1.0.tgz`)
 1. `export GEMFIRE_HOME` to point to the top level directory inside the extracted GemFire. For example, if you extracted in /tmp/downloads, `export GEMFIRE_HOME=/tmp/downloads/vmware-gemfire-10.1.0`.
-1. Sign up for the [GemFire Maven repo](https://commercial-repo.pivotal.io/) and follow the instructions there to set up gemfire-examples to use your authentication credentials (be sure to click on the **Gradle** tab for gradle-specific instruction; the steps shown by default are for mvn projects only).
+1. When you first run the gradle commands below you'll be prompted to supply credentials.  Set gemfireReleaseRepoUser but leave gemfireReleaseRepoPassword blank for instructions how to obtain an access token.
 
 ## Running an example
 
 You can now run an example with the following gradle targets:
 
 * `build` - compiles the example and runs unit tests
-* `start` - initializes the VMware GemFire cluster
+* `start` - initializes the Tanzu GemFire cluster
 * `run` - runs the example Application
 * `stop` - shuts down the cluster
 * `runAll` - invokes start, run, stop
@@ -57,7 +57,7 @@ usage:
 
 ## Catalog of examples
 
-The following sections call out ready-made examples.  You may want to start your journey with the [VMware GemFire Documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/9.15/tgf/GUID-about_gemfire.html).
+The following sections call out ready-made examples.  You may want to start your journey with the [Tanzu GemFire Documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/9.15/tgf/GUID-about_gemfire.html).
 
 ### Basics
 

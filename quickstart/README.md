@@ -3,13 +3,13 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 
-# VMware GemFire Quick Start examples
+# Tanzu GemFire Quick Start examples
 The examples in this folder are practical guides to getting started with GemFire.
 
-For details on all GemFire features, see [VMware GemFire Documentation](https://docs.vmware.com/en/VMware-GemFire).
+For details on all GemFire features, see [Tanzu GemFire Documentation](https://docs.vmware.com/en/VMware-GemFire).
 
-## VMware GemFire Version
-Your client code must link against the _same or older_ version (ignoring patch versions) of VMware GemFire as the VMware GemFire server it will connect to.
+## Tanzu GemFire Version
+Your client code must link against the _same or older_ version (ignoring patch versions) of Tanzu GemFire as the Tanzu GemFire server it will connect to.
 
 To link against a different version of GemFire, edit the `<version>` tag for `gemfire-all-bom` in `pom.xml` in each quickstart.
 

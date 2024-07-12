@@ -17,7 +17,7 @@
 
 plugins {
     id "org.nosphere.apache.rat" version "0.7.1"
-    id "com.diffplug.spotless" version "6.16.0"
+    id "com.diffplug.spotless" version "6.25.0"
     id "de.undercouch.download" version "4.0.4"
 }
 
@@ -25,7 +25,7 @@ allprojects {
     repositories {
         if (!gradle.usingGeodeCompositeBuild) {
           maven {
-            if (project.getProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')) {
+            if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com') || project.getProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')) {
               credentials {
                 username "$gemfireReleaseRepoUser"
                 password "$gemfireReleaseRepoPassword"
@@ -61,6 +61,14 @@ task checkEnv {
             throw new GradleException("Please set gemfireReleaseRepoPassword in gradle.properties to the https://commercial-repo.pivotal.io/ password for $gemfireReleaseRepoUser")
         }
     }
+    if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com')) {
+        if (!project.hasProperty("gemfireReleaseRepoUser") || gemfireReleaseRepoUser.isEmpty()) {
+            throw new GradleException("Please set gemfireReleaseRepoUser in gradle.properties to the email address you registered at https://support.broadcom.com/")
+        }
+        if (!project.hasProperty("gemfireReleaseRepoPassword") || gemfireReleaseRepoPassword.isEmpty()) {
+            throw new GradleException("Please set gemfireReleaseRepoPassword in gradle.properties to the access token (without quotes) for $gemfireReleaseRepoUser found by navigating to https://support.broadcom.com/ > My Downloads - Tanzu > Vmware Tanzu GemFire > VMware Tanzu GemFire > Show All Releases then click on green icon to the right of Click Green Token for Repository Access")
+        }
+    }
 }
 
 configurations {
@@ -93,7 +101,6 @@ subprojects {
     }
 
     jar {
-        archiveName "${baseName}.${extension}"
     }
 
     task cleanServer {
@@ -150,10 +157,10 @@ subprojects {
                 "echo \"\""
         doLast {
             // We use exit code 10 to avoid conflict with pgrep exit codes.
-            if (execResult.exitValue == 10) {
+            if (executionResult.orNull.exitValue == 10) {
                 throw new GradleException("A member process persisted beyond permitted timeout.  Aborting.")
-            } else if (execResult.exitValue != 0) {
-                throw new GradleException("waitForExistingMembers failed with exit code: " + execResult.exitValue)
+            } else if (executionResult.orNull.exitValue != 0) {
+                throw new GradleException("waitForExistingMembers failed with exit code: " + executionResult.orNull.exitValue)
             }
         }
     }
@@ -165,7 +172,7 @@ subprojects {
         commandLine 'sh', '-c', "echo \"Looking for existing member processes...\" ; " +
                 "pgrep -f \"(Server|Locator)Launcher\" ; "
         doLast {
-            if (execResult.exitValue == 0) {
+            if (executionResult.orNull.exitValue == 0) {
                 throw new GradleException("Existing members detected.  Examples expect a clean environment in which to run.")
             }
         }

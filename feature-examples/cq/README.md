@@ -21,7 +21,7 @@ limitations under the License.
 
 # GemFire Continuous Query Example
 
-This is a simple example that demonstrates VMware GemFire's Continuous Queries(CQs) feature.  CQs allow clients to subscribe
+This is a simple example that demonstrates Tanzu GemFire's Continuous Queries(CQs) feature.  CQs allow clients to subscribe
 to server-side events using a SQL-like query.  When a client registers a CQ, the client will receive all events that
 modify the query results.
 

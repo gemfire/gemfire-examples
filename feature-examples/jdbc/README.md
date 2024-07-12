@@ -19,11 +19,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# VMware GemFire JDBC Connector Example
+# Tanzu GemFire JDBC Connector Example
 
-The JDBC Connector allows VMware GemFire to connect to external data sources with JDBC.
+The JDBC Connector allows Tanzu GemFire to connect to external data sources with JDBC.
 
-![VMware GemFire JDBC Connector](connector.svg)
+![Tanzu GemFire JDBC Connector](connector.svg)
 
 ## Steps:
 
@@ -60,7 +60,7 @@ export CLASSPATH=/path/to/mysql-connector-java-8.0.15.jar:/path/to/gemfire-examp
 
 This will start the locator and two servers. And create `Parent` region, data source and JDBC mapping.
 
-6. Create data source and map the VMware GemFire region and MySQL table.
+6. Create data source and map the Tanzu GemFire region and MySQL table.
 
 ```
 gfsh

@@ -1,5 +1,5 @@
 # GemFire Image Search
-An image search webapp that uses VMware GemFire and the VMware GemFire Vector Database extension.
+An image search webapp that uses Tanzu GemFire and the Tanzu GemFire Vector Database extension.
 Download the extension from the Tanzu Network: [GemFire Vector Database extension](https://network.tanzu.vmware.com/products/gemfire-vectordb/)
 
 ## Using the Application
@@ -52,7 +52,7 @@ There are a few python packages you may need to install such as:
 - There may be others. You'll have to build and see what you have or don't have on your own system.
 
 ### Starting GemFire
-- Download the VMware GemFire Vector Database extension from the Tanzu Network and put the `.gfm` file into the GemFire extensions directory.
+- Download the Tanzu GemFire Vector Database extension from the Tanzu Network and put the `.gfm` file into the GemFire extensions directory.
 - Start a GemFire Shell (gfsh)
 - In the GemFire Shell, start a GemFire locator
 

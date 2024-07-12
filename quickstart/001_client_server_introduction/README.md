@@ -3,9 +3,9 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 
-# Quickstart Tutorial - Introduction To VMware GemFire
+# Quickstart Tutorial - Introduction To Tanzu GemFire
 
-VMware GemFire is an in-memory distributed Key-Value datastore.  As a datastore, GemFire provides a real-time, consistent and distributed service for modern applications with data-intensive needs and low latency response requirements. Because of GemFire's distributed peer-to-peer nature it can take advantage of multiples servers to pool memory, cpu and disk storage for improved performance, scalability and fault tolerance to build applications needing caching, management of in-flight data or the key-value database of record.
+Tanzu GemFire is an in-memory distributed Key-Value datastore.  As a datastore, GemFire provides a real-time, consistent and distributed service for modern applications with data-intensive needs and low latency response requirements. Because of GemFire's distributed peer-to-peer nature it can take advantage of multiples servers to pool memory, cpu and disk storage for improved performance, scalability and fault tolerance to build applications needing caching, management of in-flight data or the key-value database of record.
 
 ## Goal
 
@@ -13,7 +13,7 @@ The goal of this quickstart tutorial is to introduce GemFire basics, including s
 
 ## Download Examples and Configure Environment
 
-Download and install VMware GemFire from [Tanzu Network](https://network.tanzu.vmware.com). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
+Download and install Tanzu GemFire from [Tanzu Network](https://network.tanzu.vmware.com). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
 
 Clone the GemFire examples repository from GitHub.
 
@@ -55,7 +55,7 @@ In some environments it may be helpful to configure the JAVA_HOME environmental 
 
 ## Configure Access to GemFire Maven Repository
 
-The quickstart tutorial requires access to the VMware Commercial Maven Repository for the GemFire product jars. Please sign-up for access to repo at <https://commercial-repo.pivotal.io/register>.
+The quickstart tutorial requires access to the Broadcom Maven Repository for the GemFire product jars. Please sign-up for access to repo at <https://support.broadcom.com/>.
 
 Once sign-up is completed, add the following to the settings.xml file in .m2 directory within the home directory. Make sure to replace the email and
 password with those used during sign-up.
@@ -72,11 +72,11 @@ password with those used during sign-up.
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the VMware GemFire maven repository and makes use of the GemFire 10.1.0 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the Tanzu GemFire maven repository and makes use of the GemFire 10.1.0 version of the product.
 
 ## What is a GemFire Cluster, Locators and Servers?
 
-VMware GemFire is a distributed set of services which is generally referred to as a GemFire cluster. A GemFire cluster is made of at least one or more locators and at least one or more servers. Redundancy of services and data is achieved by running multiple locators and servers on multiple host machines. Locators provide discovery and management services for the cluster, servers provides data storage via regions, data distribution and compute services to the cluster.
+Tanzu GemFire is a distributed set of services which is generally referred to as a GemFire cluster. A GemFire cluster is made of at least one or more locators and at least one or more servers. Redundancy of services and data is achieved by running multiple locators and servers on multiple host machines. Locators provide discovery and management services for the cluster, servers provides data storage via regions, data distribution and compute services to the cluster.
 
 ## Start a Developer GemFire Cluster
 
@@ -137,7 +137,7 @@ A minimal GemFire cluster should now be available to use.
 
 ## Introduction to GFSH
 
-VMware GemFire provides the command line tool "gfsh" for managing Gemfire clusters.  Gfsh can be used to start and stop members of the cluster along with configure additional features of the product.
+Tanzu GemFire provides the command line tool "gfsh" for managing Gemfire clusters.  Gfsh can be used to start and stop members of the cluster along with configure additional features of the product.
 
 Start interactive gfsh shell.
 
@@ -149,7 +149,7 @@ $ gfsh
  / /__/ / ____/  _____/ / /    / /
 /______/_/      /______/_/    /_/    10.1.0
 
-Monitor and Manage VMware GemFire
+Monitor and Manage Tanzu GemFire
 gfsh>
 ```
 
@@ -232,7 +232,7 @@ $ java -cp target/GemFireClient-1.0-EXAMPLE.jar:target/dependency/*  com.vmware.
 
 ## What's a GemFire Client?
 
-The VMware GemFire client API is the primary way users, applications and microservices will access data, queries and the function service on the servers. A GemFire client connects to the cluster as an external process in a similar manner as classic client-server database model. The client application connects to the GemFire servers via the CacheServer port on the server to write and fetch data from the cluster using the GemFire Region API. The GemFire client is not a peer-peer member of the cluster and so may start or be stopped without effecting the membership of the cluster members or availability of data to other users.
+The Tanzu GemFire client API is the primary way users, applications and microservices will access data, queries and the function service on the servers. A GemFire client connects to the cluster as an external process in a similar manner as classic client-server database model. The client application connects to the GemFire servers via the CacheServer port on the server to write and fetch data from the cluster using the GemFire Region API. The GemFire client is not a peer-peer member of the cluster and so may start or be stopped without effecting the membership of the cluster members or availability of data to other users.
 
 ## Client Configuration
 

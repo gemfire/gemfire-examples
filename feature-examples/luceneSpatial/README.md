@@ -46,7 +46,7 @@ Each step in this example specifies paths relative to that directory.
 
         $ ../gradlew build
 
-3. Add VMware GemFire Search extension path to the `GEMFIRE_EXTENSIONS_REPOSITORY_PATH` environment
+3. Add Tanzu GemFire Search extension path to the `GEMFIRE_EXTENSIONS_REPOSITORY_PATH` environment
    variable. For example, if your vmware-gemfire-search-<version>.gfm file is located in
    /gemfire-extensions, use the following command:
 
