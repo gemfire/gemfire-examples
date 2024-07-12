@@ -111,7 +111,7 @@ spotless {
 
     // The format file is relative to gemfire-core and not the root project as the root project would change
     // if GemFire and submodules are included as part of a different gradle project.
-    eclipse('4.7').configFile "${rootDir}/etc/eclipse-java-google-style.xml"
+    eclipse('4.6.3').configFile "${rootDir}/etc/eclipse-java-google-style.xml"
     trimTrailingWhitespace()
     endWithNewline()
   }
