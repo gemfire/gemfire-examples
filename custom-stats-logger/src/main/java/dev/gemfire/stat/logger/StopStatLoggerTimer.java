@@ -31,14 +31,14 @@ public class StopStatLoggerTimer implements Function {
   public void execute(FunctionContext functionContext) {
     Cache cache = functionContext.getCache();
     Region<Object, Object> timerRegion = cache.getRegion("Timer");
-    Object statsLoggerTimer = timerRegion.get("statsLoggerTimer");
-    if (statsLoggerTimer != null) {
-      ((Timer) statsLoggerTimer).cancel();
-      logger.info("Stopped statsLoggerTimer");
-      if (timerRegion != null) {
+    if (timerRegion != null) {
+      Object statsLoggerTimer = timerRegion.get("statsLoggerTimer");
+      if (statsLoggerTimer != null) {
+        ((Timer) statsLoggerTimer).cancel();
+        logger.info("Stopped statsLoggerTimer");
         timerRegion.destroyRegion();
         logger.info("Destroy Timer region");
-      }
+        }
     }
   }
 }
