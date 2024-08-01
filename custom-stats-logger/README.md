@@ -13,7 +13,7 @@ logFrequency = 6000
 statistics = DistributionStats.replyWaitsInProgress,StatSampler.delayDuration
 ```
 If you don't want the stats logger to run do not set the statistics property.
-Once you have set the required properties in statLogger.properties file, you need to reconstruct the jar.
+Once you have set the required properties in statLogger.properties file, you need to build the jar.
 
 ```
 cd gemfire-examples/stats-logger
@@ -60,7 +60,7 @@ server1 | OK     | [Logging Metric count 1 with timer interval set to 6000 ms]
 server2 | OK     | [Logging Metric count 1 with timer interval set to 6000 ms]
 ```
 
-To stop the Stat logger execute the below function which is deployed a part of your statLogger.jar
+To stop the Stat logger execute the below function which is deployed a part of your custom-stats-logger-1.0-SNAPSHOT.jar.
 
 ```
 gfsh>execute function --id=StopStatLoggerTimer
@@ -68,6 +68,16 @@ Member  | Status | Message
 ------- | ------ | -------
 server1 | OK     | []
 server2 | OK     | []
+
+```
+You need to stop the StatLogger before starting another one. Otherwise, you can get the below exception.
+
+```
+gfsh>execute function --id=StatLogger
+Member  | Status | Message
+------- | ------ | ---------------------------------------------------------------
+server1 | ERROR  | Exception: org.apache.geode.cache.RegionExistsException: /Timer
+server2 | ERROR  | Exception: org.apache.geode.cache.RegionExistsException: /Timer
 
 ```
 
@@ -100,4 +110,5 @@ server1.log
 [info 2024/07/31 20:29:34.305 GMT-04:00 server1 <StatLogger> tid=0x100] DistributionStats.replyWaitsInProgress = 0
 ```
 
-If you make any changes to stats logger function / properties you will have to re-build and redeploy the custom-stats-logger-1.0-SNAPSHOT.jar
+If you make any changes to stats logger function/statLogger.properties you will have to re-build and redeploy the custom-stats-logger-1.0-SNAPSHOT.jar
+You can do that using the same set of steps described in the start of this page.
