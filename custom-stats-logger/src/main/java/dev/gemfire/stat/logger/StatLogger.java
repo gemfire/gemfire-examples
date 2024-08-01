@@ -58,71 +58,62 @@ public class StatLogger implements Function,Declarable {
     String logFrequency = properties.getProperty("logFrequency");
     String statistics = properties.getProperty("statistics");
 
+    cleanup(functionContext.getCache());
+
     if (!StringUtils.isEmpty(statistics) && !StringUtils.isEmpty(logFrequency)) {
-
-      cancelTimer(functionContext.getCache());
-      listOfStats.clear();
-
-      RegionFactory<Object, Object> regionFactory =
-              functionContext.getCache().createRegionFactory(RegionShortcut.LOCAL);
-      regionFactory.create("Timer");
-      logger.info("Created Timer region");
+      createTimerRegion(functionContext.getCache());
 
       timerInterval = Long.parseLong(logFrequency);
-      List<String> statisticsList = Arrays.asList(statistics.split(",", 0));
-      for (String statistic : statisticsList) {
-        String[] statsNames = statistic.split("[.]", 0);
-        addStats(functionContext.getCache().getDistributedSystem(), statsNames[0], statsNames[1]);
-      }
-
+      createStatsList(functionContext.getCache().getDistributedSystem(), statistics);
       ensureTimerRunning(functionContext.getCache());
-      functionContext.getResultSender()
-          .lastResult("Logging Metric count " + listOfStats.size() + " with timer interval set to "
-              + timerInterval + " ms");
-    } else if (StringUtils.isEmpty(statistics)) {
-        cancelTimer(functionContext.getCache());
-        listOfStats.clear();
-        functionContext.getResultSender().lastResult("No stats to log. StatLogger will not start.");
-    } else if (StringUtils.isEmpty(logFrequency) && !StringUtils.isEmpty(statistics)) {
-        cancelTimer(functionContext.getCache());
-        listOfStats.clear();
+      functionContext.getResultSender().lastResult("Logging Metric count " + listOfStats.size() +
+              " with timer interval set to " + timerInterval + " ms");
 
-        RegionFactory<Object, Object> regionFactory =
-                functionContext.getCache().createRegionFactory(RegionShortcut.LOCAL);
-        regionFactory.create("Timer");
-        logger.info("Created Timer region");
+    } else if (StringUtils.isEmpty(statistics) && !StringUtils.isEmpty(logFrequency)) {
+      functionContext.getResultSender().lastResult("No stats to log. StatLogger will not start.");
 
-        List<String> statisticsList = Arrays.asList(statistics.split(",", 0));
-        for (String statistic : statisticsList) {
-          String[] statsNames = statistic.split("[.]", 0);
-          addStats(functionContext.getCache().getDistributedSystem(), statsNames[0], statsNames[1]);
-        }
+    } else if (!StringUtils.isEmpty(statistics) && StringUtils.isEmpty(logFrequency)) {
+      createTimerRegion(functionContext.getCache());
 
-        ensureTimerRunning(functionContext.getCache());
-        functionContext.getResultSender()
-                .lastResult("Logging Metric count " + listOfStats.size() + " with timer interval set to default of "
-                        + timerInterval + " ms");
+      createStatsList(functionContext.getCache().getDistributedSystem(), statistics);
+      ensureTimerRunning(functionContext.getCache());
+      functionContext.getResultSender().lastResult("Logging Metric count " + listOfStats.size() +
+              " with timer interval set to default of " + timerInterval + " ms");
+
     } else {
-      cancelTimer(functionContext.getCache());
-      listOfStats.clear();
-      functionContext.getResultSender()
-              .lastResult("No properties set for StatLogger. StatLogger will not start.");
+      functionContext.getResultSender().lastResult("No properties set for StatLogger. StatLogger will not start.");
+
     }
   }
 
-  private void cancelTimer(Cache cache) {
-    if (timer != null) {
-      timer.cancel();
-      timer = null;
+  private void createStatsList(DistributedSystem distributedSystem, String statistics) {
+    List<String> statisticsList = Arrays.asList(statistics.split(",", 0));
+    for (String statistic : statisticsList) {
+      String[] statsNames = statistic.split("[.]", 0);
+      addStats(distributedSystem, statsNames[0], statsNames[1]);
     }
+  }
+
+  private static void createTimerRegion(Cache cache) {
+    RegionFactory<Object, Object> regionFactory = cache.createRegionFactory(RegionShortcut.LOCAL);
+    regionFactory.create("Timer");
+    logger.info("Created Timer region");
+  }
+
+  private void cleanup(Cache cache) {
+    cancelTimer(cache);
+    listOfStats.clear();
+  }
+
+  private void cancelTimer(Cache cache) {
     Region<Object, Object> timerRegion = cache.getRegion("Timer");
     if (timerRegion != null) {
       Object statsLoggerTimer = timerRegion.get("statsLoggerTimer");
       if (statsLoggerTimer != null) {
         ((Timer) statsLoggerTimer).cancel();
-        logger.info("Stopped statsLoggerTimer");
+        logger.info("Stopped old statsLoggerTimer");
         timerRegion.destroyRegion();
-        logger.info("Destroy Timer region");
+        logger.info("Destroyed Timer region");
       }
     }
   }
