@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class StatLogger implements Function, Declarable {
+public class StatLogger implements Function {
   private static final Logger logger = LogService.getLogger();
   private List<StatsHolder> listOfStats = new CopyOnWriteArrayList<>();
   private Timer timer;
