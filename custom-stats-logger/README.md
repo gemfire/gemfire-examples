@@ -20,7 +20,7 @@ cd gemfire-examples/stats-logger
 ./gradlew clean build
 
 ```
-This will create the stats-logger-1.0-SNAPSHOT.jar in the build/lib folder.
+This will create the custom-stats-logger-1.0-SNAPSHOT.jar in the build/lib folder.
 
 ```
 > cd gemfire-examples/stats-logger/scripts
@@ -42,16 +42,16 @@ Successfully connected to: [host=cblack-z01, port=1099]
 
 You are connected to a cluster of version 10.1.0.
 
-gfsh>deploy --jar ../build/libs/stats-logger-1.0-SNAPSHOT.jar
+gfsh>deploy --jar ../build/libs/custom-stats-logger-1.0-SNAPSHOT.jar
 
-Deploying files: statLogger.jar
+Deploying files: custom-stats-logger-1.0-SNAPSHOT.jar
 Total file size is: 0.01MB
 
 Continue?  (Y/n): Y
-Member  |      JAR       | JAR Location
-------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------
-server1 | statLogger.jar | /private/var/folders/96/bgs8ylk14m5cbz7twpvwb9hr0000gq/T/gemfire-extensions15485094576384966966/statLogger/main/lib/statLogger.jar
-server2 | statLogger.jar | /private/var/folders/96/bgs8ylk14m5cbz7twpvwb9hr0000gq/T/gemfire-extensions10447278891195337945/statLogger/main/lib/statLogger.jar
+Member  |                 JAR                  | JAR Location
+------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------
+server1 | custom-stats-logger-1.0-SNAPSHOT.jar | /private/var/folders/96/bgs8ylk14m5cbz7twpvwb9hr0000gq/T/gemfire-extensions7730695269553751758/custom-stats-logger/main/libs/custom-stats-logger-1.0-SNAPSHOT.jar
+server2 | custom-stats-logger-1.0-SNAPSHOT.jar | /private/var/folders/96/bgs8ylk14m5cbz7twpvwb9hr0000gq/T/gemfire-extensions14066204110947319168/custom-stats-logger/main/libs/custom-stats-logger-1.0-SNAPSHOT.jar
 
 gfsh>execute function --id=StatLogger
 Member  | Status | Message
@@ -100,4 +100,4 @@ server1.log
 [info 2024/07/31 20:29:34.305 GMT-04:00 server1 <StatLogger> tid=0x100] DistributionStats.replyWaitsInProgress = 0
 ```
 
-If you make any changes to stats logger function / properties you will have to re-build and redeploy the stats-logger-1.0-SNAPSHOT.jar.
+If you make any changes to stats logger function / properties you will have to re-build and redeploy the custom-stats-logger-1.0-SNAPSHOT.jar

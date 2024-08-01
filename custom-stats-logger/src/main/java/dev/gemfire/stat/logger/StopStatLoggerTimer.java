@@ -1,14 +1,13 @@
 package dev.gemfire.stat.logger;
 
-import java.util.Timer;
-
-import org.apache.logging.log4j.Logger;
-
 import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.geode.logging.internal.log4j.api.LogService;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Timer;
 
 public class StopStatLoggerTimer implements Function {
   private static final Logger logger = LogService.getLogger();

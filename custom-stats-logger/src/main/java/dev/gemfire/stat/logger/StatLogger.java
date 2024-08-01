@@ -2,18 +2,7 @@
 
 package dev.gemfire.stat.logger;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Logger;
-
 import org.apache.geode.StatisticDescriptor;
 import org.apache.geode.Statistics;
 import org.apache.geode.StatisticsType;
@@ -25,6 +14,12 @@ import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.geode.distributed.DistributedSystem;
 import org.apache.geode.logging.internal.log4j.api.LogService;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StatLogger implements Function, Declarable {
   private static final Logger logger = LogService.getLogger();
