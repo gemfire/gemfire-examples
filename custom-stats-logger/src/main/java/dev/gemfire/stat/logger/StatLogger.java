@@ -18,17 +18,16 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class StatLogger implements Function,Declarable {
-  private static final Logger logger = LogService.getLogger();
+public class StatLogger implements Function {
+
   private List<StatsHolder> listOfStats = new CopyOnWriteArrayList<>();
   private Timer timer;
   private TimerTask task;
   private long timerInterval = 5000;
-
-  @Override
-  public void initialize(Cache cache, Properties props) {
-    logger.info("Initializing Stat Logger with properties {}", props);
-  }
+  private static final String region = "GemFireStatLoggerTimer";
+  private static final String statsLoggerTimerRegionKey = "statsLoggerTimer";
+  private static final String statLoggerThreadName = "StatLogger";
+  private static final Logger logger = LogService.getLogger();
 
   @Override
   public boolean isHA() {
@@ -65,7 +64,7 @@ public class StatLogger implements Function,Declarable {
 
       timerInterval = Long.parseLong(logFrequency);
       createStatsList(functionContext.getCache().getDistributedSystem(), statistics);
-      ensureTimerRunning(functionContext.getCache());
+      createTimer(functionContext.getCache());
       functionContext.getResultSender().lastResult("Logging Metric count " + listOfStats.size() +
               " with timer interval set to " + timerInterval + " ms");
 
@@ -76,7 +75,7 @@ public class StatLogger implements Function,Declarable {
       createTimerRegion(functionContext.getCache());
 
       createStatsList(functionContext.getCache().getDistributedSystem(), statistics);
-      ensureTimerRunning(functionContext.getCache());
+      createTimer(functionContext.getCache());
       functionContext.getResultSender().lastResult("Logging Metric count " + listOfStats.size() +
               " with timer interval set to default of " + timerInterval + " ms");
 
@@ -96,8 +95,8 @@ public class StatLogger implements Function,Declarable {
 
   private static void createTimerRegion(Cache cache) {
     RegionFactory<Object, Object> regionFactory = cache.createRegionFactory(RegionShortcut.LOCAL);
-    regionFactory.create("Timer");
-    logger.info("Created Timer region");
+    regionFactory.create(region);
+    logger.info("Created {} region", region);
   }
 
   private void cleanup(Cache cache) {
@@ -106,21 +105,21 @@ public class StatLogger implements Function,Declarable {
   }
 
   private void cancelTimer(Cache cache) {
-    Region<Object, Object> timerRegion = cache.getRegion("Timer");
+    Region<Object, Object> timerRegion = cache.getRegion(region);
     if (timerRegion != null) {
-      Object statsLoggerTimer = timerRegion.get("statsLoggerTimer");
+      Object statsLoggerTimer = timerRegion.get(statsLoggerTimerRegionKey);
       if (statsLoggerTimer != null) {
         ((Timer) statsLoggerTimer).cancel();
-        logger.info("Stopped old statsLoggerTimer");
+        logger.info("Stopped old {}", statsLoggerTimerRegionKey);
         timerRegion.destroyRegion();
-        logger.info("Destroyed Timer region");
+        logger.info("Destroyed {} region", region);
       }
     }
   }
 
-  private void ensureTimerRunning(Cache cache) {
+  private void createTimer(Cache cache) {
     if (timer == null && !listOfStats.isEmpty()) {
-      timer = new Timer("StatLogger", true);
+      timer = new Timer(statLoggerThreadName, true);
       task = new TimerTask() {
         @Override
         public void run() {
@@ -130,8 +129,8 @@ public class StatLogger implements Function,Declarable {
         }
       };
       timer.scheduleAtFixedRate(task, 0, timerInterval);
-      logger.info("StatLogger timer started");
-      cache.getRegion("Timer").put("statsLoggerTimer", timer);
+      logger.info("{} has started", statLoggerThreadName);
+      cache.getRegion(region).put(statsLoggerTimerRegionKey, timer);
     }
   }
 
