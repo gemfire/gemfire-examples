@@ -35,8 +35,10 @@ public class StopStatLoggerTimer implements Function {
     if (statsLoggerTimer != null) {
       ((Timer) statsLoggerTimer).cancel();
       logger.info("Stopped statsLoggerTimer");
-      timerRegion.destroyRegion();
-      logger.info("Destroy Timer region");
+      if (timerRegion != null) {
+        timerRegion.destroyRegion();
+        logger.info("Destroy Timer region");
+      }
     }
   }
 }

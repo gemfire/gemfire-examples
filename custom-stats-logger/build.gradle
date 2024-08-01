@@ -9,16 +9,14 @@ repositories {
     mavenCentral()
 }
 
-def gemfireVersion = '10.1.0'
-
 dependencies {
     repositories {
         maven {
             credentials {
-                username ""
-                password ""
+                username "$gemfireReleaseRepoUser"
+                password "$gemfireReleaseRepoPassword"
             }
-            url = uri("https://packages.broadcom.com/artifactory/gemfire/")
+            url = uri("${gemfireRepositoryUrl}")
         }
     }
     implementation "com.vmware.gemfire:gemfire-core:${gemfireVersion}"
