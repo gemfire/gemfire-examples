@@ -6,10 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.geode.StatisticDescriptor;
 import org.apache.geode.Statistics;
 import org.apache.geode.StatisticsType;
-import org.apache.geode.cache.Cache;
-import org.apache.geode.cache.Declarable;
-import org.apache.geode.cache.RegionFactory;
-import org.apache.geode.cache.RegionShortcut;
+import org.apache.geode.cache.*;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.geode.distributed.DistributedSystem;
@@ -21,12 +18,17 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class StatLogger implements Function {
+public class StatLogger implements Function,Declarable {
   private static final Logger logger = LogService.getLogger();
   private List<StatsHolder> listOfStats = new CopyOnWriteArrayList<>();
   private Timer timer;
   private TimerTask task;
   private long timerInterval = 5000;
+
+  @Override
+  public void initialize(Cache cache, Properties props) {
+    logger.info("Initializing Stat Logger with properties {}", props);
+  }
 
   @Override
   public boolean isHA() {
@@ -53,42 +55,75 @@ public class StatLogger implements Function {
     } catch (IOException e) {
       logger.error("Could not load statLogger.properties", e);
     }
-    String logFrequency = properties.get("logFrequency").toString();
+    String logFrequency = properties.getProperty("logFrequency");
     String statistics = properties.getProperty("statistics");
 
-    if (StringUtils.isEmpty(statistics) && StringUtils.isEmpty(logFrequency)) {
-      functionContext.getResultSender()
-          .lastResult("No properties set for StatLogger. StatLogger will not start.");
-    } else if (!StringUtils.isEmpty(statistics) && !StringUtils.isEmpty(logFrequency)) {
+    if (!StringUtils.isEmpty(statistics) && !StringUtils.isEmpty(logFrequency)) {
+
+      cancelTimer(functionContext.getCache());
+      listOfStats.clear();
+
       RegionFactory<Object, Object> regionFactory =
               functionContext.getCache().createRegionFactory(RegionShortcut.LOCAL);
       regionFactory.create("Timer");
       logger.info("Created Timer region");
 
-      listOfStats.clear();
       timerInterval = Long.parseLong(logFrequency);
-
       List<String> statisticsList = Arrays.asList(statistics.split(",", 0));
       for (String statistic : statisticsList) {
         String[] statsNames = statistic.split("[.]", 0);
         addStats(functionContext.getCache().getDistributedSystem(), statsNames[0], statsNames[1]);
       }
 
-      cancelTimer();
       ensureTimerRunning(functionContext.getCache());
       functionContext.getResultSender()
           .lastResult("Logging Metric count " + listOfStats.size() + " with timer interval set to "
               + timerInterval + " ms");
     } else if (StringUtils.isEmpty(statistics)) {
-      cancelTimer();
-      functionContext.getResultSender().lastResult("No stats to log. StatLogger will not start.");
+        cancelTimer(functionContext.getCache());
+        listOfStats.clear();
+        functionContext.getResultSender().lastResult("No stats to log. StatLogger will not start.");
+    } else if (StringUtils.isEmpty(logFrequency) && !StringUtils.isEmpty(statistics)) {
+        cancelTimer(functionContext.getCache());
+        listOfStats.clear();
+
+        RegionFactory<Object, Object> regionFactory =
+                functionContext.getCache().createRegionFactory(RegionShortcut.LOCAL);
+        regionFactory.create("Timer");
+        logger.info("Created Timer region");
+
+        List<String> statisticsList = Arrays.asList(statistics.split(",", 0));
+        for (String statistic : statisticsList) {
+          String[] statsNames = statistic.split("[.]", 0);
+          addStats(functionContext.getCache().getDistributedSystem(), statsNames[0], statsNames[1]);
+        }
+
+        ensureTimerRunning(functionContext.getCache());
+        functionContext.getResultSender()
+                .lastResult("Logging Metric count " + listOfStats.size() + " with timer interval set to default of "
+                        + timerInterval + " ms");
+    } else {
+      cancelTimer(functionContext.getCache());
+      listOfStats.clear();
+      functionContext.getResultSender()
+              .lastResult("No properties set for StatLogger. StatLogger will not start.");
     }
   }
 
-  private void cancelTimer() {
+  private void cancelTimer(Cache cache) {
     if (timer != null) {
       timer.cancel();
       timer = null;
+    }
+    Region<Object, Object> timerRegion = cache.getRegion("Timer");
+    if (timerRegion != null) {
+      Object statsLoggerTimer = timerRegion.get("statsLoggerTimer");
+      if (statsLoggerTimer != null) {
+        ((Timer) statsLoggerTimer).cancel();
+        logger.info("Stopped statsLoggerTimer");
+        timerRegion.destroyRegion();
+        logger.info("Destroy Timer region");
+      }
     }
   }
 

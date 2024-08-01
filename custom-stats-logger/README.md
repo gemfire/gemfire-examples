@@ -60,27 +60,6 @@ server1 | OK     | [Logging Metric count 1 with timer interval set to 6000 ms]
 server2 | OK     | [Logging Metric count 1 with timer interval set to 6000 ms]
 ```
 
-To stop the Stat logger execute the below function which is deployed a part of your custom-stats-logger-1.0-SNAPSHOT.jar.
-
-```
-gfsh>execute function --id=StopStatLoggerTimer
-Member  | Status | Message
-------- | ------ | -------
-server1 | OK     | []
-server2 | OK     | []
-
-```
-You need to stop the StatLogger before starting another one. Otherwise, you can get the below exception.
-
-```
-gfsh>execute function --id=StatLogger
-Member  | Status | Message
-------- | ------ | ---------------------------------------------------------------
-server1 | ERROR  | Exception: org.apache.geode.cache.RegionExistsException: /Timer
-server2 | ERROR  | Exception: org.apache.geode.cache.RegionExistsException: /Timer
-
-```
-
 ## Example Logging on Each Member  
 server1.log
 
