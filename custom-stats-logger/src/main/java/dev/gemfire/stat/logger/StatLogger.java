@@ -58,17 +58,19 @@ public class StatLogger implements Function {
     long timerInterval;
     try {
       timerInterval = Long.parseLong(logFrequency);
+    }
+    catch (NumberFormatException exception) {
+      functionContext.getResultSender().sendException(exception);
+      return;
+    }
+    
+    try {
       createTimerRegion(functionContext.getCache());
       List<StatsHolder> statsHolderList = createStatsList(functionContext.getCache().getDistributedSystem(), statistics);
       createTimer(functionContext.getCache(), statsHolderList, timerInterval);
       functionContext.getResultSender().lastResult("Logging Metric count " + statsHolderList.size() + " with timer interval set to " + timerInterval + " ms");
     }
-    catch (NumberFormatException exception) {
-      cancelTimer(functionContext.getCache());
-      functionContext.getResultSender().sendException(exception);
-    }
     catch (GemfireStatNotFoundException exception) {
-      cancelTimer(functionContext.getCache());
       functionContext.getResultSender().sendException(exception);
     }
   }
