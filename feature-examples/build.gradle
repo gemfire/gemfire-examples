@@ -36,6 +36,18 @@ allprojects {
               includeGroup 'com.vmware.gemfire'
             }
           }
+          if (project.getProperty('gemfireRepositoryUrl').contains('usw1')) {
+            maven {
+              credentials {
+                username "$gemfireReleaseRepoUser"
+                password "$gemfireReleaseRepoPassword"
+              }
+              url project.getProperty('gemfireRepositoryUrl').replace('tds-gemfire', 'spring-enterprise').replace('-dev', '-prod')
+              content {
+                includeGroup 'org.springframework'
+              }
+            }
+          }
         }
         if(project.hasProperty("useMavenLocal")) {
             mavenLocal()
