@@ -64,6 +64,7 @@ public class ExampleAsyncEventListener implements AsyncEventListener {
         region.put(oldValue, newValue);
       });
     }
+    exService.shutdown();
     return true;
   }
 
