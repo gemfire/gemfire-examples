@@ -18,8 +18,6 @@
 package com.vmware.gemfire.examples.async;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.geode.cache.Cache;
 import org.apache.geode.cache.Region;
@@ -54,17 +52,13 @@ public class ExampleAsyncEventListener implements AsyncEventListener {
 
   @Override
   public boolean processEvents(List<AsyncEvent> events) {
-    final ExecutorService exService = Executors.newSingleThreadExecutor();
     for (AsyncEvent<Integer, String> event : events) {
       final String oldValue = event.getDeserializedValue();
       final String newValue = spellCheck(oldValue);
-      exService.submit(() -> {
-        Cache cache = (Cache) event.getRegion().getRegionService();
-        Region<String, String> region = cache.getRegion(Example.OUTGOING_REGION_NAME);
-        region.put(oldValue, newValue);
-      });
+      Cache cache = (Cache) event.getRegion().getRegionService();
+      Region<String, String> region = cache.getRegion(Example.OUTGOING_REGION_NAME);
+      region.put(oldValue, newValue);
     }
-    exService.shutdown();
     return true;
   }
 
