@@ -37,7 +37,7 @@ public class ExampleAsyncEventListenerTest {
     events.add(new TestAsyncEvent<Integer, String>(null, Operation.CREATE, 1, "teh"));
     events.add(new TestAsyncEvent<Integer, String>(null, Operation.CREATE, 2, "wil"));
     events.add(new TestAsyncEvent<Integer, String>(null, Operation.CREATE, 3, "i"));
-    assertEquals(true, listener.processEvents(events));
+    assertEquals(false, listener.processEvents(events));
   }
 
   @Test

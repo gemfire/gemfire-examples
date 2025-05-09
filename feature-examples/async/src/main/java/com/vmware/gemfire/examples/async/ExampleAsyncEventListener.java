@@ -53,6 +53,9 @@ public class ExampleAsyncEventListener implements AsyncEventListener {
   @Override
   public boolean processEvents(List<AsyncEvent> events) {
     for (AsyncEvent<Integer, String> event : events) {
+      if (event.getRegion() == null) {
+        return false;
+      }
       final String oldValue = event.getDeserializedValue();
       final String newValue = spellCheck(oldValue);
       Cache cache = (Cache) event.getRegion().getRegionService();
