@@ -30,13 +30,27 @@ import org.apache.geode.internal.cache.BucketDump;
 import org.apache.geode.internal.cache.ForceReattemptException;
 import org.apache.geode.internal.cache.PartitionedRegion;
 
+/**
+ * Function that searches for any entries that do not exist in all copies of a bucket.
+ * <p/>
+ * This function should only be invoked when the system is quiet. If there are in progress
+ * updates they may be erroneously flagged by this function.
+ * <p/>
+ * This function requires some memory - it pulls a full copy of each bucket from each member
+ * to the member running this function.
+ * <p/>
+ * This function should be invoked with FunctionService.onMember or FunctionService.onServer. This
+ * function will validate all buckets for the configured region.
+ */
 public class VerifyBucketCopiesFunction implements Function {
   public static final String ID = VerifyBucketCopiesFunction.class.getSimpleName();
 
   @Override
   public void execute(FunctionContext context) {
+    String[] args = (String[]) context.getArguments();
 
-    PartitionedRegion region = (PartitionedRegion) context.getCache().getRegion("example-region");
+    String regionName = args[0];
+    PartitionedRegion region = (PartitionedRegion) context.getCache().getRegion(regionName);
     StringBuilder failure = new StringBuilder();
     for (int i = 0; i < region.getPartitionAttributes().getTotalNumBuckets(); i++) {
       List<BucketDump> dumps = getBucketDumps(region, i);

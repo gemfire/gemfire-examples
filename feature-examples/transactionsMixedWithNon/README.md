@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) VMware, Inc. 2025. All rights reserved.
+  ~ Copyright (c) VMware, Inc. 2023. All rights reserved.
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 <!--
@@ -70,7 +70,14 @@ Inconsistency in key 1622741977|-1160214649. Value in RVK6VVPKHF(server1:85214)<
         ... 9 more
 ```
 
+5. Check for inconsistent entries using the provided functions
 
-5. Shut down the system.
+        $ gfsh
+        $ connect
+        $ execute function --id=VerifyBucketCopiesFunction --member --arguments=example-region
+        $ execute function --id=FindOldEntriesFunction   --arguments=example-region,1
+
+
+6. Shut down the system.
 
         $ gfsh run --file=scripts/stop.gfsh

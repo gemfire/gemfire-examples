@@ -21,6 +21,10 @@ import org.apache.geode.cache.CommitConflictException;
 import org.apache.geode.cache.GemFireCache;
 
 public class TransactionUtil {
+
+  /**
+   * Execute a runnable in a transaction, retrying until it succeeds without conflict.
+   */
   public static void doInTransaction(GemFireCache cache, Runnable r) {
     boolean done = false;
     while (!done) {
