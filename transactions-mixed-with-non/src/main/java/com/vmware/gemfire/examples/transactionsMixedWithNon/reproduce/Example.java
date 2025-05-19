@@ -15,9 +15,9 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vmware.gemfire.examples.transactionsMixedWithNon;
+package com.vmware.gemfire.examples.transactionsMixedWithNon.reproduce;
 
-import static com.vmware.gemfire.examples.transactionsMixedWithNon.TransactionUtil.doInTransaction;
+import static com.vmware.gemfire.examples.transactionsMixedWithNon.reproduce.TransactionUtil.doInTransaction;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -15,7 +15,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vmware.gemfire.examples.transactionsMixedWithNon;
+package com.vmware.gemfire.examples.transactionsMixedWithNon.reproduce;
 
 import org.apache.geode.cache.CommitConflictException;
 import org.apache.geode.cache.GemFireCache;

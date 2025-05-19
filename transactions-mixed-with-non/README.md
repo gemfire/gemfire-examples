@@ -1,40 +1,37 @@
 <!--
-  ~ Copyright (c) VMware, Inc. 2023. All rights reserved.
+  ~ Copyright (c) VMware, Inc. 2025. All rights reserved.
   ~ SPDX-License-Identifier: Apache-2.0
   -->
-<!--
-Licensed to the Apache Software Foundation (ASF) under one or more
-contributor license agreements.  See the NOTICE file distributed with
-this work for additional information regarding copyright ownership.
-The ASF licenses this file to You under the Apache License, Version 2.0
-(the "License"); you may not use this file except in compliance with
-the License.  You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
 
 # Transaction operations mixed with non-transactional operations
 
 This example shows data inconsistency that happens when transactions are mixed with non-transactional operations
 
-This example assumes you have installed JDK11 and GemFire.
+There are two packages in this example
+* `com.vmware.gemfire.examples.transactionsMixedWithNon.reproduce` - an example that reproduces the problem
+* `com.vmware.gemfire.examples.transactionsMixedWithNon.repair` - Utility functions to find inconsistent data in an existing cluster and remove inconsistent entries from all members.
+
+## Utility functions
+### `FindOldEntriesFunction` 
+This function finds all entries with a last modified time older than a specified age. It checks each of these entries to see if the entry exists on the primary
+
+To use this function, invoke it from gfsh. The first argument is the region. The second
+argument is a number of minutes. Only entries older than this age will be examined.
+```shell
+execute function --id=FindOldEntriesFunction --arguments=example-region,60
+```
+
+## Reproduction example
 
 The example runs for 60 seconds. A client does two different operations in different threads
 * One thread performs transactional putAlls
 * A second thread invokes a server side function that queries for entries, updates the entries, and removes them, without using a transaction
 
-## Steps
+### Reproduction Steps
 
-1. From the `gemfire-examples/transactionsMixedWithNon` directory, build the example, and
-   run unit tests.
+1. Build the code
 
-        $ ../gradlew build
+        $ ./gradlew build
 
 2. Next start a locator, start three servers, create a region, and deploy the function.
 
@@ -42,7 +39,7 @@ The example runs for 60 seconds. A client does two different operations in diffe
 
 3. Run the example 
 
-        $ ../gradlew run
+        $ ./gradlew run
 
 4. Data inconsistency should be reported
 
@@ -64,7 +61,7 @@ Inconsistency in key 1622741977|-1160214649. Value in RVK6VVPKHF(server1:85214)<
 Caused by: java.lang.RuntimeException: Data does not match for bucket 110. Primary is RVK6VVPKHF(server2:85228)<v2>:53458
 Inconsistency in key 1622741977|-1160214649. Value in RVK6VVPKHF(server1:85214)<v1>:55157 is UNPROCESSED. Value in RVK6VVPKHF(server2:85228)<v2>:53458 is null
 
-        at transactionsMixedWithNon//com.vmware.gemfire.examples.transactionsMixedWithNon.VerifyBucketCopiesFunction.execute(VerifyBucketCopiesFunction.java:73)
+        at transactionsMixedWithNon//com.vmware.gemfire.examples.transactionsMixedWithNon.reproduce.VerifyBucketCopiesFunction.execute(VerifyBucketCopiesFunction.java:73)
         at gemfire//org.apache.geode.internal.cache.tier.sockets.command.ExecuteFunction70.executeFunctionLocally(ExecuteFunction70.java:400)
         at gemfire//org.apache.geode.internal.cache.tier.sockets.command.ExecuteFunction70.cmdExecute(ExecuteFunction70.java:261)
         ... 9 more
@@ -79,5 +76,4 @@ Inconsistency in key 1622741977|-1160214649. Value in RVK6VVPKHF(server1:85214)<
 
 
 6. Shut down the system.
-
         $ gfsh run --file=scripts/stop.gfsh

@@ -26,5 +26,5 @@ create region --name=example-region --type=PARTITION_REDUNDANT_PERSISTENT --redu
 list members
 describe region --name=example-region
 
-deploy --jar=build/libs/transactionsMixedWithNon.jar
+deploy --jar=build/libs/transactions-mixed-with-non-1.0-SNAPSHOT.jar
 list functions

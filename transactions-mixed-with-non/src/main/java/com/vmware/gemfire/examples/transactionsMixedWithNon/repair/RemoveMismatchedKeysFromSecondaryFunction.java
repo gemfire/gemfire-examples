@@ -1,7 +1,7 @@
 // Copyright (c) VMware, Inc. 2025.
 // All rights reserved. SPDX-License-Identifier: Apache-2.0
 
-package com.vmware.gemfire.examples.transactionsMixedWithNon;
+package com.vmware.gemfire.examples.transactionsMixedWithNon.repair;
 
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;

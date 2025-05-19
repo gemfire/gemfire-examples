@@ -15,52 +15,47 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vmware.gemfire.examples.transactionsMixedWithNon;
+package com.vmware.gemfire.examples.transactionsMixedWithNon.repair;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.geode.cache.execute.RegionFunctionContext;
+import org.apache.geode.cache.partition.PartitionRegionHelper;
 
 /**
- * Function that searches any entries older than a certain age. If it finds one, it
- * will check to see if that entry exists in the primary. If the primary does not
- * contain the entry, the key will be returned from the function.
- * <p/>
- * This function can be invoked through gfsh. The first parameter is the region
- * name to examine. The second parameter the age in minutes of the entries. Only
- * entries with a last modified older than this age will be considered.
- * <p/>
- * Example of finding entries older than 1 hour and checking them.
- * {code}
- * execute function --id=FindOldEntriesFunction --arguments=example-region,60
- * {code}
+ * Internal function used by {@link FindOldEntriesFunction}. This
+ * returns true if the entry passed in as it's filter exists
+ * on this member.
  */
-public class FindAndUpdateEntriesFunction implements Function {
-  public static final String ID = FindAndUpdateEntriesFunction.class.getSimpleName();
+public class ContainsKeyOnPrimaryFunction implements Function {
+  public static final String ID = ContainsKeyOnPrimaryFunction.class.getSimpleName();
+  private static final int LIMIT = 1000;
+
 
   @Override
   public void execute(FunctionContext context) {
     RegionFunctionContext rfc = (RegionFunctionContext) context;
 
-    Region dataSet = rfc.getDataSet();
-    HashSet<Object> toReturn = new HashSet<>(dataSet.keySet());
-    for (Object key : toReturn) {
+    Set<?> keys = ((RegionFunctionContext<?>) context).getFilter();
 
-      dataSet.put(key, "IN_PROGRESS");
-      dataSet.remove(key);
-      // Transactional update
-      // doInTransaction(context.getCache(), () -> dataSet.put(key, "IN_PROGRESS"));
-    }
+    // Function is always called with a single key as the filter
+    Object key = keys.iterator().next();
 
-    rfc.getResultSender().lastResult(toReturn);
+    Region<?, ?> localData = PartitionRegionHelper.getLocalDataForContext(rfc);
+
+    context.getResultSender().lastResult(localData.containsKey(key));
+  }
+
+  @Override
+  public boolean optimizeForWrite() {
+    return true;
   }
 
   @Override
   public String getId() {
     return ID;
   }
-
 }

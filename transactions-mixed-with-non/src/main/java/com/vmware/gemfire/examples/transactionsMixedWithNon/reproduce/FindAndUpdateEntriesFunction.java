@@ -15,47 +15,38 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.vmware.gemfire.examples.transactionsMixedWithNon;
+package com.vmware.gemfire.examples.transactionsMixedWithNon.reproduce;
 
-import java.util.Set;
+import java.util.HashSet;
 
 import org.apache.geode.cache.Region;
 import org.apache.geode.cache.execute.Function;
 import org.apache.geode.cache.execute.FunctionContext;
 import org.apache.geode.cache.execute.RegionFunctionContext;
-import org.apache.geode.cache.partition.PartitionRegionHelper;
 
-/**
- * Internal function used by {@link FindOldEntriesFunction}. This
- * returns true if the entry passed in as it's filter exists
- * on this member.
- */
-public class ContainsKeyOnPrimaryFunction implements Function {
-  public static final String ID = ContainsKeyOnPrimaryFunction.class.getSimpleName();
-  private static final int LIMIT = 1000;
-
+public class FindAndUpdateEntriesFunction implements Function {
+  public static final String ID = FindAndUpdateEntriesFunction.class.getSimpleName();
 
   @Override
   public void execute(FunctionContext context) {
     RegionFunctionContext rfc = (RegionFunctionContext) context;
 
-    Set<?> keys = ((RegionFunctionContext<?>) context).getFilter();
+    Region dataSet = rfc.getDataSet();
+    HashSet<Object> toReturn = new HashSet<>(dataSet.keySet());
+    for (Object key : toReturn) {
 
-    // Function is always called with a single key as the filter
-    Object key = keys.iterator().next();
+      dataSet.put(key, "IN_PROGRESS");
+      dataSet.remove(key);
+      // Transactional update
+      // doInTransaction(context.getCache(), () -> dataSet.put(key, "IN_PROGRESS"));
+    }
 
-    Region<?, ?> localData = PartitionRegionHelper.getLocalDataForContext(rfc);
-
-    context.getResultSender().lastResult(localData.containsKey(key));
-  }
-
-  @Override
-  public boolean optimizeForWrite() {
-    return true;
+    rfc.getResultSender().lastResult(toReturn);
   }
 
   @Override
   public String getId() {
     return ID;
   }
+
 }

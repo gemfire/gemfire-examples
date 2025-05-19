@@ -1,0 +1,30 @@
+plugins {
+    id 'application'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        credentials {
+            username "$gemfireReleaseRepoUser"
+            password "$gemfireReleaseRepoPassword"
+        }
+        url = uri("${gemfireRepositoryUrl}")
+    }
+}
+
+application {
+    mainClass = 'com.vmware.gemfire.examples.transactionsMixedWithNon.reproduce.Example'
+}
+
+dependencies {
+    implementation "com.vmware.gemfire:gemfire-core:${gemfireVersion}"
+    implementation "com.vmware.gemfire:gemfire-logging:${gemfireVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
