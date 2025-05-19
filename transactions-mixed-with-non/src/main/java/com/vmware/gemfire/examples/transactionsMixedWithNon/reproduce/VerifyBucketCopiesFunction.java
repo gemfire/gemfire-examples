@@ -32,15 +32,19 @@ import org.apache.geode.internal.cache.PartitionedRegion;
 
 /**
  * Function that searches for any entries that do not exist in all copies of a bucket.
- * <p/>
+ * <p>
  * This function should only be invoked when the system is quiet. If there are in progress
  * updates they may be erroneously flagged by this function.
- * <p/>
+ * <p>
  * This function requires some memory - it pulls a full copy of each bucket from each member
  * to the member running this function.
- * <p/>
- * This function should be invoked with FunctionService.onMember or FunctionService.onServer. This
+ * <p>
+ * This function should be invoked on single member. This
  * function will validate all buckets for the configured region.
+ * <p>
+ * <code>
+ *   execute function --id=VerifyBucketCopiesFunction   --arguments=example-region --member=server1
+ * </code>
  */
 public class VerifyBucketCopiesFunction implements Function {
   public static final String ID = VerifyBucketCopiesFunction.class.getSimpleName();
@@ -84,7 +88,7 @@ public class VerifyBucketCopiesFunction implements Function {
     if (failure.length() != 0) {
       throw new RuntimeException(failure.toString());
     }
-    context.getResultSender().lastResult("done");
+    context.getResultSender().lastResult("OK");
   }
 
   private static List<BucketDump> getBucketDumps(PartitionedRegion region, int i) {

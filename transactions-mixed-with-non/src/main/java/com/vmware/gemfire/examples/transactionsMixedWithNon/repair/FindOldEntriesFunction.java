@@ -33,25 +33,26 @@ import org.apache.geode.cache.partition.PartitionRegionHelper;
  * Function that searches any entries older than a certain age. If it finds one, it
  * will check to see if that entry exists in the primary. If the primary does not
  * contain the entry, the key will be returned from the function.
- * <p/>
+ * <p>
  * This function can be invoked through gfsh. The first parameter is the region
  * name to examine. The second parameter the age in minutes of the entries. Only
  * entries with a last modified older than this age will be considered.
- * <p/>
+ * <p>
  * Example of finding entries older than 1 hour and checking them.
- * {code}
- * execute function --id=FindOldEntriesFunction --arguments=example-region,60
- * {code}
+ * <p>
+ * <code>
+ *   execute function --id=FindOldEntriesFunction --arguments=example-region,60
+ * </code>
  */
-public class FindOldEntriesFunction implements Function {
+public class FindOldEntriesFunction implements Function<String[]> {
   public static final String ID = FindOldEntriesFunction.class.getSimpleName();
   private static final int LIMIT = 1000;
 
 
   @Override
-  public void execute(FunctionContext context) {
+  public void execute(FunctionContext<String[]> context) {
 
-    String[] args = (String[]) context.getArguments();
+    String[] args = context.getArguments();
 
     String regionName = args[0];
     int minutesOld = Integer.parseInt(args[1]);
@@ -63,7 +64,6 @@ public class FindOldEntriesFunction implements Function {
     long age = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(minutesOld);
     int count = 0;
     StringBuilder oldEntries = new StringBuilder();
-    Set<Object> oldKeys = new HashSet<>();
     for (Region.Entry<?, ?> entry : localData.entrySet(false)) {
       if (entry.getStatistics().getLastModifiedTime() < age) {
         Object key = entry.getKey();

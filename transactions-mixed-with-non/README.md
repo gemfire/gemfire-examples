@@ -5,20 +5,31 @@
 
 # Transaction operations mixed with non-transactional operations
 
-This example shows data inconsistency that happens when transactions are mixed with non-transactional operations
+This example shows data inconsistency that happens when transactions are mixed with non-transactional operations.
 
-There are two packages in this example
+There are two packages of java code in this example
 * `com.vmware.gemfire.examples.transactionsMixedWithNon.reproduce` - an example that reproduces the problem
 * `com.vmware.gemfire.examples.transactionsMixedWithNon.repair` - Utility functions to find inconsistent data in an existing cluster and remove inconsistent entries from all members.
 
 ## Utility functions
-### `FindOldEntriesFunction` 
+### FindOldEntriesFunction
 This function finds all entries with a last modified time older than a specified age. It checks each of these entries to see if the entry exists on the primary
 
 To use this function, invoke it from gfsh. The first argument is the region. The second
 argument is a number of minutes. Only entries older than this age will be examined.
 ```shell
 execute function --id=FindOldEntriesFunction --arguments=example-region,60
+```
+
+### RemoveMismatchedKeysFromSecondaryFunction
+
+This function will remove a key from all copies of a bucket, even if the entry does not exist on the secondary.
+
+To use this function, invoke it from gfsh. The first argument is the region. The second argument
+is the key to remove. The key is assumed to be a string
+
+```shell
+execute function --id=RemoveMismatchedKeysFromSecondaryFunction --arguments=example-region,AKEY
 ```
 
 ## Reproduction example
@@ -67,13 +78,21 @@ Inconsistency in key 1622741977|-1160214649. Value in RVK6VVPKHF(server1:85214)<
         ... 9 more
 ```
 
-5. Check for inconsistent entries using the provided functions
+5. Check for inconsistent entries using the provided functions. Note we are calling the FindOldEntriesFunction with an age of 1, meaning you may need to wait 1 minute for the entry to show up.
 
         $ gfsh
         $ connect
         $ execute function --id=VerifyBucketCopiesFunction --member --arguments=example-region
         $ execute function --id=FindOldEntriesFunction   --arguments=example-region,1
+ 
+6. Clean up any inconsistent entries that are found
+ 
+        $ execute function --id=RemoveMismatchedKeysFromSecondaryFunction --arguments=example-region,John
 
+7. Verify the entries are gone
+ 
+        $ execute function --id=FindOldEntriesFunction   --arguments=example-region,1
 
-6. Shut down the system.
+8. Shut down the system.
+ 
         $ gfsh run --file=scripts/stop.gfsh

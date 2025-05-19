@@ -50,6 +50,7 @@ public class Example {
 
     long start = System.nanoTime();
     int count = 0;
+    System.out.println("Running for 60 seconds, trying to reproduce a data inconsistency by mixing transactional and non-transactional operations...");
     while (System.nanoTime() - start < TimeUnit.SECONDS.toNanos(TEST_DURATION_SECONDS)) {
       CompletableFuture<Void> asyncUpdate =
           CompletableFuture.runAsync(() -> updateWithFunction(region));
@@ -64,6 +65,7 @@ public class Example {
       }
     }
 
+    System.out.println("No inconsistency found");
   }
 
   private static void updateWithFunction(Region<String, String> region) {
@@ -91,7 +93,7 @@ public class Example {
             .execute(VerifyBucketCopiesFunction.ID);
     List<String> results = collector.getResult();
 
-    if (!results.stream().allMatch("done"::equals)) {
+    if (!results.stream().allMatch("OK"::equals)) {
       throw new RuntimeException("unexpected results " + results);
     }
   }
