@@ -5,4 +5,4 @@
 
 # Tanzu GemFire Example - Transactions mixed with non-transactional operations
 
-Please see the README in [transactions-mixed-with-non|transactions-mixed-with-non]
+Please see the README in [transactions-mixed-with-non](transactions-mixed-with-non)
