@@ -96,3 +96,15 @@ Inconsistency in key 1622741977|-1160214649. Value in RVK6VVPKHF(server1:85214)<
 8. Shut down the system.
  
         $ gfsh run --file=scripts/stop.gfsh
+
+9. Optionally, modify the FindAndUpdateEntriesFunction to do it's work in a transaction and retry the example. You should see the Example complete successfully, without inconsistency
+
+```java
+      //Comment out these non-transactional operations
+      //dataSet.put(key, "IN_PROGRESS");
+      //dataSet.remove(key);
+      
+      // Do the operations in a transaction instead
+      doInTransaction(context.getCache(), () -> dataSet.put(key, "IN_PROGRESS"));
+      doInTransaction(context.getCache(), () -> dataSet.remove(key);
+```

@@ -17,6 +17,7 @@
  */
 package com.vmware.gemfire.examples.transactionsMixedWithNon.reproduce;
 
+import java.util.AbstractQueue;
 import java.util.HashSet;
 
 import org.apache.geode.cache.Region;
@@ -34,11 +35,15 @@ public class FindAndUpdateEntriesFunction implements Function {
     Region dataSet = rfc.getDataSet();
     HashSet<Object> toReturn = new HashSet<>(dataSet.keySet());
     for (Object key : toReturn) {
-
+      //Non-transactional update. Comment these two lines out and use the transactional
+      //update below instead to prevent data inconsistency
       dataSet.put(key, "IN_PROGRESS");
       dataSet.remove(key);
-      // Transactional update
+
+      // Transactional update. Use this code instead of the non-transactional updates above
+      // to prevent data inconsistency
       // doInTransaction(context.getCache(), () -> dataSet.put(key, "IN_PROGRESS"));
+      // doInTransaction(context.getCache(), () -> dataSet.remove(key);
     }
 
     rfc.getResultSender().lastResult(toReturn);
