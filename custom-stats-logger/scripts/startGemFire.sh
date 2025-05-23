@@ -22,7 +22,7 @@ DEFAULT_LOCATOR_MEMORY="--initial-heap=1g --max-heap=1g"
 
 DEFAULT_SERVER_MEMORY="--initial-heap=2g --max-heap=2g"
 
-DEFAULT_JVM_OPTS=" --mcast-port=0"
+DEFAULT_JVM_OPTS=""
 
 LOCATOR_OPTS="${DEFAULT_LOCATOR_MEMORY} ${DEFAULT_JVM_OPTS}"
 LOCATOR_OPTS="${LOCATOR_OPTS} --name=locator_`hostname`"
