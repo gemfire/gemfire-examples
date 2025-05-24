@@ -18,27 +18,27 @@
 #
 
 # Start the locator
-start locator --name=locator-ln1 --port=10332 --locators=localhost[10332],localhost[10333] --mcast-port=0 --log-level=config \
+start locator --name=locator-ln1 --port=10332 --locators=localhost[10332],localhost[10333] --log-level=config \
         --http-service-port=7070 \
 	--J=-Dgemfire.remote-locators=localhost[10331] --J=-Dgemfire.distributed-system-id=2 \
 	--J=-Dgemfire.jmx-manager-start=true --J=-Dgemfire.jmx-manager-http-port=8082 \
 	--J=-Dgemfire.jmx-manager-port=1092
 
-start locator --name=locator-ln2 --port=10333 --locators=localhost[10333],localhost[10332] --mcast-port=0 --log-level=config \
+start locator --name=locator-ln2 --port=10333 --locators=localhost[10333],localhost[10332] --log-level=config \
         --http-service-port=7080 \
 	--J=-Dgemfire.remote-locators=localhost[10331] --J=-Dgemfire.distributed-system-id=2 \
 	--J=-Dgemfire.jmx-manager-start=true --J=-Dgemfire.jmx-manager-http-port=8083 \
 	--J=-Dgemfire.jmx-manager-port=1093
 
 # Start server 1
-start server --name=server-ln-1 --locators=localhost[10332],localhost[10333] --mcast-port=0 --log-level=config \
+start server --name=server-ln-1 --locators=localhost[10332],localhost[10333] --log-level=config \
 	--enable-time-statistics=true --statistic-archive-file=cacheserver.gfs --server-port=0 \
 	--classpath=../build/classes/java/main --J=-Dgemfire.statistic-sampling-enabled=true \
 	--J=-Dgemfire.distributed-system-id=2 --J=-Dgemfire.conserve-sockets=false \
 	--J=-Dgemfire.log-file=cacheserver.log --J=-Dgemfire.wait-before-wan-copy=2000
 
 # Start server 2
-start server --name=server-ln-2 --locators=localhost[10332],localhost[10333] --mcast-port=0 --log-level=config \
+start server --name=server-ln-2 --locators=localhost[10332],localhost[10333] --log-level=config \
 	--enable-time-statistics=true --statistic-archive-file=cacheserver.gfs --server-port=0 \
 	--classpath=../build/classes/java/main --J=-Dgemfire.statistic-sampling-enabled=true \
 	--J=-Dgemfire.distributed-system-id=2 --J=-Dgemfire.conserve-sockets=false \
