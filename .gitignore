@@ -13,6 +13,7 @@ build/
 build-eclipse/
 /tags
 out/
+.DS_Store
 
 locator
 locator1
@@ -33,4 +34,6 @@ wan/server-*/
 *.dat
 *.rej
 *.orig
+
+
 
