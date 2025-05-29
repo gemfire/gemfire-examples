@@ -1,3 +1,5 @@
+// Copyright 2024-2025 Broadcom. All rights reserved.
+
 package com.broadcom.gemfiremcpserverdemo.service;
 
 import com.broadcom.gemfiremcpserverdemo.model.FinancialDocumentMetadata;
@@ -39,7 +41,7 @@ class FinancialDocumentSearchToolTest {
         MockitoAnnotations.openMocks(this);
         searchTool = new FinancialDocumentSearchTool(gemFireVectorStore, pdfIngestionService, metadataRegion);
 
-        // Inject the temporary path into the private `docsPath` field via reflection
+
         var docsPathField = FinancialDocumentSearchTool.class.getDeclaredField("docsPath");
         docsPathField.setAccessible(true);
         docsPathField.set(searchTool, tempDir.toAbsolutePath().toString());
@@ -156,7 +158,7 @@ class FinancialDocumentSearchToolTest {
         List<String> result = searchTool.listAvailableFinancialDocs();
 
         assertEquals(2, result.size());
-        assertTrue(result.get(0).contains("file2.pdf")); // Newest first
+        assertTrue(result.get(0).contains("file2.pdf"));
         assertTrue(result.get(1).contains("file1.pdf"));
 
 
