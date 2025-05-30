@@ -110,7 +110,7 @@ subprojects {
         testImplementation("org.assertj:assertj-core")
         testImplementation('org.apache.httpcomponents:httpcore')
         testImplementation('org.apache.httpcomponents:httpclient')
-        runtimeOnly "org.apache.logging.log4j:log4j-slf4j-impl"
+        runtimeOnly "org.apache.logging.log4j:log4j-slf4j2-impl"
     }
 
     project.version = null
