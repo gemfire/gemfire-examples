@@ -19,7 +19,6 @@ package com.vmware.gemfire.examples.micrometerMetrics;
 
 import static io.micrometer.prometheus.PrometheusConfig.DEFAULT;
 import static java.lang.Integer.getInteger;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,8 +28,9 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 
+import org.apache.geode.logging.internal.log4j.api.LogService;
 import org.apache.geode.metrics.MetricsPublishingService;
 import org.apache.geode.metrics.MetricsSession;
 
@@ -40,7 +40,7 @@ public class SimpleMetricsPublishingService implements MetricsPublishingService 
   private static final String HOSTNAME = "localhost";
   private static final int PORT = getInteger(PORT_PROPERTY, DEFAULT_PORT);
 
-  private static Logger LOG = getLogger(SimpleMetricsPublishingService.class);
+  private static Logger LOG = LogService.getLogger();
 
   private final int port;
   private PrometheusMeterRegistry registry;
