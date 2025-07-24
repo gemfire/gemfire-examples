@@ -27,7 +27,7 @@ services:
     depends_on:
       gemfire-locator-0:
         condition: service_healthy
-    command: gfsh start server --name=server-0 --locators=gemfire-locator-0[10334] --start-rest-api --http-service-port=7070
+    command: gfsh start server --name=server-0 --locators=gemfire-locator-0[10334] --server-port=40405  --hostname-for-clients=localhost --start-rest-api --http-service-port=7070
     environment:
       - ACCEPT_TERMS=y
     ports:
