@@ -1,5 +1,4 @@
-// Copyright (c) VMware, Inc. 2023.
-// All rights reserved. SPDX-License-Identifier: Apache-2.0
+// Copyright (c) VMware, Inc. 2023. All rights reserved.
 start locator --name=locator --bind-address=127.0.0.1
 
 start server --name=server1 --locators=127.0.0.1[10334] --server-port=0

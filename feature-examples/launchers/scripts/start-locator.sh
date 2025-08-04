@@ -2,7 +2,6 @@
 
 #
 # Copyright 2024 Broadcom. All rights reserved.
-# SPDX-License-Identifier: Apache-2.0
 #
 
 # Example script to start a locator with custom application launcher.

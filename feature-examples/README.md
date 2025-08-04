@@ -1,6 +1,5 @@
 <!--
   ~ Copyright 2023-2024 Broadcom. All rights reserved.
-  ~ SPDX-License-Identifier: Apache-2.0
   -->
 <!--
 Licensed to the Apache Software Foundation (ASF) under one or more

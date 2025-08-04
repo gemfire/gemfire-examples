@@ -1,6 +1,5 @@
 <!--
   ~ Copyright (c) VMware, Inc. 2023. All rights reserved.
-  ~ SPDX-License-Identifier: Apache-2.0
   -->
 # Contributing to gemfire-examples
 We welcome contributions from the community and first want to thank you for taking the time to contribute!
