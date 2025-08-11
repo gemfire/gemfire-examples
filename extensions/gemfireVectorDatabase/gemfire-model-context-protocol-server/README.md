@@ -60,7 +60,7 @@ pip install optimum onnx onnxruntime sentence-transformers
 ```
 6. Export the model:
 ```
-optimum-cli export onnx --model sentence-transformers/all-MiniLM-L6-v2 onnx-output-folder
+optimum-cli export onnx --model sentence-transformers/all-MiniLM-L6-v2 src/main/resources/onnx
 ```
 
 This will generate a `model.onnx` and `tokenizer.json` in the `onnx-output-folder`.
