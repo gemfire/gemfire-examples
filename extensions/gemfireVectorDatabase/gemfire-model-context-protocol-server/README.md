@@ -63,7 +63,7 @@ pip install optimum onnx onnxruntime sentence-transformers
 optimum-cli export onnx --model sentence-transformers/all-MiniLM-L6-v2 onnx-output-folder
 ```
 
-This will generate a `model.onnx` and `tokenizer.json` in the `onnx-output-folder`.
+This process generates a model.onnx and tokenizer.json file in resources/onnx, the location where Spring expects to load them.
 
 ### Potential issues
 #### ONNX Export: Missing Dependency
