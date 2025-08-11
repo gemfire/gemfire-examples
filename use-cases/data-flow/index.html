@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Awesome Products, Inc.</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="container py-4">
+
+
+<header class="mb-5 text-center">
+    <h1 class="display-4">🧪 Awesome Products, Inc.</h1>
+    <p class="lead">Real-time sales dashboard for world-changing gadgets</p>
+    <hr />
+</header>
+<div class="row mb-5">
+    <div class="col-md-6">
+        <h2 class="mb-4">Create Order</h2>
+        <form id="orderForm">
+
+            <div class="mb-3">
+                <label class="form-label">Country</label>
+                <select class="form-select" id="country">
+                    <option value="USA">USA</option>
+                    <option value="CAN">Canada</option>
+                    <option value="MEX">Mexico</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Select Products</label>
+                <div id="productList" class="form-check"></div>
+            </div>
+
+            <div class="mb-3">
+                <strong>Total: $<span id="total">0.00</span></strong>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Order</button>
+        </form>
+    </div>
+
+    <!-- Sales Chart -->
+    <div class="col-md-6">
+        <h2 class="mb-3">Total Sales by Country</h2>
+        <canvas id="salesChart" style="max-width: 100%; height: 300px;"></canvas>
+    </div>
+</div>
+
+
+
+
+<h2 class="mb-3">Live Orders</h2>
+<ul id="orders" class="list-group mb-5"></ul>
+
+<!-- Scripts -->
+<script src="js/bootstrap.bundle.js"></script>
+<script>
+    const products = [
+        { name: "Portable Time Machine", price: 9.99 },
+        { name: "Magic Fruit Rehydrator", price: 19.95 },
+        { name: "Bluetooth Toothbrush", price: 24.99 },
+        { name: "Pocket Fog Machine", price: 14.50 }
+    ];
+
+    const productList = document.getElementById("productList");
+    const totalSpan = document.getElementById("total");
+
+
+    products.forEach((product, index) => {
+        const div = document.createElement("div");
+        div.className = "form-check";
+        div.innerHTML = `
+        <input class="form-check-input" type="checkbox" value="${product.price}" id="product-${index}">
+        <label class="form-check-label" for="product-${index}">
+          ${product.name} - $${product.price.toFixed(2)}
+        </label>
+      `;
+        productList.appendChild(div);
+    });
+
+    function updateTotal() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        let total = 0;
+        checkboxes.forEach(cb => {
+            if (cb.checked) total += parseFloat(cb.value);
+        });
+        totalSpan.textContent = total.toFixed(2);
+    }
+    productList.addEventListener("change", updateTotal);
+
+
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const selected = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
+        if (selected.length === 0) {
+            alert("Please select at least one product.");
+            return;
+        }
+
+        const total = parseFloat(totalSpan.textContent);
+        const order = {
+            orderId: 'ORD-' + Math.floor(Math.random() * 100000),
+            customerId: 'CUST-' + Math.floor(Math.random() * 100000),
+            total,
+            currency: 'USD',
+            country: document.getElementById('country').value,
+            createdAt: new Date().toISOString()
+        };
+
+        try {
+            await fetch('http://localhost:8085', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order)
+            });
+            alert('✅ Order submitted!');
+        } catch (err) {
+            alert('❌ Failed to submit order.');
+            console.error(err);
+        }
+    });
+
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const getRandomColor = () => {
+        const hue = Math.floor(Math.random() * 360);
+        return `hsl(${hue}, 70%, 60%)`; // pretty pastel colors
+    };
+
+    const salesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(initialSales),
+            datasets: [{
+                label: 'Total Sales ($)',
+                data: Object.values(initialSales),
+                backgroundColor: Object.keys(initialSales).map(() => getRandomColor())
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: (value) => `$${value}`
+                    }
+                }
+            }
+        }
+    });
+
+
+    function updateChart(country, amount) {
+        const index = salesChart.data.labels.indexOf(country);
+
+        if (index !== -1) {
+            salesChart.data.datasets[0].data[index] = parseFloat(
+                (salesChart.data.datasets[0].data[index] + amount).toFixed(2)
+            );
+        } else {
+            // Add new country and a new color
+            salesChart.data.labels.push(country);
+            salesChart.data.datasets[0].data.push(amount);
+            salesChart.data.datasets[0].backgroundColor.push(getRandomColor());
+        }
+
+        salesChart.update();
+    }
+
+
+    // WebSocket setup
+    const socket = new WebSocket('ws://localhost:9292/ws');
+    socket.onmessage = (event) => {
+        try {
+            const data = JSON.parse(event.data);
+
+            const li = document.createElement('li');
+            li.className = 'list-group-item';
+            li.textContent = `${data.orderId} - ${data.country} - $${data.total.toFixed(2)}`;
+            document.getElementById('orders').prepend(li);
+
+            updateChart(data.country, data.total);
+        } catch (e) {
+            console.warn('⚠️ Invalid WebSocket data:', event.data);
+            console.error('❌ JSON parse error:', e);
+        }
+    };
+    socket.onopen = () => console.log('✅ WebSocket connected');
+    socket.onerror = (e) => console.error('❌ WebSocket error', e);
+</script>
+</body>
+</html>
