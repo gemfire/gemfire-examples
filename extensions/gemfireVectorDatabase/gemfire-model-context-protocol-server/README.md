@@ -34,41 +34,72 @@ This project demonstrates how an MCP client (like Claude Desktop) can interact w
 - Claude Desktop (or an MCP client)
 
 ---
+
 ## GemFire MCP Server Setup
-### Setting Up Embedding with ONNX
-To generate embeddings for PDF documents, Spring AI requires an embedding model. This demo uses the ONNX-exported version of `sentence-transformers/all-MiniLM-L6-v2` for local inference.
 
-Refer to [Spring AI’s ONNX documentation](https://docs.spring.io/spring-ai/reference/api/embeddings/onnx.html#_prerequisites) for details, or follow the local setup below:
+### Clone the Repository and Prepare the ONNX Embedding Model
 
-#### Steps
+To generate embeddings for PDF documents, Spring AI requires an embedding model.
+This demo uses the ONNX-exported version of [`sentence-transformers/all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) for local inference.
 
-1. Create a virtual environment:
-```
-python3 -m venv venv
-```
-2. Activate it:
-```
-source ./venv/bin/activate
-```
-3. Upgrade pip and install build tools:
-```
-pip install --upgrade pip setuptools wheel
-```
-4. Install required packages:
-```
-pip install optimum onnx onnxruntime sentence-transformers
-```
-6. Export the model:
-```
-optimum-cli export onnx --model sentence-transformers/all-MiniLM-L6-v2 src/main/resources/onnx
-```
+Refer to [Spring AI’s ONNX documentation](https://docs.spring.io/spring-ai/reference/api/embeddings/onnx.html#_prerequisites) for full details, or follow the steps below:
 
-This process generates a model.onnx and tokenizer.json file in resources/onnx, the location where Spring expects to load them.
+1. **Clone the GemFire Examples repository**
 
-### Potential issues
-#### ONNX Export: Missing Dependency
+   ```bash
+   git clone https://github.com/gemfire/gemfire-examples.git
+   cd extensions/gemfireVectorDatabase/gemfire-model-context-protocol-server
+   ```
 
-If you see the following error during ONNX export:
+2. **Open the project** in your preferred IDE.
+
+3. **Navigate to the `gemfire-model-context-protocol-server` directory** in a terminal (either in your IDE or separately).
+
+4. **Create a virtual environment**
+
+   ```bash
+   python3 -m venv venv
+   ```
+
+5. **Activate the virtual environment**
+
+   ```bash
+   source ./venv/bin/activate
+   ```
+
+6. **Upgrade pip and install build tools**
+
+   ```bash
+   pip install --upgrade pip setuptools wheel
+   ```
+
+7. **Install the required Python packages**
+
+   ```bash
+   pip install optimum onnx onnxruntime sentence-transformers
+   ```
+
+8. **Export the model to the `resources/onnx` directory**
+
+   ```bash
+   optimum-cli export onnx --model sentence-transformers/all-MiniLM-L6-v2 src/main/resources/onnx
+   ```
+
+   This generates `model.onnx` and `tokenizer.json` in:
+
+   ```
+   extensions/gemfireVectorDatabase/gemfire-model-context-protocol-server/src/main/resources/onnx
+   ```
+
+   Spring AI will automatically load the model from this location.
+
+---
+
+### Potential Issues
+
+#### Missing Dependency During ONNX Export
+
+If you see this error:
 
 ```
 Weight deduplication check in the ONNX export requires accelerate. Please install accelerate to run it.
@@ -79,15 +110,8 @@ Install the missing dependency:
 ```bash
 pip install accelerate
 ```
+
 ---
-
-## Clone and Build the Project
-### Clone the Repository
-
-```bash
-git clone https://github.com/gemfire/gemfire-examples.git
-cd extensions/gemfireVectorDatabase/gemfire-model-context-protocol-server
-```
 
 ### Configure GemFire Artifact Access
 To resolve GemFire dependencies, you’ll need access credentials from Broadcom.
@@ -138,6 +162,13 @@ Open the `application.properties` file and configure the following properties:
 * `spring.ai.embedding.transformer.onnx.modelOutputName=token_embeddings` — Output node name used for embeddings.
 * `docs.path=/Path/To/FinancialDocs` — Directory to load financial documents from.
 * `gemfire.region.docsMetadata=` - Region that will store the metatdata about each document stored in the GemFire Vector DB.
+
+### Configure GemFire Cluster Connection
+The example currently tries to connect to a GemFire cluster running at `localhost:10334`. If your cluster is running at a different location:
+
+1. Open `GemfireMcpServerDemoApplication.java`.
+2. Locate the `ClientCache` configuration `@Bean`.
+3. Update the locator host/port to match your environment.
 
 ###  Build the MCP Server
 
@@ -201,7 +232,7 @@ Make sure you have downloaded GemFire 10.x or later and the GemFire Vector DB ex
     start locator --name locator1 --http-service-port 7070
     ```
 
-6. Start a server with a different HTTP service port:
+6. Start a second server with a different HTTP service port:
 
     ```
     start server --name server1 --http-service-port 7071
