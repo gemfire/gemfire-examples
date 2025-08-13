@@ -27,7 +27,7 @@ This project demonstrates how an MCP client (like Claude Desktop) can interact w
 
 ## What You'll Need
 
-- Java 17+
+- Java 17+ 
 - Gradle (recommended for this demo) or Maven
 - [GemFire VectorDB](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-vector-database/1-2/gf-vector-db/install.html)
 - [VMware GemFire 10.x+](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-1/gf/getting_started-15_minute_quickstart_gfsh.html)
@@ -36,6 +36,46 @@ This project demonstrates how an MCP client (like Claude Desktop) can interact w
 ---
 
 ## GemFire MCP Server Setup
+
+### Make sure your Java matches your machine (to avoid `Unexpected flavor: cpu`)
+
+Some dependencies include native binaries that are architecture-specific. If your JDK architecture doesn’t match your machine’s architecture, those libraries can’t load correctly and you may see an error like `Unexpected flavor: cpu`.
+
+1. Check your JDK version and architecture
+
+Run this in the same terminal where you’ll build the JAR:
+
+```bash
+java -XshowSettings:properties -version 2>&1 | grep -E 'java.vendor|java.runtime.version|os\.name|os\.arch'
+```
+
+Example output:
+
+```
+java.runtime.version = 17.0.5+8-LTS
+java.vendor = BellSoft
+os.arch = aarch64
+os.name = Mac OS X
+```
+
+2. Verify two things
+
+* **Java 17 or newer** (`java.runtime.version` ≥ 17)
+* **Architectures match**: `os.arch` should match your machine’s CPU architecture
+
+   * Apple Silicon/M1–M4: `aarch64` (a.k.a. `arm64`)
+   * Intel/AMD: `x86_64` (a.k.a. `amd64`)
+
+(Optional) Confirm your machine’s architecture:
+
+```bash
+uname -m
+# arm64 or x86_64
+```
+
+3. If they don’t match
+
+Install a JDK that matches your machine (e.g., an **aarch64/arm64** JDK for Apple Silicon, or **x86\_64** for Intel). A mismatch can cause the build to fail with errors like `Unexpected flavor: cpu`.
 
 ### Clone the Repository and Prepare the ONNX Embedding Model
 
@@ -93,7 +133,17 @@ Refer to [Spring AI’s ONNX documentation](https://docs.spring.io/spring-ai/ref
 
    Spring AI will automatically load the model from this location.
 
----
+9. **Verify the files exist**
+```bash
+   ls -lh src/main/resources/onnx
+# Should see: model.onnx, tokenizer.json
+```
+
+10. **Deactivate the virtual environment**
+   ```bash
+   deactivate
+   ```
+
 
 ### Potential Issues
 
@@ -105,10 +155,12 @@ If you see this error:
 Weight deduplication check in the ONNX export requires accelerate. Please install accelerate to run it.
 ```
 
-Install the missing dependency:
+Install the missing dependency and rerun the export command from step 8:
 
 ```bash
 pip install accelerate
+optimum-cli export onnx --model sentence-transformers/all-MiniLM-L6-v2 src/main/resources/onnx
+
 ```
 
 ---
