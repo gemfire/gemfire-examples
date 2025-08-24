@@ -21,12 +21,12 @@ limitations under the License.
 # GemFire OQL Indexing Example
 
 This example demonstrates an index for OQL
-[queries](https://geode.apache.org/docs/guide/11/developing/query_index/query_index.html)
+[queries](https://docs.vmware.com/en/VMware-GemFire/10.0/gf/developing-query_index-query_index.html)
 on a region.
 
 A region can contain objects of arbitrary complexity, including objects that contain other objects.
 The values of a region can be queried using
-[OQL](https://geode.apache.org/docs/guide/11/developing/querying_basics/chapter_overview.html) and
+[OQL](https://docs.vmware.com/en/VMware-GemFire/10.0/gf/developing-querying_basics-chapter_overview.html) and
 OQL queries can reference fields in the objects in the region. Indexes can be created to improve
 the performance of queries. Certain optimizations occur for top-level fields but indexes can also be
 created for nested fields, i.e., fields of objects that are contained with the objects in the

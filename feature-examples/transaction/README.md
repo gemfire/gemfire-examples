@@ -20,7 +20,7 @@ limitations under the License.
 
 # GemFire Transaction Example
 
-This is a simple example that demonstrates the use of [transactions](https://geode.apache.org/docs/guide/11/developing/transactions/working_with_transactions.html)
+This is a simple example that demonstrates the use of [transactions](https://docs.vmware.com/en/VMware-GemFire/10.0/gf/developing-transactions-chapter_overview.html)
 to protect consistency during concurrent access and modification of data. Since a region may
 configured across multiple servers and multiple clients may interact with that region independent of
 each other, data integrity relies on synchronization of modifications between all actors.

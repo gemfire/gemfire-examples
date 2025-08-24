@@ -26,7 +26,7 @@ This example assumes you have GemFire and Java installed. It also assumes you ha
 It was designed and tested with GemFire 1.9.0 and Tomcat 9, and while the session features will work with other combinations
 you may need to make some changes to the setup if you're using other versions. For more information about how to set up
 the tomcat module with your version of Tomcat and GemFire see the official documentation at: 
-`https://geode.apache.org/docs/guide/19/tools_modules/http_session_mgmt/tomcat_installing_the_module.html`
+`https://docs.vmware.com/en/VMware-GemFire/10.0/gf/tools_modules-http_session_mgmt-tomcat_setting_up_the_module.html`
 
 ##Steps
 
