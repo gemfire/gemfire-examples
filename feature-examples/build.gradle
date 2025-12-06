@@ -21,6 +21,15 @@ plugins {
     id "de.undercouch.download" version "4.0.4"
 }
 
+if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com')) {
+    if (!project.hasProperty("gemfireReleaseRepoUser") || gemfireReleaseRepoUser.isEmpty()) {
+        throw new GradleException("Please set gemfireReleaseRepoUser in gradle.properties to the email address you registered at https://support.broadcom.com/")
+    }
+    if (!project.hasProperty("gemfireReleaseRepoPassword") || gemfireReleaseRepoPassword.isEmpty()) {
+        throw new GradleException("Please set gemfireReleaseRepoPassword in gradle.properties to the access token (without quotes) for $gemfireReleaseRepoUser found by navigating to https://support.broadcom.com/ > My Downloads - Tanzu > Vmware Tanzu GemFire > VMware Tanzu GemFire > Show All Releases then click on green icon to the right of Click Green Token for Repository Access")
+    }
+}
+
 allprojects {
     repositories {
         if (!gradle.usingGeodeCompositeBuild) {
@@ -60,26 +69,11 @@ allprojects {
 def installDir = System.getenv('GEMFIRE_HOME') ?: System.getenv('GEODE_HOME') ?: System.getProperty('GEMFIRE_HOME')
 
 def checkEnvTask = tasks.register('checkEnv') {
-    if (installDir==null || installDir.isEmpty()) {
-        throw new GradleException("Please export GEMFIRE_HOME=<the top-level directory extracted from your GemFire .tgz> (if this message persists, you may also need to ./gradlew --stop)")
-    } else {
-        println("GemFire directory is $installDir")
-    }
-
-    if (project.getProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')) {
-        if (!project.hasProperty("gemfireReleaseRepoUser") || gemfireReleaseRepoUser.isEmpty()) {
-            throw new GradleException("Please set gemfireReleaseRepoUser in gradle.properties to the email address you registered at https://commercial-repo.pivotal.io/")
-        }
-        if (!project.hasProperty("gemfireReleaseRepoPassword") || gemfireReleaseRepoPassword.isEmpty()) {
-            throw new GradleException("Please set gemfireReleaseRepoPassword in gradle.properties to the https://commercial-repo.pivotal.io/ password for $gemfireReleaseRepoUser")
-        }
-    }
-    if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com')) {
-        if (!project.hasProperty("gemfireReleaseRepoUser") || gemfireReleaseRepoUser.isEmpty()) {
-            throw new GradleException("Please set gemfireReleaseRepoUser in gradle.properties to the email address you registered at https://support.broadcom.com/")
-        }
-        if (!project.hasProperty("gemfireReleaseRepoPassword") || gemfireReleaseRepoPassword.isEmpty()) {
-            throw new GradleException("Please set gemfireReleaseRepoPassword in gradle.properties to the access token (without quotes) for $gemfireReleaseRepoUser found by navigating to https://support.broadcom.com/ > My Downloads - Tanzu > Vmware Tanzu GemFire > VMware Tanzu GemFire > Show All Releases then click on green icon to the right of Click Green Token for Repository Access")
+    doLast {
+        if (installDir==null || installDir.isEmpty()) {
+            throw new GradleException("Please export GEMFIRE_HOME=<the top-level directory extracted from your GemFire .tgz> (if this message persists, you may also need to ./gradlew --stop)")
+        } else {
+            println("GemFire directory is $installDir")
         }
     }
 }
@@ -91,6 +85,12 @@ configurations {
 
 subprojects {
     apply plugin: 'java-library'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(project.compileJVMVer)
+        }
+    }
 
     dependencies {
         // All callouts to com.vmware.gemfire here, need to be specified in settings.gradle
