@@ -27,11 +27,11 @@ allprojects {
           maven {
             if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com') || project.getProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')) {
               credentials {
-                username "$gemfireReleaseRepoUser"
-                password "$gemfireReleaseRepoPassword"
+                username = "$gemfireReleaseRepoUser"
+                password = "$gemfireReleaseRepoPassword"
               }
             }
-            url project.getProperty('gemfireRepositoryUrl')
+            url = project.getProperty('gemfireRepositoryUrl')
             content {
               includeGroup 'com.vmware.gemfire'
               includeGroup 'org.springframework'
@@ -40,10 +40,10 @@ allprojects {
           if (project.getProperty('gemfireRepositoryUrl').contains('usw1')) {
             maven {
               credentials {
-                username "$gemfireReleaseRepoUser"
-                password "$gemfireReleaseRepoPassword"
+                username = "$gemfireReleaseRepoUser"
+                password = "$gemfireReleaseRepoPassword"
               }
-              url project.getProperty('gemfireRepositoryUrl').replace('tds-gemfire', 'spring-enterprise').replace('-dev', '-prod')
+              url = project.getProperty('gemfireRepositoryUrl').replace('tds-gemfire', 'spring-enterprise').replace('-dev', '-prod')
               content {
                 includeGroup 'org.springframework'
               }
@@ -57,9 +57,9 @@ allprojects {
     }
 }
 
-def installDir = System.getenv('GEMFIRE_HOME') ?: System.getenv('GEODE_HOME')
+def installDir = System.getenv('GEMFIRE_HOME') ?: System.getenv('GEODE_HOME') ?: System.getProperty('GEMFIRE_HOME')
 
-task checkEnv {
+def checkEnvTask = tasks.register('checkEnv') {
     if (installDir==null || installDir.isEmpty()) {
         throw new GradleException("Please export GEMFIRE_HOME=<the top-level directory extracted from your GemFire .tgz> (if this message persists, you may also need to ./gradlew --stop)")
     } else {
@@ -117,7 +117,7 @@ subprojects {
     jar {
     }
 
-    task cleanServer {
+    tasks.register('cleanServer') {
         doLast {
             delete 'locator'
             delete 'locator-ln'
@@ -132,30 +132,38 @@ subprojects {
             delete 'server-ny-2'
         }
     }
-    clean.finalizedBy cleanServer
+    tasks.named('clean').configure {
+      finalizedBy tasks.named('cleanServer')
+    }
 
-    task start(type: Exec, dependsOn: [checkEnv, build, cleanServer]) {
+    tasks.register('start', Exec) {
+        ['build', 'cleanServer'].each {
+          dependsOn tasks.named(it)
+        }
+        dependsOn checkEnvTask
         workingDir projectDir
         environment 'GEODE_HOME', installDir
         commandLine 'sh', '-c', "$installDir/bin/gfsh run --file=${projectDir}/scripts/start.gfsh"
     }
 
-    task stop(type: Exec, dependsOn: checkEnv) {
+    tasks.register('stop', Exec) {
+        dependsOn checkEnvTask
         workingDir projectDir
         environment 'GEODE_HOME', installDir
         commandLine 'sh', '-c', "$installDir/bin/gfsh run --file=${projectDir}/scripts/stop.gfsh"
     }
 
-    task run(type: JavaExec, dependsOn: build) {
+    tasks.register('run', JavaExec) {
+        dependsOn tasks.named('build')
         description = 'Run example'
         classpath = sourceSets.main.runtimeClasspath
-        main = "com.vmware.gemfire.examples.${project.name}.Example"
+        mainClass = "com.vmware.gemfire.examples.${project.name}.Example"
     }
 
-    task waitForExitingMembers(type: Exec) {
+    tasks.register('waitForExitingMembers', Exec) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        ignoreExitValue true
+        ignoreExitValue = true
         commandLine 'sh', '-c', "" +
                 "TIMEOUT=120 ;" +
                 "echo \"Waiting at most \$TIMEOUT seconds for all members to shut down...\" ;" +
@@ -179,10 +187,10 @@ subprojects {
         }
     }
 
-    task verifyNoMembersRunning(type: Exec) {
+    tasks.register('verifyNoMembersRunning', Exec) {
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        ignoreExitValue true
+        ignoreExitValue = true
         commandLine 'sh', '-c', "echo \"Looking for existing member processes...\" ; " +
                 "pgrep -f \"(Server|Locator)Launcher\" ; "
         doLast {
@@ -198,11 +206,15 @@ subprojects {
         }
     }
 
-    task runAll(dependsOn: [verifyNoMembersRunning, start, run, stop, waitForExitingMembers])
-    start.mustRunAfter verifyNoMembersRunning
-    run.mustRunAfter start
-    stop.mustRunAfter run
-    waitForExitingMembers.mustRunAfter stop
+    tasks.register('runAll') {
+      ['verifyNoMembersRunning', 'start', 'run', 'stop', 'waitForExitingMembers'].each {
+        dependsOn tasks.named(it)
+      }
+    }
+    tasks.named('start').configure {mustRunAfter tasks.named('verifyNoMembersRunning')}
+    tasks.named('run').configure {mustRunAfter tasks.named('start')}
+    tasks.named('stop').configure {mustRunAfter tasks.named('run')}
+    tasks.named('waitForExitingMembers').configure {mustRunAfter tasks.named('stop')}
 }
 
 apply from: "gradle/spotless.gradle"
