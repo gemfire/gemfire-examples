@@ -21,6 +21,7 @@
 apply plugin: "org.nosphere.apache.rat"
 
 rat {
+  reportDir = rootProject.getLayout().getBuildDirectory().dir('reports')
   substringMatcher("VMware", "VMware", "VMware, Inc.", "vmware-eula")
   approvedLicense("VMware")
   substringMatcher("Broadcom", "Broadcom", "Broadcom")
@@ -66,6 +67,7 @@ rat {
     '**/*.rej',
     '**/*.orig',
     '**/*.json',
+    '**/.java-version',
 
     // image files
     '**/*.svg',
