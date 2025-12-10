@@ -48,7 +48,7 @@ This example runs a single client that connects to the London cluster and
 puts 10 entries into the example-region and prints them.  After the client
 app has run, both clusters will contain the data.
 
-This example assumes that JDK11 and GemFire are installed.
+This example assumes that JDK17 and GemFire are installed.
 
 ## Steps
 

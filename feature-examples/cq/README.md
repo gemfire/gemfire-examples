@@ -34,7 +34,7 @@ which prints to stdout.
 
 The client will generate data for 20 seconds, close the CQ and Cache, and then exit.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

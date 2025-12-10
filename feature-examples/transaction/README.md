@@ -41,7 +41,7 @@ incremented the value _or_ if another child is simultaenously trying to incremen
 example, which should take about a dozen seconds, reports the final value of the counter to show
 that all of the children's increments were consistently applied.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

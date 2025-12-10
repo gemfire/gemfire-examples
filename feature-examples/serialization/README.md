@@ -42,7 +42,7 @@ instance. This obviates modifying classes to implement a serialization interface
 the objects to be queried by way of PDX without the classes being preset on the server's class
 path.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

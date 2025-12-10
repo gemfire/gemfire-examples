@@ -27,7 +27,7 @@ that represent employee information.
 The example does queries through the API and presents example queries
 to be invoked through the `gfsh` command-line interface.
 
-This example assumes that JDK11 and GemFire are installed.
+This example assumes that JDK17 and GemFire are installed.
 
 ## Set up the cluster 
 1. Set directory ```gemfire-examples/queries``` to be the

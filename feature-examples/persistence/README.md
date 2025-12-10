@@ -24,7 +24,7 @@ This is a simple example that demonstrates persistent regions.
 
 The data for a region resides in memory in the JVM for the server. When a region is persistent, the data for that region is also preserved in a disk store. The disk store uses a directory in a file system to save the operations on regions. Unlike non-persistent regions, the data for a persistent region is available even after a period where no servers for that region are running.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

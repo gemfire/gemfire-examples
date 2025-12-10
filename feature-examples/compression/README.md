@@ -23,7 +23,7 @@ limitations under the License.
 This is a simple example that demonstrates enabling Compression in a
 replicated region. The Default compression algorithm included with GemFire is Snappy. Additionally, you can specify your own compressor algorithm as well by implementing `org.apache.geode.compression.Compression` Interface. For enabling compression on a GemFire region you can follow the official [document](https://geode.apache.org/docs/guide/113/managing/region_compression.html#topic_inm_whc_gl).
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

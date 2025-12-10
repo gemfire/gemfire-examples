@@ -25,7 +25,7 @@ This is a simple example that demonstrates loading values using a
 produce a value that is stored in the region.  This approach is
 commonly used to fetch data from other systems like a database.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

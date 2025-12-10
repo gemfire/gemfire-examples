@@ -38,7 +38,7 @@ Since flight code objects are contained within a passenger object, the index on 
 nested field. After randomly populating the mock database, this example shows the results of queries
 that use no index, a top-level index, and a nested index.
 
-This example assumes that JDK11 and GemFire are installed.
+This example assumes that JDK17 and GemFire are installed.
 
 ## Steps
 

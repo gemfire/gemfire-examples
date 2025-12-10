@@ -33,7 +33,7 @@ region.  Since there is no redundancy of the data within the region, when one
 of the servers goes away, the entries hosted within that server are also gone;
 the example demonstrates this.
 
-This example assumes that JDK11 and GemFire are installed.
+This example assumes that JDK17 and GemFire are installed.
 
 ## Demonstration of Partitioning
 1. Set directory ```gemfire-examples/partitioned``` to be the

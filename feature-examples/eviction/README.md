@@ -34,7 +34,7 @@ limits on its in-memory resource consumption. When an operation would exceed tho
 region will take an action to assure that the limits will not be exceeded after the operation
 completes. The region can either destroy one or more entries or overflow one or more entries to disk.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

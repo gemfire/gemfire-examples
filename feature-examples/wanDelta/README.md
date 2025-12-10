@@ -37,7 +37,7 @@ Delta object with a small change.  Each Delta update event will only cause
 the changes to be replicated across the WAN.  After the client app has run, 
 both clusters will contain the data.
 
-This example assumes that JDK11 and GemFire are installed.
+This example assumes that JDK17 and GemFire are installed.
 
 ## Steps
 

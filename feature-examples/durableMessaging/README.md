@@ -33,7 +33,7 @@ The example performs the following tasks to demonstrate durable messaging:
 4. Start a second client, and do puts while the first client is down
 5. Restart the first client, and observe that the create events in the durable queue are delivered.  A simple cache listener is used to print output to the terminal as create events are received.  If interested, see [Cache Listeners](listener/README.md) for more details on how cache listeners work.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

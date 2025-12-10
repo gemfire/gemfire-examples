@@ -22,7 +22,7 @@ limitations under the License.
 
 This is a simple example that demonstrates putting a map of values into a region, checking the size, and retrieving the values.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

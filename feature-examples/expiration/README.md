@@ -35,7 +35,7 @@ This example creates a region where the entries are destroyed after ten seconds 
 updated. The example first puts ten random integers into the region. Then the example loops,
 printing the number of entries in the region, until the region is empty.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

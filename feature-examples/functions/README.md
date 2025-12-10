@@ -28,7 +28,7 @@ A function is implemented by creating a Java class that implements `com.vmware.g
 
 The `deploy` command in `gfsh` deploys all the functions in the specified JAR file. A function's implementation of `execute()` will be run inside the server when `org.apache.geode.cache.execute.Execution.execute()` is invoked for that function.
 
-This example assumes you have installed JDK11 and GemFire.
+This example assumes you have installed JDK17 and GemFire.
 
 ## Steps
 

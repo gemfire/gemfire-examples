@@ -27,7 +27,7 @@ In this example, two servers host a single partitioned region with entries
 that represent employee information. The example indexes the first and last
 names of employees.
 
-This example assumes that JDK11 and GemFire are installed.
+This example assumes that JDK17 and GemFire are installed.
 The minimum java version is jdk 11.
 
 Note: These example use the GemFire Search extension which requires GemFire 10 to work
