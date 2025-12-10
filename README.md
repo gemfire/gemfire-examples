@@ -11,4 +11,4 @@ This repository contains two types of examples:
 * [Extensions](extensions) examples that utilize GemFire extensions, such as the GemFire Vector Database extension.
 * [Scripts](scripts) example shell scripts for running various GemFire components.
 
-See [Tanzu GemFire Documentation](https://docs.vmware.com/en/VMware-GemFire) for further detail.
+See [Tanzu GemFire Documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html) for further detail.

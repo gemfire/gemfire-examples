@@ -19,7 +19,7 @@ The goal of this quickstart tutorial is to introduce using and storing JSON docu
 
 ## Download Examples and Configure Environment
 
-Download and install Tanzu GemFire from [Tanzu Network](https://network.tanzu.vmware.com). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
+Download and install Tanzu GemFire from [support.broadcom.com](https://support.broadcom.com). Follow the installation instructions in the [GemFire documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html/index.html).
 
 Clone the GemFire examples repository from GitHub.
 
@@ -78,7 +78,7 @@ password with those used during sign-up.
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the Tanzu GemFire maven repository and makes use of the GemFire 10.1.0 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the Tanzu GemFire maven repository and makes use of the GemFire 10.2.0 version of the product.
 
 ## Start a Developer GemFire Cluster
 
@@ -137,10 +137,10 @@ A JsonDocument can be converted back to a JSON string with the toJson() method. 
 | "null" | null |
 | Number | Integer, Long, BigInteger, or Double |
 
-For additional details on using JSON with GemFire see [documentation](https://docs.vmware.com/en/VMware-GemFire/10.1/gf/developing-data_serialization-jsonformatter_pdxinstances.html)
+For additional details on using JSON with GemFire see [documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/developing-data_serialization-jsonformatter_pdxinstances.html)
 
-For class details see JavaDocs for [JsonDocument](https://gemfire.docs.pivotal.io/apidocs/gf-100/org/apache/geode/json/JsonDocument.html) and
-[JsonDocumentFactory](https://gemfire.docs.pivotal.io/apidocs/gf-100/org/apache/geode/json/JsonDocumentFactory.html).
+For class details see JavaDocs for [JsonDocument](https://developer.broadcom.com/xapis/vmware-gemfire-java-api-reference/latest/org/apache/geode/json/JsonDocument.html) and
+[JsonDocumentFactory](https://developer.broadcom.com/xapis/vmware-gemfire-java-api-reference/latest/org/apache/geode/json/JsonDocumentFactory.html).
 
 See [BSON](https://bsonspec.org) and [JSON](https://www.json.org/json-en.html) specifications for additional information on JSON.
 

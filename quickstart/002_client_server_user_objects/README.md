@@ -19,7 +19,7 @@ The goal of this quickstart tutorial is to introduce building and using user cre
 
 ## Download Examples and Configure Environment
 
-Download and install Tanzu GemFire from [Tanzu Network](https://network.tanzu.vmware.com). Follow the installation instructions in the [GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html).
+Download and install Tanzu GemFire from [support.broadcom.com](https://support.broadcom.com). Follow the installation instructions in the [GemFire documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html/index.html).
 
 Clone the GemFire examples repository from GitHub.
 
@@ -78,7 +78,7 @@ password with those used during sign-up.
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the Tanzu GemFire maven repository and makes use of the GemFire 10.1.0 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the Tanzu GemFire maven repository and makes use of the GemFire 10.2.0 version of the product.
 
 ## Start a Developer GemFire Cluster
 
@@ -136,7 +136,7 @@ Serialization is a critical part of working with distributed and networked proce
 
 GemFire Portable Data Exchange (PDX) is the preferred option for doing data serialization of values within GemFire. PDX provides support for cross language (C++, Java, C#) serialization and deserialization using a compact format. PDX stores the serialized data in named fields that can be directly accessed avoiding the cost of deserializing the entire data object. The preference to keep data in a serialized form helps to reduce GC and memory pressure within GemFire servers while still providing access via the PdxInstance type. Another advantage to using PDX is that it allows versioning of value objects thus permitting changes such as adding or removing fields over the development lifecycle of an application.
 
-For addition information on PDX and how GemFire handles serialization [review the GemFire docs](https://docs.vmware.com/en/VMware-GemFire/10.1/gf/developing-data_serialization-chapter_overview.html).
+For addition information on PDX and how GemFire handles serialization [review the GemFire docs](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/developing-data_serialization-chapter_overview.html).
 
 ## User Created Key and Value Instances
 
@@ -156,9 +156,9 @@ public Pet() {
 
 The class doesn't have to implement java.io.Serializable but also will not effect its usage if it does. Implementing hashCode and equals is recommended but is not used directly by PDX instances but may be useful once a PDX instance is converted back to its original type.
 
-In this example the instance data will be serialized using the [ReflectionBasedAutoSerializer](https://gemfire.docs.pivotal.io/apidocs/tgf-915/org/apache/geode/pdx/ReflectionBasedAutoSerializer.html) which is configured during cache creation. This serializer uses Java reflection to determine the fields of the class along with a pattern string to determine which class instances are to be serialized via PDX and optionally if any fields will be excluded from serialization.
+In this example the instance data will be serialized using the [ReflectionBasedAutoSerializer](https://developer.broadcom.com/xapis/vmware-gemfire-java-api-reference/latest/org/apache/geode/pdx/ReflectionBasedAutoSerializer.html) which is configured during cache creation. This serializer uses Java reflection to determine the fields of the class along with a pattern string to determine which class instances are to be serialized via PDX and optionally if any fields will be excluded from serialization.
 
-For more complex situations GemFire provides extensive documentation on [PDX](https://docs.vmware.com/en/VMware-GemFire/10.1/gf/developing-data_serialization-gemfire_pdx_serialization.html) domain class implementation with custom serialization options.
+For more complex situations GemFire provides extensive documentation on [PDX](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/developing-data_serialization-gemfire_pdx_serialization.html) domain class implementation with custom serialization options.
 
 ## Client Application
 
@@ -319,7 +319,7 @@ public boolean equals(Object obj) {
 
 For additional details see [javadocs](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/package-summary.html) for java.lang.Object and java.long.String.
 
-For additional information and advanced usage of keys with PDX see the [GemFire docs](https://docs.vmware.com/en/VMware-GemFire/10.1/gf/developing-data_serialization-using_pdx_region_entry_keys.html).
+For additional information and advanced usage of keys with PDX see the [GemFire docs](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/developing-data_serialization-gemfire_pdx_serialization.html).
 
 ## Upload Classes and Run Client
 

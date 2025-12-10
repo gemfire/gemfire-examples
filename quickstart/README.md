@@ -5,7 +5,7 @@
 # Tanzu GemFire Quick Start examples
 The examples in this folder are practical guides to getting started with GemFire.
 
-For details on all GemFire features, see [Tanzu GemFire Documentation](https://docs.vmware.com/en/VMware-GemFire).
+For details on all GemFire features, see [Tanzu GemFire Documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html).
 
 ## Tanzu GemFire Version
 Your client code must link against the _same or older_ version (ignoring patch versions) of Tanzu GemFire as the Tanzu GemFire server it will connect to.

@@ -30,7 +30,7 @@ This project demonstrates how an MCP client (like Claude Desktop) can interact w
 - Java 17+ 
 - Gradle (recommended for this demo) or Maven
 - [GemFire VectorDB](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-vector-database/1-2/gf-vector-db/install.html)
-- [VMware GemFire 10.x+](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-1/gf/getting_started-15_minute_quickstart_gfsh.html)
+- [VMware GemFire 10.x+](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/getting_started-15_minute_quickstart_gfsh.html)
 - Claude Desktop (or an MCP client)
 
 ---
@@ -239,7 +239,7 @@ Make sure you have downloaded GemFire 10.x or later and the GemFire Vector DB ex
 
    For example:
     ```
-   vmware-gemfire-10.1.3/extensions/vmware-gemfire-vectordb-1.2.0.gfm
+   vmware-gemfire-10.2.0/extensions/vmware-gemfire-vectordb-1.2.0.gfm
    ```
 3. Open a terminal, navigate to the `bin` folder in the GemFire directory, and start GFSH:
 
@@ -267,8 +267,8 @@ Make sure you have downloaded GemFire 10.x or later and the GemFire Vector DB ex
     GemFire-Source-Revision: 62f20538984ebd92beee00874104d8706c6e4719
     Build-Id: gemfire 2511
     Product-Name: Tanzu GemFire
-    GemFire-Version: 10.1.3
-    GemFire-Source-Repository: support/10.1
+    GemFire-Version: 10.2.0
+    GemFire-Source-Repository: support/10.2
     ----------------------------------------
     Tanzu GemFire Vector DB
     ----------------------------------------

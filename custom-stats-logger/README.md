@@ -46,7 +46,7 @@ Then connect with `gfsh` and deploy the JAR:
    / _____/ ______/ ______/ /____/ /
   / /  __/ /___  /_____  / _____  /
  / /__/ / ____/  _____/ / /    / /  
-/______/_/      /______/_/    /_/    10.1.0
+/______/_/      /______/_/    /_/    10.2.0
 
 Monitor and Manage VMware GemFire
 
@@ -55,7 +55,7 @@ Connecting to Locator at [host=localhost, port=10334] ..
 Connecting to Manager at [host=cblack-z01, port=1099] ..
 Successfully connected to: [host=cblack-z01, port=1099]
 
-You are connected to a cluster of version 10.1.0.
+You are connected to a cluster of version 10.2.0.
 
 gfsh> deploy --jar ../build/libs/custom-stats-logger-1.0-SNAPSHOT.jar
 

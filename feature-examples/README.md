@@ -21,7 +21,7 @@ limitations under the License.
 # Tanzu GemFire feature examples
 The examples in this folder are showcase features of GemFire and demonstrate their basic usage.
 
-For details on all GemFire features, see [Tanzu GemFire Documentation](https://docs.vmware.com/en/VMware-GemFire).
+For details on all GemFire features, see [Tanzu GemFire Documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html).
 
 ## Tanzu GemFire Version
 Your client code must link against the _same or older_ version (ignoring patch versions) of Tanzu GemFire as the Tanzu GemFire server it will connect to.
@@ -33,8 +33,8 @@ To link against an older version of GemFire, edit the `gemfireVersion=` line in 
 In order to execute the examples in this project, follow these steps:
 1. Ensure [JDK 17 or 21](https://bell-sw.com/pages/downloads/) is installed (and set JAVA_HOME if it's not the default).
 1. Download the version of GemFire that you want to use as the server from [Broadcom Customer Support](https://support.broadcom.com/)
-1. Unpack the GemFire TGZ file (e.g. `tar xzf vmware-gemfire-10.1.0.tgz`)
-1. `export GEMFIRE_HOME` to point to the top level directory inside the extracted GemFire. For example, if you extracted in /tmp/downloads, `export GEMFIRE_HOME=/tmp/downloads/vmware-gemfire-10.1.0`.
+1. Unpack the GemFire TGZ file (e.g. `tar xzf vmware-gemfire-10.2.0.tgz`)
+1. `export GEMFIRE_HOME` to point to the top level directory inside the extracted GemFire. For example, if you extracted in /tmp/downloads, `export GEMFIRE_HOME=/tmp/downloads/vmware-gemfire-10.2.0`.
 1. When you first run the gradle commands below you'll be prompted to supply credentials.  Set gemfireReleaseRepoUser but leave gemfireReleaseRepoPassword blank for instructions how to obtain an access token.
 
 ## Running an example
@@ -56,7 +56,7 @@ usage:
 
 ## Catalog of examples
 
-The following sections call out ready-made examples.  You may want to start your journey with the [Tanzu GemFire Documentation](https://docs.vmware.com/en/VMware-Tanzu-GemFire/9.15/tgf/GUID-about_gemfire.html).
+The following sections call out ready-made examples.  You may want to start your journey with the [Tanzu GemFire Documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html).
 
 ### Basics
 

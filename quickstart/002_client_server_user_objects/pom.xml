@@ -12,7 +12,7 @@
   <version>1.0-EXAMPLE</version>
 
   <name>GemFireClient</name>
-  <url>https://docs.vmware.com/en/VMware-GemFire</url>
+  <url>https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,7 +33,7 @@
       <dependency>
         <groupId>com.vmware.gemfire</groupId>
         <artifactId>gemfire-all-bom</artifactId>
-        <version>10.1.0</version>
+        <version>10.2.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

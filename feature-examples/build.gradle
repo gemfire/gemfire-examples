@@ -34,7 +34,7 @@ allprojects {
     repositories {
         if (!gradle.usingGeodeCompositeBuild) {
           maven {
-            if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com') || project.getProperty('gemfireRepositoryUrl').contains('commercial-repo.pivotal.io')) {
+            if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com')) {
               credentials {
                 username = "$gemfireReleaseRepoUser"
                 password = "$gemfireReleaseRepoPassword"
@@ -44,18 +44,6 @@ allprojects {
             content {
               includeGroup 'com.vmware.gemfire'
               includeGroup 'org.springframework'
-            }
-          }
-          if (project.getProperty('gemfireRepositoryUrl').contains('usw1')) {
-            maven {
-              credentials {
-                username = "$gemfireReleaseRepoUser"
-                password = "$gemfireReleaseRepoPassword"
-              }
-              url = project.getProperty('gemfireRepositoryUrl').replace('tds-gemfire', 'spring-enterprise').replace('-dev', '-prod')
-              content {
-                includeGroup 'org.springframework'
-              }
             }
           }
         }
