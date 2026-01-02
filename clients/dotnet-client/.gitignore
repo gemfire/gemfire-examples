@@ -1,0 +1,15 @@
+/**/*.log
+/**/*.class
+/**/*.dat
+/**/*.crf
+/**/*.drf
+/**/*.krf
+/**/*.if
+/**/locator
+/**/locator0
+/**/server
+/**/server0
+/**/server1
+nuget.config
+/**/.idea
+/**/.DS_Store
