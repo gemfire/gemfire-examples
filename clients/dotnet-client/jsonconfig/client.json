@@ -1,0 +1,9 @@
+{
+  "durable-client-id": "test-durable-id",
+  "durable-timeout": "305s",
+  "notify-dupcheck-life": "212s",
+  "log-disk-space-limit": "0",
+  "log-file-size-limit": "0",
+  "log-level": "info",
+  "log-file": "gemfire.log"
+}
