@@ -1,20 +1,20 @@
-// Copyright 2024 Broadcom. All Rights Reserved.
+// Copyright 2026 Broadcom. All Rights Reserved.
 
 
 using GemFire.Client;
 
-namespace GemFire.Examples.Dataserializable
+namespace GemFire.Examples.Dataserializable;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var cacheFactory = new CacheFactory()
+            .Set("log-level", "none");
+        cacheFactory.AddLocator("localhost", 10334);
+
+        using (var cache = cacheFactory.Create("DataSerializable"))
         {
-            var cacheFactory = new CacheFactory()
-                .Set("log-level", "none");
-            cacheFactory.AddLocator("localhost", 10334);
-
-            ICache cache = cacheFactory.Create("DataSerializable");
-
             Console.WriteLine("Registering for data serialization");
 
             cache.TypeRegistry.RegisterType(Order.CreateDeserializable, 20);
@@ -36,7 +36,6 @@ namespace GemFire.Examples.Dataserializable
 
             Console.WriteLine("Order key: " + orderKey + " = " + orderRetrieved);
 
-            cache.Close();
         }
     }
 }

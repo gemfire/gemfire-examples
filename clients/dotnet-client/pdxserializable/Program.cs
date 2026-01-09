@@ -1,27 +1,27 @@
-// Copyright 2024 Broadcom. All Rights Reserved.
+// Copyright 2026 Broadcom. All Rights Reserved.
 
 
 using GemFire.Client;
 
-namespace GemFire.Examples.PDXSerializable
+namespace GemFire.Examples.PDXSerializable;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var cacheFactory = new CacheFactory()
+            .Set("log-level", "none");
+        cacheFactory.AddLocator("localhost", 10334);
+
+        using (var cache = cacheFactory.Create("PDXSerializable"))
         {
-            var cacheFactory = new CacheFactory()
-                .Set("log-level", "none");
-            cacheFactory.AddLocator("localhost", 10334);
-
-            ICache cache = cacheFactory.Create("PDXSerializable");
-
             Console.WriteLine("Registering for data serialization");
 
             cache.TypeRegistry.RegisterPdxType(Order.CreateDeserializable);
 
-            IRegionFactory regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
+            var regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
 
-            IRegion<int, Order> orderRegion = regionFactory.Create<int, Order>("example_orderobject");
+            var orderRegion = regionFactory.Create<int, Order>("example_orderobject");
 
             Console.WriteLine("Storing order object in the region");
 
@@ -37,7 +37,6 @@ namespace GemFire.Examples.PDXSerializable
 
             Console.WriteLine("Order key: " + orderKey + " = " + orderRetrieved);
 
-            cache.Close();
         }
     }
 }

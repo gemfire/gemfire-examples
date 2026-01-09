@@ -1,30 +1,30 @@
-﻿// Copyright 2024 Broadcom. All Rights Reserved.
+﻿// Copyright 2026 Broadcom. All Rights Reserved.
 
 using GemFire.Client;
 
-namespace GemFire.Examples.ClassAsKey
+namespace GemFire.Examples.ClassAsKey;
+
+public class Program
 {
-    public class Program
+    public static void Main()
     {
-        public static void Main()
+        var cacheFactory = new CacheFactory()
+            .Set("log-level", "none");
+        cacheFactory.AddLocator("localhost", 10334);
+
+        using (var cache = cacheFactory.Create("ClassAsKey"))
         {
-            var cacheFactory = new CacheFactory()
-                .Set("log-level", "none");
-            cacheFactory.AddLocator("localhost", 10334);
-
-            ICache cache = cacheFactory.Create("ClassAsKey");
-
             cache.TypeRegistry.RegisterType(User.CreateDeserializable, 500);
             cache.TypeRegistry.RegisterType(Order.CreateDeserializable, 501);
 
-            IRegion<User, Order> region = cache
+            var region = cache
                 .CreateRegionFactory(RegionShortcut.PROXY)
                 .Create<User, Order>("orders");
 
-            User user1 = new User("Tom", 1);
-            User user2 = new User("Janet", 2);
-            Order order1 = new Order();
-            Order order2 = new Order();
+            var user1 = new User("Tom", 1);
+            var user2 = new User("Janet", 2);
+            var order1 = new Order();
+            var order2 = new Order();
 
             order1.AddToOrder("Cronut");
             order1.AddToOrder("Maple Bar");

@@ -1,22 +1,22 @@
-// Copyright 2024 Broadcom. All Rights Reserved.
+// Copyright 2026 Broadcom. All Rights Reserved.
 
 using GemFire.Client;
 
-namespace GemFire.Examples.AuthInitialize
+namespace GemFire.Examples.AuthInitialize;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        var cacheFactory = new CacheFactory()
+            .Set("log-level", "none")
+            .SetAuthInitialize(new ExampleAuthInitialize());
+        cacheFactory.AddLocator("localhost", 10334);
+
+        using (var cache = cacheFactory.Create("ExampleAuthInit"))
         {
-            var cacheFactory = new CacheFactory()
-                .Set("log-level", "none")
-                .SetAuthInitialize(new ExampleAuthInitialize());
-            cacheFactory.AddLocator("localhost", 10334);
-
-            ICache cache = cacheFactory.Create("ExampleAuthInit");
-
-            IRegionFactory regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
-            IRegion<string, string> region = regionFactory.Create<string, string>("region");
+            var regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
+            var region = regionFactory.Create<string, string>("region");
 
             region.Put("a", "1");
             region.Put("b", "2");
@@ -27,7 +27,6 @@ namespace GemFire.Examples.AuthInitialize
             Console.Out.WriteLine("a = " + a);
             Console.Out.WriteLine("b = " + b);
 
-            cache.Close();
         }
     }
 }
