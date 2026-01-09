@@ -1,25 +1,25 @@
-// Copyright 2024 Broadcom. All Rights Reserved.
+// Copyright 2026 Broadcom. All Rights Reserved.
 
 using GemFire.Client;
 
-namespace GemFire.Examples.RemoteQuery
+namespace GemFire.Examples.RemoteQuery;
+
+public class Program
 {
-    public class Program
+    public static void Main()
     {
-        public static void Main()
+        var cacheFactory = new CacheFactory()
+            .Set("log-level", "none");
+        cacheFactory.AddLocator("localhost", 10334);
+
+        using (var cache = cacheFactory.Create("RemoteQuery"))
         {
-            var cacheFactory = new CacheFactory()
-                .Set("log-level", "none");
-            cacheFactory.AddLocator("localhost", 10334);
-
-            ICache cache = cacheFactory.Create("RemoteQuery");
-
             Console.WriteLine("Registering for data serialization");
 
             cache.TypeRegistry.RegisterPdxType(Order.CreateDeserializable);
 
-            IRegionFactory regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
-            IRegion<string, Order> orderRegion = regionFactory.Create<string, Order>("custom_orders");
+            var regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
+            var orderRegion = regionFactory.Create<string, Order>("custom_orders");
 
             Console.WriteLine("Create orders");
             var order1 = new Order(1, "product x", 23);
@@ -37,11 +37,11 @@ namespace GemFire.Examples.RemoteQuery
             orderRegion.Put("Order5", order5);
             orderRegion.Put("Order6", order6);
 
-            IQueryService queryService = cache.GetQueryService();
+            var queryService = cache.GetQueryService();
 
             Console.WriteLine("Getting the orders from the region");
-            IQuery<Order> query = queryService.NewQuery<Order>("SELECT * FROM /custom_orders WHERE quantity > 30");
-            IReadOnlyCollection<Order> queryResults = query.Execute();
+            var query = queryService.NewQuery<Order>("SELECT * FROM /custom_orders WHERE quantity > 30");
+            var queryResults = query.Execute();
 
             Console.WriteLine("The following orders have a quantity greater than 30:");
 
@@ -50,7 +50,6 @@ namespace GemFire.Examples.RemoteQuery
                 Console.WriteLine(value.ToString());
             }
 
-            cache.Close();
         }
     }
 }

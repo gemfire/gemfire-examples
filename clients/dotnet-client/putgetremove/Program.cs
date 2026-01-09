@@ -1,22 +1,22 @@
-// Copyright 2024 Broadcom. All Rights Reserved.
+// Copyright 2026 Broadcom. All Rights Reserved.
 
 
 using GemFire.Client;
 
-namespace GemFire.Examples.PutGetRemove
+namespace GemFire.Examples.PutGetRemove;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        var cacheFactory = new CacheFactory()
+            .Set("log-level", "none");
+        cacheFactory.AddLocator("localhost", 10334);
+
+        using (var cache = cacheFactory.Create("PutGetRemove"))
         {
-            var cacheFactory = new CacheFactory()
-                .Set("log-level", "none");
-            cacheFactory.AddLocator("localhost", 10334);
 
-            ICache cache = cacheFactory.Create("PutGetRemove");
-
-
-            IRegion<string, string> region = cache
+            var region = cache
               .CreateRegionFactory(RegionShortcut.PROXY)
               .Create<string, string>("example_userinfo");
 
@@ -48,7 +48,6 @@ namespace GemFire.Examples.PutGetRemove
                 Console.WriteLine("Info for " + rtimmonsKey + " has not been deleted");
             }
 
-            cache.Close();
         }
     }
 }
