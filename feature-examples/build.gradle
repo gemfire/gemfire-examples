@@ -26,7 +26,7 @@ if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com')) {
         throw new GradleException("Please set gemfireReleaseRepoUser in gradle.properties to the email address you registered at https://support.broadcom.com/")
     }
     if (!project.hasProperty("gemfireReleaseRepoPassword") || gemfireReleaseRepoPassword.isEmpty()) {
-        throw new GradleException("Please set gemfireReleaseRepoPassword in gradle.properties to the access token (without quotes) for $gemfireReleaseRepoUser found by navigating to https://support.broadcom.com/ > My Downloads - Tanzu > Vmware Tanzu GemFire > VMware Tanzu GemFire > Show All Releases then click on green icon to the right of Click Green Token for Repository Access")
+        throw new GradleException("Please set gemfireReleaseRepoPassword in gradle.properties to the registry token for $gemfireReleaseRepoUser found by navigating to https://support.broadcom.com > My Downloads > Registry Tokens")
     }
 }
 

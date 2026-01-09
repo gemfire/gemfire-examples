@@ -169,8 +169,7 @@ optimum-cli export onnx --model sentence-transformers/all-MiniLM-L6-v2 src/main/
 To resolve GemFire dependencies, you’ll need access credentials from Broadcom.
 
 1. Log in to the [Broadcom Customer Support Portal](https://support.broadcom.com/) with your customer credentials.
-2. Go to the [VMware Tanzu GemFire](https://support.broadcom.com/group/ecx/productdownloads?subfamily=VMware%20Tanzu%20GemFire) downloads page, select VMware Tanzu GemFire, click Show All Releases.
-3. Find the release named **Click Green Token for Repository Access** and click the **Token Download icon on the RIGHT**. This opens the instructions on how to use the GemFire artifact repository. At the top, the Access Token is provided. Click **Copy to Clipboard**. You will use this Access Token as the password.
+2. Click on My Downloads > Registry Tokens to view or create a token.  You will use this Registry Token as the password.
 
 #### If using Gradle
 Add credentials to your ~/.gradle/gradle.properties (or project-level gradle.properties):
