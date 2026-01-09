@@ -1,29 +1,29 @@
-// Copyright 2024 Broadcom. All Rights Reserved.
+// Copyright 2026 Broadcom. All Rights Reserved.
 
 using GemFire.Client;
 
-namespace GemFire.Examples.ContinuousQuery
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var cacheFactory = new CacheFactory()
-                .Set("log-level", "none");
-            
-            cacheFactory.AddLocator("localhost", 10334).SetSubscriptionEnabled(true);
-            
-            ICache cache = cacheFactory.Create("ContinuousQuery");
+namespace GemFire.Examples.ContinuousQuery;
 
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var cacheFactory = new CacheFactory()
+            .Set("log-level", "none");
+        
+        cacheFactory.AddLocator("localhost", 10334).SetSubscriptionEnabled(true);
+
+        using (var cache = cacheFactory.Create("ContinuousQuery"))
+        {
             Console.WriteLine("Registering for data serialization");
 
             cache.TypeRegistry.RegisterPdxType(Order.CreateDeserializable);
 
-            IRegionFactory regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
+            var regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
 
-            IRegion<string, Order> orderRegion = regionFactory.Create<string, Order>("example_orderobject");
+            var orderRegion = regionFactory.Create<string, Order>("example_orderobject");
 
-            IQueryService queryService = cache.GetQueryService();
+            var queryService = cache.GetQueryService();
 
             var cqAttributesFactory = cache.CreateCqAttributesFactory<string, Order>();
 
@@ -34,7 +34,7 @@ namespace GemFire.Examples.ContinuousQuery
                 .Create();
             try
             {
-                var query = queryService.NewCq("MyCq", 
+                var query = queryService.NewCq("MyCq",
                     "SELECT * FROM /example_orderobject WHERE quantity > 30",
                     cqAttributes, false);
 
@@ -71,7 +71,6 @@ namespace GemFire.Examples.ContinuousQuery
                 Console.WriteLine(ex.Message);
             }
 
-            cache.Close();
         }
     }
 }

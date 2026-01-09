@@ -1,30 +1,29 @@
-// Copyright 2024 Broadcom. All Rights Reserved.
+// Copyright 2026 Broadcom. All Rights Reserved.
 
 using System.Collections;
-using functionexecution;
 using GemFire.Client;
 
-namespace GemFire.Examples.FunctionExecution
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var cacheFactory = new CacheFactory()
-                .Set("log-level", "none");
-            cacheFactory.AddLocator("localhost", 10334);
+namespace GemFire.Examples.FunctionExecution;
 
-            ICache cache = cacheFactory.Create("FunctionExecution");
-            
-            IRegionFactory regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
-            IRegion<object, object> region = regionFactory.Create<object, object>("partition_region");
+class Program
+{
+    static void Main(string[] args)
+    {
+        var cacheFactory = new CacheFactory()
+            .Set("log-level", "none");
+        cacheFactory.AddLocator("localhost", 10334);
+
+        using (var cache = cacheFactory.Create("FunctionExecution"))
+        {
+            var regionFactory = cache.CreateRegionFactory(RegionShortcut.PROXY);
+            var region = regionFactory.Create<object, object>("partition_region");
 
             Console.WriteLine("Storing id and username in the region");
 
-            string rtimmonsKey = "rtimmons";
-            string rtimmonsValue = "Robert Timmons";
-            string scharlesKey = "scharles";
-            string scharlesValue = "Sylvia Charles";
+            var rtimmonsKey = "rtimmons";
+            var rtimmonsValue = "Robert Timmons";
+            var scharlesKey = "scharles";
+            var scharlesValue = "Sylvia Charles";
 
             region.Put(rtimmonsKey, rtimmonsValue, null);
             region.Put(scharlesKey, scharlesValue, null);
@@ -36,7 +35,7 @@ namespace GemFire.Examples.FunctionExecution
             Console.WriteLine(rtimmonsKey + " = " + user1);
             Console.WriteLine(scharlesKey + " = " + user2);
 
-            ArrayList keyArgs = new ArrayList();
+            var keyArgs = new ArrayList();
             keyArgs.Add(rtimmonsKey);
             keyArgs.Add(scharlesKey);
 
@@ -58,7 +57,6 @@ namespace GemFire.Examples.FunctionExecution
                 }
             }
 
-            cache.Close();
         }
     }
 }
