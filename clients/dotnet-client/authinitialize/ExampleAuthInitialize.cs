@@ -19,14 +19,14 @@ class ExampleAuthInitialize : IAuthInitialize
         Console.Out.WriteLine("ExampleAuthInitialize::Close called");
     }
 
-    public IProperties<string, object> GetCredentials(IProperties<string, string> props, string server)
+    public IDictionary<string, object> GetCredentials(IDictionary<string, string> props, string server)
     {
         // TODO get your username and password
         Console.Out.WriteLine("ExampleAuthInitialize::GetCredentials called");
 
-        var credentials = new GemFire.Client.Properties<string, object>();
-        credentials.Insert("security-username", "root");
-        credentials.Insert("security-password", "root");
+        var credentials = new Dictionary<string, object>();
+        credentials.Add("security-username", "root");
+        credentials.Add("security-password", "root");
         return credentials;
     }
 }

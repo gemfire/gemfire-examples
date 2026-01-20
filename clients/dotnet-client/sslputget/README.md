@@ -1,12 +1,12 @@
-﻿# Copyright 2026 Broadcom. All Rights Reserved.
+# Copyright 2026 Broadcom. All Rights Reserved.
 # sslputget example
 
 This example illustrates how to use SSL encryption for all traffic between a .NET application and VMware Tanzu GemFire.
 
 ## Prerequisites
 
-- Install VMware Tanzu GemFire (see [VMware Tanzu GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html))
-- Install [VMware Tanzu GemFire .NET Client](INSTALLATION.md)
+- Install VMware Tanzu GemFire (see [VMware Tanzu GemFire documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html))
+- Install [VMware Tanzu GemFire .NET Client](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-dotnet-client/1-0-beta/gf-dotnet-client/installation.html)
   - VMware Tanzu GemFire .NET Client is delivered as a NuGet package
   - Follow instructions in solution README to install package
 - Build Java example classes (see solution README for details)

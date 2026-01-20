@@ -6,9 +6,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugSymbols>true</DebugSymbols>
+		<DefineConstants>TRACE;RELEASE;NET;NET8_0_OR_GREATER;NETCOREAPP</DefineConstants>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugSymbols>true</DebugSymbols>
+		<DefineConstants>TRACE;RELEASE;NET;NET8_0_OR_GREATER;NETCOREAPP</DefineConstants>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="gemfire.client" Version="1.0.0.101" />
+	<ItemGroup>
+    <PackageReference Include="gemfire.client" Version="1.0.0-667-beta.1" />
   </ItemGroup>
 
   <ItemGroup>
