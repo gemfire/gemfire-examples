@@ -1,7 +1,48 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3EA6DC1D-0496-4F02-9B91-AE9277776CAE}|putgetremove\\putgetremove.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\putgetremove\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{3EA6DC1D-0496-4F02-9B91-AE9277776CAE}|putgetremove\\putgetremove.csproj|solutionrelative:putgetremove\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FCF35F5-D1C1-4FDD-A4D8-347948CEA163}|authinitialize\\authinitialize.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\authinitialize\\authinitialize.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{9FCF35F5-D1C1-4FDD-A4D8-347948CEA163}|authinitialize\\authinitialize.csproj|solutionrelative:authinitialize\\authinitialize.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3EA6DC1D-0496-4F02-9B91-AE9277776CAE}|putgetremove\\putgetremove.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\putgetremove\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3EA6DC1D-0496-4F02-9B91-AE9277776CAE}|putgetremove\\putgetremove.csproj|solutionrelative:putgetremove\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FCF35F5-D1C1-4FDD-A4D8-347948CEA163}|authinitialize\\authinitialize.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\authinitialize\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FCF35F5-D1C1-4FDD-A4D8-347948CEA163}|authinitialize\\authinitialize.csproj|solutionrelative:authinitialize\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E08FB873-9AED-4F84-88DD-3236E04A93C4}|cachelistener\\cachelistener.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\cachelistener\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E08FB873-9AED-4F84-88DD-3236E04A93C4}|cachelistener\\cachelistener.csproj|solutionrelative:cachelistener\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E08FB873-9AED-4F84-88DD-3236E04A93C4}|cachelistener\\cachelistener.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\cachelistener\\mycachelistener.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E08FB873-9AED-4F84-88DD-3236E04A93C4}|cachelistener\\cachelistener.csproj|solutionrelative:cachelistener\\mycachelistener.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FCF35F5-D1C1-4FDD-A4D8-347948CEA163}|authinitialize\\authinitialize.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\authinitialize\\exampleauthinitialize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FCF35F5-D1C1-4FDD-A4D8-347948CEA163}|authinitialize\\authinitialize.csproj|solutionrelative:authinitialize\\exampleauthinitialize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C4012BB-2D3E-4C69-BD24-F33C6431C7EE}|classaskey\\classaskey.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\classaskey\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C4012BB-2D3E-4C69-BD24-F33C6431C7EE}|classaskey\\classaskey.csproj|solutionrelative:classaskey\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C4012BB-2D3E-4C69-BD24-F33C6431C7EE}|classaskey\\classaskey.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\classaskey\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C4012BB-2D3E-4C69-BD24-F33C6431C7EE}|classaskey\\classaskey.csproj|solutionrelative:classaskey\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C4012BB-2D3E-4C69-BD24-F33C6431C7EE}|classaskey\\classaskey.csproj|c:\\dev\\gemfire-examples\\clients\\dotnet-client\\classaskey\\util\\objecthash.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C4012BB-2D3E-4C69-BD24-F33C6431C7EE}|classaskey\\classaskey.csproj|solutionrelative:classaskey\\util\\objecthash.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 17,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,6 +115,140 @@
             {
               "$type": "Bookmark",
               "Name": "ST:131:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\putgetremove\\README.md",
+              "RelativeDocumentMoniker": "putgetremove\\README.md",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\putgetremove\\README.md",
+              "RelativeToolTip": "putgetremove\\README.md",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAEEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-01-20T18:59:03.461Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "authinitialize",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\authinitialize\\authinitialize.csproj",
+              "RelativeDocumentMoniker": "authinitialize\\authinitialize.csproj",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\authinitialize\\authinitialize.csproj",
+              "RelativeToolTip": "authinitialize\\authinitialize.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-01-20T18:48:09.336Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\classaskey\\Program.cs",
+              "RelativeDocumentMoniker": "classaskey\\Program.cs",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\classaskey\\Program.cs",
+              "RelativeToolTip": "classaskey\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAIBJwBsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T16:47:08.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\classaskey\\Order.cs",
+              "RelativeDocumentMoniker": "classaskey\\Order.cs",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\classaskey\\Order.cs",
+              "RelativeToolTip": "classaskey\\Order.cs",
+              "ViewState": "AQIAACoAAAAAAAAAAAAmwAQAAAAaAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T16:46:58.206Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ObjectHash.cs",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\classaskey\\util\\ObjectHash.cs",
+              "RelativeDocumentMoniker": "classaskey\\util\\ObjectHash.cs",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\classaskey\\util\\ObjectHash.cs",
+              "RelativeToolTip": "classaskey\\util\\ObjectHash.cs",
+              "ViewState": "AQIAAHwAAAAAAAAAAAAcwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T16:46:41.516Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\cachelistener\\Program.cs",
+              "RelativeDocumentMoniker": "cachelistener\\Program.cs",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\cachelistener\\Program.cs",
+              "RelativeToolTip": "cachelistener\\Program.cs",
+              "ViewState": "AQIAACsAAAAAAAAAAAAgwDkAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T16:45:05.944Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MyCacheListener.cs",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\cachelistener\\MyCacheListener.cs",
+              "RelativeDocumentMoniker": "cachelistener\\MyCacheListener.cs",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\cachelistener\\MyCacheListener.cs",
+              "RelativeToolTip": "cachelistener\\MyCacheListener.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T16:44:47.126Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\authinitialize\\Program.cs",
+              "RelativeDocumentMoniker": "authinitialize\\Program.cs",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\authinitialize\\Program.cs",
+              "RelativeToolTip": "authinitialize\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAIBJwAQAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T16:42:56.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ExampleAuthInitialize.cs",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\authinitialize\\ExampleAuthInitialize.cs",
+              "RelativeDocumentMoniker": "authinitialize\\ExampleAuthInitialize.cs",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\authinitialize\\ExampleAuthInitialize.cs",
+              "RelativeToolTip": "authinitialize\\ExampleAuthInitialize.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAIBJwAUAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T16:42:38.813Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\putgetremove\\Program.cs",
+              "RelativeDocumentMoniker": "putgetremove\\Program.cs",
+              "ToolTip": "C:\\dev\\gemfire-examples\\clients\\dotnet-client\\putgetremove\\Program.cs",
+              "RelativeToolTip": "putgetremove\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAA6AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-09T15:58:16.671Z",
+              "EditorCaption": ""
             }
           ]
         },

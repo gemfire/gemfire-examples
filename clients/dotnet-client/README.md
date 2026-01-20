@@ -8,8 +8,8 @@ Before running the examples, ensure you have the following components installed:
 
 - **.NET 8.0 SDK** - Download from [Microsoft .NET Downloads](https://dotnet.microsoft.com/download)
 - **Java 8 or Java 11 JDK** - Required to run Tanzu GemFire Locator and Server processes
-- **VMware Tanzu GemFire** - Download and install from [VMware Tanzu GemFire Downloads](https://support.broadcom.com/group/ecx/productdownloads?subfamily=VMware%20Tanzu%20GemFire)
-- **VMware Tanzu GemFire .NET Client** - Install the `GemFire.Client` NuGet package (see [Installation Guide](https://docs.vmware.com/en/VMware-GemFire/index.html) for installation instructions)
+- **VMware Tanzu GemFire** - Download and install from [VMware Tanzu GemFire Downloads](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html)))
+- **VMware Tanzu GemFire .NET Client** - Install the `GemFire.Client` NuGet package (see [Installation Guide](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-dotnet-client/1-0-beta/gf-dotnet-client/installation.html) for installation instructions)
 
 ## Getting the Examples
 
