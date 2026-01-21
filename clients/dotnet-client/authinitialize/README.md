@@ -6,8 +6,8 @@ There are 3 Java files used to create a simple authenticator which are deployed 
 The Java code demonstrates the basics required on the server side needed for the server authenticate the client.
 
 ## Prerequisites
-- Install VMware Tanzu GemFire (see [VMware Tanzu GemFire documentation](https://docs.vmware.com/en/VMware-GemFire/index.html))
-- Install [VMware Tanzu GemFire .NET Client](INSTALLATION.md)
+- Install VMware Tanzu GemFire (see [VMware Tanzu GemFire documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html))
+- Install [VMware Tanzu GemFire .NET Client](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-dotnet-client/1-0-beta/gf-dotnet-client/installation.html)
     - VMware Tanzu GemFire .NET Client is delivered as a NuGet package
     - Follow instructions in solution README to install package
 - Build Java example classes (see solution README for details)

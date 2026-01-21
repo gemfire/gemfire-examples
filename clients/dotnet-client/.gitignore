@@ -9,7 +9,9 @@
 /**/locator0
 /**/server
 /**/server0
-/**/server1
+/**/server1j
+/**/obj
+/**/bin
 nuget.config
 /**/.idea
 /**/.DS_Store
