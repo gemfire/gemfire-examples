@@ -32,20 +32,20 @@ Configure PATH to GemFire bin directory for access to gfsh utility.
 $ export PATH=${PATH}:${GEMFIRE_HOME}/bin
 ```
 
-Validate Java 11 and Maven install.
+Validate Java 17 and Maven install.
 
 ```text
 $ java -version
 
-openjdk version "11.0.17" 2022-10-18
-OpenJDK Runtime Environment (build 11.0.17+8-post-Ubuntu-1ubuntu2)
-OpenJDK 64-Bit Server VM (build 11.0.17+8-post-Ubuntu-1ubuntu2, mixed mode, sharing)
+openjdk version "17.0.14" 2025-01-21
+OpenJDK Runtime Environment Homebrew (build 17.0.14+0)
+OpenJDK 64-Bit Server VM Homebrew (build 17.0.14+0, mixed mode, sharing)
 
 $ mvn --version
 
 Apache Maven 3.8.3
 Maven home: /usr/share/maven
-Java version: 11.0.17, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Java version: 17.0.14, vendor: Ubuntu, runtime: /usr/lib/jvm/java-17-openjdk-amd64
 Default locale: en_US, platform encoding: UTF-8
 OS name: "linux", version: "5.19.0-29-generic", arch: "amd64", family: "unix"
 ```
@@ -93,7 +93,7 @@ Locator in /home/<username>/locator on test-javaclient.localdomain[10334] as loc
 Process ID: 532579
 Uptime: 10 seconds
 GemFire Version: 10.2.0
-Java Version: 11.0.17
+Java Version: 17.0.14
 Log File: /home/<username>/test/locator/locator.log
 JVM Arguments: --add-exports=java.management/com.sun.jmx.remote.security=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED -Dgemfire.enable-cluster-configuration=true -Dgemfire.load-cluster-configuration-from-dir=false -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
 Class-Path: /home/<username>/vmware-gemfire-10.2.0/lib/gemfire-core-10.2.0.jar:/home/<username>/vmware-gemfire-10.2.0/lib/gemfire-server-all-10.2.0.jar
@@ -125,7 +125,7 @@ Server in /home/<username>/server on test-javaclient.localdomain[40404] as serve
 Process ID: 534075
 Uptime: 3 seconds
 GemFire Version: 10.2.0
-Java Version: 11.0.17
+Java Version: 17.0.14
 Log File: /home/<username>/test/server/server.log
 JVM Arguments: --add-exports=java.management/com.sun.jmx.remote.security=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED -Dgemfire.default.locators=192.168.0.38[10334] -Dgemfire.start-dev-rest-api=false -Dgemfire.use-cluster-configuration=true -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
 Class-Path: /home/<username>/vmware-gemfire-10.2.0/lib/gemfire-core-10.2.0.jar:/home/<username>/vmware-gemfire-10.2.0/lib/gemfire-server-all-10.2.0.jar
@@ -223,7 +223,7 @@ Build the client application with Maven and copy dependencies to target director
 $ mvn clean compile dependency:copy-dependencies package
 ```
 
-Set the classpath and run the client with the Java 11 virtual machine.
+Set the classpath and run the client with the Java 17 virtual machine.
 
 ```text
 $ java -cp target/GemFireClient-1.0-EXAMPLE.jar:target/dependency/*  com.vmware.gemfire.examples.quickstart.GemFireClient

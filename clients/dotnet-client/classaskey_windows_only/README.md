@@ -11,7 +11,7 @@ This example shows how to design a photo filter as the key for storing metadata 
 * Install VMware Tanzu GemFire (see [VMware Tanzu GemFire documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html))
 * Install [VMware Tanzu GemFire .NET Client](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-dotnet-client/1-0-beta/gf-dotnet-client/installation.html)
 * Set `GEMFIRE_HOME` to the install directory of VMware Tanzu GemFire
-* Set `JAVA_HOME` to top of Java 8 JDK or Java 11 JDK installation
+* Set `JAVA_HOME` to top of Java 17 JDK installation
 * Build examples from solution directory "dotnet build"
 
 ## Running

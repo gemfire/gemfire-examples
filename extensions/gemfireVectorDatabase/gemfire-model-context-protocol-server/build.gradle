@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2026 Broadcom. All Rights Reserved.
+ */
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.5'
@@ -14,14 +18,19 @@ java {
 }
 
 repositories {
-    mavenCentral()
     maven {
-        url "https://packages.broadcom.com/artifactory/gemfire/"
-        credentials {
-            username "$project.ext.gemfireRepoUsername"
-            password "$project.ext.gemfireRepoPassword"
+        if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com')) {
+            credentials {
+                username = "$gemfireReleaseRepoUser"
+                password = "$gemfireReleaseRepoPassword"
+            }
         }
+        url = uri(findProperty('gemfireRepositoryUrl') ?: "https://packages.broadcom.com/artifactory/gemfire/")
     }
+    if (project.hasProperty('useMavenLocal')) {
+        mavenLocal()
+    }
+    mavenCentral()
 }
 
 configurations.all {

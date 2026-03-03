@@ -15,7 +15,7 @@ or with minor changes can be used to add multiple listeners that will be trigger
 - Build Java example classes (see solution README for details)
 - Build examples from solution directory "dotnet build"
 - Set shell variable `GEMFIRE_HOME` to the install directory of VMware Tanzu GemFire
-- Set shell variable `JAVA_HOME` to top of Java 8 JDK or Java 11 JDK installation
+- Set shell variable `JAVA_HOME` to top of Java 17 JDK installation
 
 ## Running
 

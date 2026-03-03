@@ -19,6 +19,6 @@ package com.vmware.gemfire.examples.sessionState;
 public class Example {
   public static void main(String[] args) {
     System.out.println(
-        "Refer to the README.md located in geode_examples/sessionState for info on how to run the session state demo.");
+        "Refer to the README.md located in feature-examples/sessionState for info on how to run the session state demo.");
   }
 }

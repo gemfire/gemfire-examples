@@ -14,7 +14,7 @@ The goal of this quickstart tutorial is to introduce using and storing JSON docu
 
 * Tanzu GemFire 10.0 or later
 * Apache Maven
-* Java Developer Kit (JDK) 11
+* Java Developer Kit (JDK) 17
 * (optional) Integrated Development Environment (IDE) such as Microsoft Visual Studio Code (vscode) or JetBrains IntelliJ IDEA
 
 ## Download Examples and Configure Environment
@@ -39,20 +39,20 @@ Configure PATH to GemFire bin directory for access to gfsh utility.
 $ export PATH=${PATH}:${GEMFIRE_HOME}/bin
 ```
 
-Validate Java 11 and Maven install.
+Validate Java 17 and Maven install.
 
 ```text
 $ java -version
 
-openjdk version "11.0.17" 2022-10-18
-OpenJDK Runtime Environment (build 11.0.17+8-post-Ubuntu-1ubuntu2)
-OpenJDK 64-Bit Server VM (build 11.0.17+8-post-Ubuntu-1ubuntu2, mixed mode, sharing)
+openjdk version "17.0.14" 2025-01-21
+OpenJDK Runtime Environment Homebrew (build 17.0.14+0)
+OpenJDK 64-Bit Server VM Homebrew (build 17.0.14+0, mixed mode, sharing)
 
 $ mvn --version
 
 Apache Maven 3.8.3
 Maven home: /usr/share/maven
-Java version: 11.0.17, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Java version: 17.0.14, vendor: Ubuntu, runtime: /usr/lib/jvm/java-17-openjdk-amd64
 Default locale: en_US, platform encoding: UTF-8
 OS name: "linux", version: "5.19.0-29-generic", arch: "amd64", family: "unix"
 ```
@@ -113,7 +113,7 @@ Build the client application with Maven and copy dependencies to target director
 $ mvn clean compile dependency:copy-dependencies package
 ```
 
-Set the classpath and run the client with the Java 11 virtual machine.
+Set the classpath and run the client with the Java 17 virtual machine.
 
 ```text
 $ java -cp target/GemFireClient-1.0-EXAMPLE.jar:target/dependency/*  com.vmware.gemfire.examples.quickstart.GemFireClient

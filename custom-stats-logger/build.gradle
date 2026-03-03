@@ -2,23 +2,32 @@ plugins {
     id 'java'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 group = 'org.example'
 version = '1.0-SNAPSHOT'
 
 repositories {
+    maven {
+        if (project.getProperty('gemfireRepositoryUrl').contains('broadcom.com')) {
+            credentials {
+                username = "$gemfireReleaseRepoUser"
+                password = "$gemfireReleaseRepoPassword"
+            }
+        }
+        url = project.getProperty('gemfireRepositoryUrl')
+    }
+    if (project.hasProperty('useMavenLocal')) {
+        mavenLocal()
+    }
     mavenCentral()
 }
 
 dependencies {
-    repositories {
-        maven {
-            credentials {
-                username "$gemfireReleaseRepoUser"
-                password "$gemfireReleaseRepoPassword"
-            }
-            url = uri("${gemfireRepositoryUrl}")
-        }
-    }
     implementation "com.vmware.gemfire:gemfire-core:${gemfireVersion}"
     implementation "com.vmware.gemfire:gemfire-logging:${gemfireVersion}"
     implementation "org.apache.commons:commons-lang3:3.15.0"
