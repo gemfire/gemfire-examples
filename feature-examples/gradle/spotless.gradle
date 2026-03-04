@@ -122,6 +122,13 @@ spotless {
       include '**/*.gradle'
       exclude '**/generated-src/**'
       exclude '**/build/**'
+      // The sessionState/webapp sub-directory is a standalone Gradle project
+      // with its own settings.gradle that does not participate in the
+      // feature-examples BOM, so it must manage its own dependency versions.
+      // Exclude it so that the 'Drop version portion of dependency' rule does
+      // not fire on its build.gradle. The path is relative to each subproject's
+      // projectDir, so 'webapp/**' matches when spotless runs in :sessionState.
+      exclude 'webapp/**'
     }
 
     toggleOffOn()

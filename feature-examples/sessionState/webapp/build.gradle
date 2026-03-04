@@ -30,8 +30,6 @@ repositories {
 }
 
 dependencies {
-  // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
   compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
-
   testImplementation('junit:junit')
 }
