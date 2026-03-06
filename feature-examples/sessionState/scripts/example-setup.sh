@@ -24,6 +24,8 @@
 # Description:
 # 2026-03-04: Added pre-setup cleanup of any previously-installed GemFire JARs and copying of
 #             GemFire runtime JARs to Tomcat lib/ so the session management module resolves at startup
+# 2026-03-04: Switch GemFire client dependency source from lib/ to the curated
+#             gemfire-client-dependencies zip in tools/Modules/gemfire-session-management/
 #
 
 # Usage: ./example-setup.sh <root directory of GemFire install>
@@ -69,6 +71,21 @@ fi
 TOMCAT_VERSION=Tomcat11
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
+# Locate the curated client-dependencies zip shipped with GemFire at:
+#   tools/Modules/gemfire-session-management/gemfire-client-dependencies-*.zip
+# This zip contains exactly the GemFire client-side JARs needed by the session
+# management module — no server-only or launcher JARs.
+CLIENT_DEPS_ZIP=$(ls "${GEMFIRE_LOCATION}/tools/Modules/gemfire-session-management"/gemfire-client-dependencies-*.zip 2>/dev/null | head -1)
+
+if [ -z "${CLIENT_DEPS_ZIP}" ]; then
+  echo "ERROR: gemfire-client-dependencies zip not found in"
+  echo "       ${GEMFIRE_LOCATION}/tools/Modules/gemfire-session-management/"
+  echo "       Ensure GemFire is fully installed."
+  exit 1
+fi
+
+echo "Using GemFire client dependencies: ${CLIENT_DEPS_ZIP}"
+
 # ---------------------------------------------------------------------------
 # Step 1: Clean any GemFire files left from a previous setup run so we always
 #         install fresh JARs that match the currently supplied GemFire version.
@@ -78,10 +95,10 @@ echo "Cleaning up any previously installed GemFire files from Tomcat..."
 # Remove session management JARs (from previous session-mgmt zip extractions)
 rm -f "${CATALINA_LOCATION}/lib/gemfire-session-management-"*.jar
 
-# Remove GemFire runtime JARs (anything that also lives in $GEMFIRE_HOME/lib/)
-for jar in "${GEMFIRE_LOCATION}/lib"/*.jar; do
-  rm -f "${CATALINA_LOCATION}/lib/$(basename "${jar}")"
-done
+# Remove GemFire client dependency JARs (listed inside the client-deps zip)
+while IFS= read -r fname; do
+  rm -f "${CATALINA_LOCATION}/lib/${fname}"
+done < <(unzip -Z1 "${CLIENT_DEPS_ZIP}")
 
 # Remove GemFire cache configuration files
 rm -f "${CATALINA_LOCATION}/conf/cache-client.xml"
@@ -144,29 +161,15 @@ if [ -d "${CATALINA_LOCATION}/lib/conf" ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Step 4: Copy GemFire core runtime JARs into $CATALINA_HOME/lib/
-#         The session management JARs depend on GemFire classes (gemfire-core,
-#         gemfire-management, etc.) which must be on Tomcat's shared classpath.
-#         All JARs from $GEMFIRE_HOME/lib/ are copied except a small set of
-#         bootstrap/launcher JARs that are only meaningful inside GemFire's own
-#         JBoss Modules loader and would conflict with Tomcat's classloading.
+# Step 4: Install GemFire client dependency JARs into $CATALINA_HOME/lib/
+#         tools/Modules/gemfire-session-management/gemfire-client-dependencies-*.zip
+#         contains the curated set of GemFire client-side JARs (gemfire-core,
+#         gemfire-management, and their transitive dependencies) that the session
+#         management module needs on Tomcat's shared classpath. Using this zip
+#         instead of lib/ ensures only the necessary client JARs are installed.
 # ---------------------------------------------------------------------------
-echo "Copying GemFire runtime JARs from ${GEMFIRE_LOCATION}/lib/ to ${CATALINA_LOCATION}/lib/..."
-for jar in "${GEMFIRE_LOCATION}/lib"/*.jar; do
-  fname=$(basename "${jar}")
-  case "${fname}" in
-    gemfire-bootstrap.jar|\
-    gemfire-dependencies.jar|\
-    gemfire-jboss-modules-*.jar|\
-    gfsh-dependencies.jar)
-      # These are launcher/classloader bootstrap JARs used only by GemFire's own
-      # JBoss Modules runtime and must not be placed on Tomcat's classpath.
-      ;;
-    *)
-      cp "${jar}" "${CATALINA_LOCATION}/lib/"
-      ;;
-  esac
-done
+echo "Installing GemFire client dependency JARs from ${CLIENT_DEPS_ZIP}..."
+unzip -o "${CLIENT_DEPS_ZIP}" -d "${CATALINA_LOCATION}/lib"
 
 # ---------------------------------------------------------------------------
 # Step 5: Install the .gfm extension into GemFire's extensions directory so

@@ -24,6 +24,7 @@
 # Description:
 # 2026-03-04: Extended shutdown to stop Tomcat and remove all GemFire-placed files from the
 #             Tomcat installation, leaving it in a clean state for the next setup run
+# 2026-03-04: Switch cleanup to use gemfire-client-dependencies zip manifest instead of lib/
 #
 
 # Usage: ./example-shutdown.sh <root directory of GemFire install>
@@ -55,10 +56,10 @@ CATALINA_LOCATION=${CATALINA_HOME%/}
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 # ---------------------------------------------------------------------------
-# 1. Stop the GemFire cluster
+# 1. Stop the GemFire cluster (non-fatal if already stopped)
 # ---------------------------------------------------------------------------
 echo "Stopping GemFire locator and server..."
-"${GEMFIRE_LOCATION}/bin/gfsh" run --file="${SCRIPT_DIR}/stop.gfsh"
+"${GEMFIRE_LOCATION}/bin/gfsh" run --file="${SCRIPT_DIR}/stop.gfsh" || true
 
 # ---------------------------------------------------------------------------
 # 2. Stop Tomcat
@@ -82,18 +83,20 @@ rm -rf "${CATALINA_LOCATION}/webapps/SessionStateDemo"
 # ---------------------------------------------------------------------------
 # 4. Remove GemFire JARs from Tomcat's lib/ directory.
 #    This covers:
-#      a) All JARs that were copied from $GEMFIRE_HOME/lib/
+#      a) All JARs listed in the gemfire-client-dependencies zip
+#         (tools/Modules/gemfire-session-management/gemfire-client-dependencies-*.zip)
 #      b) The session management JARs (gemfire-session-management-*) that
 #         were extracted from the session management zip
 # ---------------------------------------------------------------------------
 echo "Removing GemFire JARs from ${CATALINA_LOCATION}/lib/..."
 if [ -d "${CATALINA_LOCATION}/lib" ]; then
-  # Remove JARs that exist in GemFire's lib directory (these are GemFire's dependencies)
-  for jar in "${GEMFIRE_LOCATION}/lib"/*.jar; do
-    fname=$(basename "${jar}")
-    rm -f "${CATALINA_LOCATION}/lib/${fname}"
-  done
-  # Remove the session management module JARs (come from the session management zip, not GemFire lib)
+  CLIENT_DEPS_ZIP=$(ls "${GEMFIRE_LOCATION}/tools/Modules/gemfire-session-management"/gemfire-client-dependencies-*.zip 2>/dev/null | head -1)
+  if [ -n "${CLIENT_DEPS_ZIP}" ]; then
+    while IFS= read -r fname; do
+      rm -f "${CATALINA_LOCATION}/lib/${fname}"
+    done < <(unzip -Z1 "${CLIENT_DEPS_ZIP}")
+  fi
+  # Remove the session management module JARs (come from the session management zip, not client-deps)
   rm -f "${CATALINA_LOCATION}/lib/gemfire-session-management-"*.jar
 fi
 
