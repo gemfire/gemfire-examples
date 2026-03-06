@@ -33,7 +33,7 @@ Third example is SearchOverlappingLocation, it finds the location that overlaps 
 
 Fourth example is SearchIntersectingCoordinates, it finds the location that coincides with a given shape (which consists of multiple locations). 
 
-These example assumes that Java 11 and GemFire are installed. Minimum java version is jdk11. 
+These example assumes that Java 17 and GemFire are installed. Minimum java version is jdk17. 
 
 Note: These example use the GemFire Search extension which requires GemFire 10 to work
 

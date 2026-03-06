@@ -10,6 +10,8 @@ build/
 .project
 .settings/
 .idea/
+.cursor/
+.vscode/
 build-eclipse/
 /tags
 out/
@@ -21,8 +23,11 @@ l1
 server
 *server1
 *server2
-wan/locator-*/
-wan/server-*/
+feature-examples/wan/locator-*/
+feature-examples/wan/server-*/
+feature-examples/wanDelta/locator-*/
+feature-examples/wanDelta/server-*/
+custom-stats-logger/bin/
 
 *.iml
 *.ipr
@@ -34,6 +39,7 @@ wan/server-*/
 *.dat
 *.rej
 *.orig
+.java-version
 
 
 

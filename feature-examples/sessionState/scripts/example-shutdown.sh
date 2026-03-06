@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Copyright (c) VMware, Inc. 2023. All rights reserved.
 #
@@ -17,8 +18,102 @@
  # the License.
  #
 
- #!bin/bash
+#
+# @AI-Generated
+# Generated in whole or in part by Cursor
+# Description:
+# 2026-03-04: Extended shutdown to stop Tomcat and remove all GemFire-placed files from the
+#             Tomcat installation, leaving it in a clean state for the next setup run
+# 2026-03-04: Switch cleanup to use gemfire-client-dependencies zip manifest instead of lib/
+#
 
- #Shutdown server and locator
-$1/bin/gfsh run --file=shutdown-example.gfsh
+# Usage: ./example-shutdown.sh <root directory of GemFire install>
+# Example: ./example-shutdown.sh /path/to/vmware-gemfire
+#
+# Prerequisites:
+#   - CATALINA_HOME must be set to the root of your Apache Tomcat 11 installation
 
+set -eu
+
+GEMFIRE_LOCATION=${1%/}
+
+if [ -z "${GEMFIRE_LOCATION}" ]; then
+  GEMFIRE_LOCATION=${GEMFIRE_HOME:-}
+fi
+
+if [ -z "${GEMFIRE_LOCATION}" ]; then
+  echo "Usage: $0 <root directory of GemFire install>"
+  echo "  or set GEMFIRE_HOME environment variable"
+  exit 1
+fi
+
+if [ -z "${CATALINA_HOME:-}" ]; then
+  echo "ERROR: CATALINA_HOME environment variable is not set."
+  exit 1
+fi
+
+CATALINA_LOCATION=${CATALINA_HOME%/}
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
+# ---------------------------------------------------------------------------
+# 1. Stop the GemFire cluster (non-fatal if already stopped)
+# ---------------------------------------------------------------------------
+echo "Stopping GemFire locator and server..."
+"${GEMFIRE_LOCATION}/bin/gfsh" run --file="${SCRIPT_DIR}/stop.gfsh" || true
+
+# ---------------------------------------------------------------------------
+# 2. Stop Tomcat
+# ---------------------------------------------------------------------------
+echo "Stopping Tomcat..."
+if [ -x "${CATALINA_LOCATION}/bin/shutdown.sh" ]; then
+  "${CATALINA_LOCATION}/bin/shutdown.sh" || true
+else
+  chmod +x "${CATALINA_LOCATION}/bin/shutdown.sh"
+  "${CATALINA_LOCATION}/bin/shutdown.sh" || true
+fi
+sleep 3
+
+# ---------------------------------------------------------------------------
+# 3. Remove the SessionStateDemo webapp from Tomcat
+# ---------------------------------------------------------------------------
+echo "Removing SessionStateDemo webapp..."
+rm -rf "${CATALINA_LOCATION}/webapps/SessionStateDemo.war"
+rm -rf "${CATALINA_LOCATION}/webapps/SessionStateDemo"
+
+# ---------------------------------------------------------------------------
+# 4. Remove GemFire JARs from Tomcat's lib/ directory.
+#    This covers:
+#      a) All JARs listed in the gemfire-client-dependencies zip
+#         (tools/Modules/gemfire-session-management/gemfire-client-dependencies-*.zip)
+#      b) The session management JARs (gemfire-session-management-*) that
+#         were extracted from the session management zip
+# ---------------------------------------------------------------------------
+echo "Removing GemFire JARs from ${CATALINA_LOCATION}/lib/..."
+if [ -d "${CATALINA_LOCATION}/lib" ]; then
+  CLIENT_DEPS_ZIP=$(ls "${GEMFIRE_LOCATION}/tools/Modules/gemfire-session-management"/gemfire-client-dependencies-*.zip 2>/dev/null | head -1)
+  if [ -n "${CLIENT_DEPS_ZIP}" ]; then
+    while IFS= read -r fname; do
+      rm -f "${CATALINA_LOCATION}/lib/${fname}"
+    done < <(unzip -Z1 "${CLIENT_DEPS_ZIP}")
+  fi
+  # Remove the session management module JARs (come from the session management zip, not client-deps)
+  rm -f "${CATALINA_LOCATION}/lib/gemfire-session-management-"*.jar
+fi
+
+# ---------------------------------------------------------------------------
+# 5. Remove GemFire cache configuration files from Tomcat's conf/ directory
+# ---------------------------------------------------------------------------
+echo "Removing GemFire cache config files from ${CATALINA_LOCATION}/conf/..."
+rm -f "${CATALINA_LOCATION}/conf/cache-client.xml"
+rm -f "${CATALINA_LOCATION}/conf/cache-peer.xml"
+rm -f "${CATALINA_LOCATION}/conf/cache-server.xml"
+
+# ---------------------------------------------------------------------------
+# 6. Remove the .gfm extension file from GemFire's extensions directory
+# ---------------------------------------------------------------------------
+echo "Removing session management gfm extension from ${GEMFIRE_LOCATION}/extensions/..."
+rm -f "${GEMFIRE_LOCATION}/extensions/gemfire-session-management-tomcat11-"*.gfm
+
+echo ""
+echo "Shutdown complete. Tomcat is now in a clean state."
+echo "Run example-setup.sh again to reinstall with a fresh GemFire version."

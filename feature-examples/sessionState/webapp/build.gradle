@@ -19,15 +19,17 @@ plugins {
 
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
 
 repositories {
   mavenCentral()
 }
 
 dependencies {
-  // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-  providedCompile(group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0')
-
-  testCompile(group: 'junit', name: 'junit', version: '4.13.1')
+  compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
+  testImplementation('junit:junit')
 }
