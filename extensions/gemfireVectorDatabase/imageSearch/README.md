@@ -1,6 +1,6 @@
 # GemFire Image Search
 An image search webapp that uses Tanzu GemFire and the Tanzu GemFire Vector Database extension.
-Download the extension from support.broadcom.com: [GemFire Vector Database extension](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Tanzu%20GemFire%20Vector%20Database&displayGroup=VMware%20Tanzu%20GemFire%20Vector%20Database&release=1.2.0&os=&servicePk=530223&language=EN)
+Download the extension from support.broadcom.com: [GemFire Vector Database extension](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Tanzu%20GemFire%20Vector%20Database&displayGroup=VMware%20Tanzu%20GemFire%20Vector%20Database&release=1.2.1&os=&servicePk=541204&language=EN)
 
 ## Using the Application
 
@@ -37,8 +37,8 @@ The application currently expects to find the GemFire `--http-service-port`  at 
 
 ## Requirements
 
-- [GemFire 10.0+](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Tanzu%20GemFire&displayGroup=VMware%20Tanzu%20GemFire&release=10.2.0&os=&servicePk=536435&language=EN)
-- [GemFire Vector Database extension 1.2+](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Tanzu%20GemFire%20Vector%20Database&displayGroup=VMware%20Tanzu%20GemFire%20Vector%20Database&release=1.2.0&os=&servicePk=530223&language=EN)
+- [GemFire 10.0+](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Tanzu%20GemFire&displayGroup=VMware%20Tanzu%20GemFire&release=10.2.2&os=&servicePk=541187&language=EN)
+- [GemFire Vector Database extension 1.2+](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Tanzu%20GemFire%20Vector%20Database&displayGroup=VMware%20Tanzu%20GemFire%20Vector%20Database&release=1.2.1&os=&servicePk=541204&language=EN)
 - React
 - Flask (python webserver)
 - Python 3.9+

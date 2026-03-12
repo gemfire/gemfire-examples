@@ -35,7 +35,7 @@
       <dependency>
         <groupId>com.vmware.gemfire</groupId>
         <artifactId>gemfire-all-bom</artifactId>
-        <version>10.2.0</version>
+        <version>10.2.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

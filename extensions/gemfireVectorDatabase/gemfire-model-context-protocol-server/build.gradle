@@ -41,7 +41,7 @@ configurations.all {
 ext {
     set('springAiVersion', "1.0.0")
     springBootForGemFireVersion = '2.0.3'
-    vmwareGemFireVersion = '10.2.0'
+    vmwareGemFireVersion = '10.2.2'
 }
 
 dependencies {
