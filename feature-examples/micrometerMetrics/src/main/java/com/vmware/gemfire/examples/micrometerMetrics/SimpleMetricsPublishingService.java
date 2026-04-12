@@ -16,7 +16,7 @@
  */
 package com.vmware.gemfire.examples.micrometerMetrics;
 
-import static io.micrometer.prometheus.PrometheusConfig.DEFAULT;
+import static io.micrometer.prometheusmetrics.PrometheusConfig.DEFAULT;
 import static java.lang.Integer.getInteger;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import io.micrometer.prometheus.PrometheusMeterRegistry;
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import org.apache.logging.log4j.Logger;
 
 import org.apache.geode.logging.internal.log4j.api.LogService;

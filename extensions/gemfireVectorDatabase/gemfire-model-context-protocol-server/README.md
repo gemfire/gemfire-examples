@@ -238,7 +238,7 @@ Make sure you have downloaded GemFire 10.x or later and the GemFire Vector DB ex
 
    For example:
     ```
-   vmware-gemfire-10.2.5/extensions/vmware-gemfire-vectordb-1.2.2.gfm
+   vmware-gemfire-10.3.0/extensions/vmware-gemfire-vectordb-2.0.0.gfm
    ```
 3. Open a terminal, navigate to the `bin` folder in the GemFire directory, and start GFSH:
 
@@ -260,20 +260,20 @@ Make sure you have downloaded GemFire 10.x or later and the GemFire Vector DB ex
     Tanzu GemFire
     ----------------------------------------
     Build-Java-Vendor: BellSoft
-    GemFire-Source-Date: 2025-03-20 13:29:10 -0700
+    GemFire-Source-Date: 2026-07-15 13:29:10 -0700
     Build-Platform: Linux 4.18.0-553.el8_10.x86_64 amd64
-    Build-Java-Version: 1.8.0_442
+    Build-Java-Version: 17
     GemFire-Source-Revision: 62f20538984ebd92beee00874104d8706c6e4719
-    Build-Id: gemfire 2511
+    Build-Id: gemfire 2957
     Product-Name: Tanzu GemFire
-    GemFire-Version: 10.2.5
-    GemFire-Source-Repository: support/10.2
+    GemFire-Version: 10.3.0
+    GemFire-Source-Repository: support/10.3
     ----------------------------------------
     Tanzu GemFire Vector DB
     ----------------------------------------
-    GemFire-Vector-DB-Source-Repository: HEAD
-    GemFire-Vector-DB-Source-Date: 2025-04-10 09:22:32 -0700
-    GemFire-Vector-DB-Version: 1.2.2
+    GemFire-Vector-DB-Source-Repository: develop
+    GemFire-Vector-DB-Source-Date: 2026-07-15 13:29:10 -0700
+    GemFire-Vector-DB-Version: 2.0.0
     GemFire-Vector-DB-Source-Revision: 9ad01268475449c40fd58491b373b30ce3c91522
     ```
 

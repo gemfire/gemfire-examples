@@ -24,7 +24,7 @@ import static org.mockito.quality.Strictness.STRICT_STUBS;
 
 import java.io.IOException;
 
-import io.micrometer.prometheus.PrometheusMeterRegistry;
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;

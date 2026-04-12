@@ -20,7 +20,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <vmwareGemFire.version>10.2.5</vmwareGemFire.version>
+        <vmwareGemFire.version>10.3.0</vmwareGemFire.version>
     </properties>
 
     <!--

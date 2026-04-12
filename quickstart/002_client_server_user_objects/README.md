@@ -12,7 +12,7 @@ The goal of this quickstart tutorial is to introduce building and using user cre
 
 ## Prerequisite Required Software
 
-* Tanzu GemFire 10.2.0 or later
+* Tanzu GemFire 10.3.0 or later
 * Apache Maven
 * Java Developer Kit (JDK) 17
 * (optional) Integrated Development Environment (IDE) such as Microsoft Visual Studio Code (vscode) or JetBrains IntelliJ IDEA
@@ -78,7 +78,7 @@ password with those used during sign-up.
 </settings>
 ```
 
-The pom.xml file provided with the examples is already configured with a pointer to the Tanzu GemFire maven repository and makes use of the GemFire 10.2.5 version of the product.
+The pom.xml file provided with the examples is already configured with a pointer to the Tanzu GemFire maven repository and makes use of the GemFire 10.3.0 version of the product.
 
 ## Start a Developer GemFire Cluster
 
