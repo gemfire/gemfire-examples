@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GemFire Distributed Types Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .console-font, pre { font-family: 'Monaco', 'Consolas', 'Courier New', monospace; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+
+        @keyframes highlight {
+            0% { background-color: #fef08a; transform: scale(1.02); }
+            100% { background-color: transparent; transform: scale(1); }
+        }
+        .animate-update { animation: highlight 0.5s ease-out; }
+
+        [x-cloak] { display: none !important; }
+
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid #fff;
+            width: 14px;
+            height: 14px;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-screen overflow-hidden flex" x-data="gemfireLab">
+
+<aside class="w-64 bg-white border-r border-slate-200 flex flex-col z-10 shadow-sm shrink-0">
+    <div class="p-6 border-b border-slate-200 bg-indigo-600 text-white">
+        <h1 class="text-xl font-extrabold tracking-tight">GemFire <span class="text-indigo-200 font-medium">Lab</span></h1>
+    </div>
+    <div class="flex-1 overflow-y-auto py-2">
+        <template x-for="category in [...new Set(tabs.map(t => t.category))]" :key="category">
+            <div class="mb-4">
+                <div class="px-6 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider" x-text="category"></div>
+                <template x-for="tab in tabs.filter(t => t.category === category)" :key="tab.id">
+                    <button @click="activeTab = tab.id"
+                            class="w-full text-left px-6 py-2 text-sm transition-all border-l-4 font-medium"
+                            :class="activeTab === tab.id ? 'border-indigo-600 bg-indigo-50 text-indigo-700' : 'border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900'">
+                        <span x-text="tab.name"></span>
+                    </button>
+                </template>
+            </div>
+        </template>
+    </div>
+</aside>
+
+<main class="flex-1 flex flex-col h-full bg-slate-100 min-w-0">
+
+    <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center shadow-sm shrink-0">
+        <div class="flex items-center gap-6">
+            <h2 class="text-lg font-bold text-slate-800" x-text="tabs.find(t => t.id === activeTab).name"></h2>
+
+            <div class="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-tight">Simulate Latency</span>
+                <button @click="simLatency = !simLatency"
+                        class="relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none"
+                        :class="simLatency ? 'bg-indigo-600' : 'bg-slate-300'">
+                        <span class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition"
+                              :class="simLatency ? 'translate-x-5' : 'translate-x-0'"></span>
+                </button>
+            </div>
+        </div>
+        <button @click="showCode = !showCode" class="text-sm text-indigo-600 font-semibold hover:underline">
+            <span x-text="showCode ? 'Hide Code Snippet' : 'View Code Snippet'"></span>
+        </button>
+    </header>
+
+    <div class="flex-1 p-6 overflow-y-auto">
+        <div class="max-w-6xl mx-auto space-y-4">
+
+            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden mb-6">
+                <div class="p-6">
+                    <div class="grid grid-cols-2 gap-8 mb-6">
+                        <div>
+                            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2">What it is</h3>
+                            <p class="text-slate-700 text-sm leading-relaxed" x-text="tabs.find(t => t.id === activeTab).desc"></p>
+                        </div>
+                        <div>
+                            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2">When to use it</h3>
+                            <p class="text-slate-700 text-sm leading-relaxed" x-text="tabs.find(t => t.id === activeTab).useCase"></p>
+                        </div>
+                    </div>
+
+                    <div x-show="showCode" x-collapse>
+                        <div class="mt-4 bg-[#0d1117] rounded-xl p-6 shadow-2xl border border-slate-800 relative overflow-hidden">
+                            <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+                                <div class="text-[10px] text-indigo-400 font-bold font-mono uppercase tracking-[0.2em]">
+                                    Java Client API
+                                </div>
+                                <div class="text-[10px] text-slate-600 font-mono italic">
+                                    Distributed Types API
+                                </div>
+                            </div>
+
+                            <div class="dark-scrollbar overflow-x-auto">
+                                <div x-show="activeTab === 'dset'">
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DSet&lt;String&gt;</span> set = factory.createDSet(<span class="text-[#f1fa8c]">"demo-dset"</span>);
+<span class="text-[#8be9fd]">boolean</span> added = set.add(<span class="text-[#f1fa8c]">"Session-XYZ"</span>); <span class="text-[#6272a4]">// Distributed uniqueness check</span></code></pre>
+                                </div>
+
+                                <div x-show="activeTab === 'dlist'" x-cloak>
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DList&lt;String&gt;</span> list = factory.createDList(<span class="text-[#f1fa8c]">"demo-dlist"</span>);
+list.add(<span class="text-[#f1fa8c]">"Event-1"</span>); <span class="text-[#6272a4]">// Ordered cluster-wide list</span></code></pre>
+                                </div>
+
+                                <div x-show="activeTab === 'dblockingqueue'" x-cloak>
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DBlockingQueue&lt;String&gt;</span> q = factory.createDBlockingQueue(<span class="text-[#f1fa8c]">"demo-dbq"</span>, <span class="text-[#bd93f9]">100</span>);
+q.put(<span class="text-[#f1fa8c]">"Task"</span>); <span class="text-[#6272a4]">// Blocks if full</span>
+<span class="text-[#8be9fd]">String</span> t = q.take(); <span class="text-[#6272a4]">// Blocks until item is available</span></code></pre>
+                                </div>
+
+                                <div x-show="activeTab === 'dcircularqueue'" x-cloak>
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DCircularQueue&lt;String&gt;</span> cq = factory.createDCircularQueue(<span class="text-[#f1fa8c]">"demo-dcq"</span>, <span class="text-[#bd93f9]">3</span>);
+cq.add(<span class="text-[#f1fa8c]">"Item-4"</span>); <span class="text-[#6272a4]">// FIFO with fixed capacity (auto-eviction)</span></code></pre>
+                                </div>
+
+                                <div x-show="activeTab === 'datomiclong'" x-cloak>
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DAtomicLong</span> al = factory.createDAtomicLong(<span class="text-[#f1fa8c]">"demo-dal"</span>, <span class="text-[#bd93f9]">0L</span>);
+al.addAndGet(<span class="text-[#bd93f9]">1L</span>); <span class="text-[#6272a4]">// Atomic increment across all JVMs</span></code></pre>
+                                </div>
+
+                                <div x-show="activeTab === 'datomicreference'" x-cloak>
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DAtomicReference&lt;String&gt;</span> ar = factory.createDAtomicReference(<span class="text-[#f1fa8c]">"demo-dar"</span>, <span class="text-[#f1fa8c]">"IDLE"</span>);
+ar.set(<span class="text-[#f1fa8c]">"ACTIVE"</span>); <span class="text-[#6272a4]">// Thread-safe cluster-wide ref</span></code></pre>
+                                </div>
+
+                                <div x-show="activeTab === 'dcounter'" x-cloak>
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DCounter</span> c = factory.createDCounter(<span class="text-[#f1fa8c]">"demo-dcounter"</span>, <span class="text-[#bd93f9]">0</span>);
+c.increment(<span class="text-[#bd93f9]">5</span>); <span class="text-[#6272a4]">// Optimized high-throughput CRDT counter</span></code></pre>
+                                </div>
+
+                                <div x-show="activeTab === 'dsemaphore'" x-cloak>
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DSemaphore</span> sem = factory.createDSemaphore(<span class="text-[#f1fa8c]">"demo-dsemaphore"</span>, <span class="text-[#bd93f9]">3</span>);
+sem.acquire(); <span class="text-[#6272a4]">// Shared cluster-wide permit management</span></code></pre>
+                                </div>
+
+                                <div x-show="activeTab === 'dcountdownlatch'" x-cloak>
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DCountDownLatch</span> dl = factory.createDCountDownLatch(<span class="text-[#f1fa8c]">"demo-dcdl"</span>, <span class="text-[#bd93f9]">3</span>);
+dl.countDown(); <span class="text-[#6272a4]">// Decrement global signal</span></code></pre>
+                                </div>
+
+                                <div x-show="activeTab === 'dsnowflake'" x-cloak>
+                                        <pre class="text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-[#ff79c6]">DSnowflake</span> snowflake = DSnowflake.builder().build();
+<span class="text-[#8be9fd]">long</span> id = snowflake.nextId(); <span class="text-[#6272a4]">// Time-sortable unique identifier</span></code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-5">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
+                    <h3 class="text-[10px] font-bold text-indigo-500 uppercase tracking-[0.2em]">How to Demo</h3>
+                </div>
+                <p class="text-indigo-900 text-sm font-semibold leading-snug"
+                   x-text="tabs.find(t => t.id === activeTab).demo"></p>
+            </div>
+
+            <div x-show="activeTab === 'dsnowflake'" x-cloak class="bg-indigo-50 border border-indigo-200 rounded-xl shadow-sm p-6 mb-6">
+                <h3 class="text-sm font-bold text-indigo-900 mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                    Global Database View (ORDER BY id DESC)
+                </h3>
+                <div class="flex flex-col gap-2">
+                    <template x-for="id in sortedSnowflakeIds" :key="id">
+                        <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border border-indigo-100 font-mono text-sm">
+                            <span class="font-bold text-slate-800" x-text="id"></span>
+                        </div>
+                    </template>
+                    <div x-show="stateA.dlist.length === 0" class="text-sm text-slate-500 italic">
+                        Generate IDs from the clients below to see them sort perfectly by time across both JVMs.
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div class="bg-white border-2 border-blue-200 rounded-xl shadow-sm flex flex-col h-[380px] overflow-hidden relative">
+                    <div x-show="isProcessing.A" x-transition.opacity class="absolute inset-0 bg-blue-50/40 backdrop-blur-[1px] z-50 flex items-center justify-center">
+                        <div class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-3 shadow-lg">
+                            <div class="spinner"></div>
+                            <span class="text-sm font-bold">Network Delay...</span>
+                        </div>
+                    </div>
+                    <div x-show="(activeTab === 'dblockingqueue' && isAwaitingQueue.A) || (activeTab === 'dcountdownlatch' && isAwaitingLatch.A)"
+                         x-transition.opacity class="absolute inset-0 bg-yellow-50/60 backdrop-blur-[2px] z-40 flex items-center justify-center">
+                        <div class="bg-yellow-600 text-white px-6 py-3 rounded-xl flex items-center gap-4 shadow-xl border-2 border-yellow-400">
+                            <div class="spinner border-yellow-200"></div>
+                            <span class="font-bold tracking-wide uppercase text-sm">Thread Blocked: Awaiting Signal...</span>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 px-4 py-3 border-b border-blue-200 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full inline-block transition-colors"
+                                  :class="connected.A ? 'bg-green-400' : 'bg-red-500'"></span>
+                            <h3 class="font-bold text-blue-900">Client A</h3>
+                        </div>
+                        <span class="text-[10px] text-blue-500 font-mono uppercase">NodeID: 01</span>
+                    </div>
+                    <div class="p-6 flex-1 overflow-y-auto">
+                        <div x-show="activeTab === 'dset'">
+                            <div class="flex gap-2 mb-4">
+                                <input type="text" x-model="inputSetA" @keydown.enter="addToSet('A')" placeholder="Key..." class="flex-1 border rounded px-3 py-2 text-sm focus:border-blue-500 outline-none">
+                                <button @click="addToSet('A')" class="bg-blue-600 text-white px-4 py-2 rounded text-sm">Add</button>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <template x-for="item in stateA.dset">
+                                        <span class="bg-slate-100 border rounded-full px-3 py-1 text-sm flex items-center gap-2">
+                                            <span x-text="item"></span>
+                                            <button @click="removeFromSet('A', item)" class="text-slate-400 hover:text-red-500">&times;</button>
+                                        </span>
+                                </template>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dlist'" x-cloak>
+                            <div class="flex gap-2 mb-4">
+                                <input type="text" x-model="inputListA" @keydown.enter="addToList('A')" placeholder="List item..." class="flex-1 border rounded px-3 py-2 text-sm outline-none focus:border-blue-500">
+                                <button @click="addToList('A')" class="bg-blue-600 text-white px-4 py-2 rounded text-sm">Add</button>
+                            </div>
+                            <ul class="divide-y border border-slate-200 rounded-lg">
+                                <template x-for="(item, idx) in stateA.dlist">
+                                    <li class="px-3 py-2 flex justify-between items-center text-sm">
+                                        <span x-text="item"></span>
+                                        <button @click="removeFromList('A', idx)" class="text-red-400 text-xs hover:text-red-600 font-bold">Del</button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                        <div x-show="activeTab === 'dblockingqueue'" x-cloak class="flex flex-col items-center h-full space-y-6 pt-4">
+                            <button @click="produce('A')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-sm transition">Produce Job</button>
+                            <div class="w-full bg-slate-50 border border-slate-200 rounded p-4 flex gap-2 overflow-x-auto">
+                                <template x-for="item in stateA.dqueue">
+                                    <span class="bg-slate-800 text-white text-xs px-2 py-1 rounded" x-text="item"></span>
+                                </template>
+                                <span x-show="stateA.dqueue.length===0" class="text-slate-400 text-xs italic m-auto">Queue Empty</span>
+                            </div>
+                            <button @click="consume('A')" class="text-blue-600 border border-blue-600 hover:bg-blue-50 px-6 py-2 rounded-lg text-sm font-medium transition">Consume (take)</button>
+                        </div>
+                        <div x-show="activeTab === 'dcircularqueue'" x-cloak class="flex flex-col items-center h-full space-y-4 pt-4">
+                            <button @click="enqueueCQ('A')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition">Push Item</button>
+                            <div class="w-full flex flex-col gap-1 anim-circ">
+                                <template x-for="item in stateA.dcirc">
+                                    <div class="bg-slate-800 text-white text-xs p-2 rounded text-center font-mono" x-text="item"></div>
+                                </template>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'datomiclong'" x-cloak class="flex flex-col items-center justify-center h-full">
+                            <div class="text-5xl font-black mb-8 anim-atomic" x-text="stateA.datomiclong"></div>
+                            <div class="flex gap-4">
+                                <button @click="decrement('A')" class="bg-slate-200 hover:bg-slate-300 px-6 py-2 rounded-lg font-bold transition">-</button>
+                                <button @click="increment('A')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold transition">+</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'datomicreference'" x-cloak class="flex flex-col h-full pt-4 text-center">
+                            <div class="bg-slate-900 rounded-lg p-4 font-mono text-green-400 text-sm h-24 mb-6 flex items-center justify-center anim-ref break-all" x-text="stateA.datomicreference"></div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button @click="updateRef('A', '{&quot;status&quot;: &quot;ACTIVE&quot;}')" class="bg-green-100 text-green-700 hover:bg-green-200 border border-green-200 px-2 py-2 rounded text-[10px] font-bold transition">SET ACTIVE</button>
+                                <button @click="updateRef('A', '{&quot;status&quot;: &quot;IDLE&quot;}')" class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 border border-yellow-200 px-2 py-2 rounded text-[10px] font-bold transition">SET IDLE</button>
+                                <button @click="updateRef('A', '{&quot;status&quot;: &quot;ERROR&quot;}')" class="bg-red-100 text-red-700 hover:bg-red-200 border border-red-200 px-2 py-2 rounded text-[10px] font-bold transition">SET ERROR</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dcounter'" x-cloak class="flex flex-col items-center justify-center h-full">
+                            <div class="text-6xl font-black text-indigo-600 mb-8 anim-dcounter" x-text="stateA.dcounter"></div>
+                            <div class="flex gap-3">
+                                <button @click="addCounter('A', 1)" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold transition">+1</button>
+                                <button @click="addCounter('A', 10)" class="bg-blue-800 hover:bg-blue-900 text-white px-6 py-2 rounded-lg font-bold transition">+10</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dsemaphore'" x-cloak class="flex flex-col items-center justify-center h-full">
+                            <div class="text-4xl font-black text-blue-600 mb-8" x-text="clientPermits.A"></div>
+                            <div class="flex gap-4">
+                                <button @click="acquireSemaphore('A')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold transition">Acquire</button>
+                                <button @click="releaseSemaphore('A')" class="border border-slate-300 hover:bg-slate-50 px-6 py-2 rounded-lg font-medium transition">Release</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dcountdownlatch'" x-cloak class="flex flex-col items-center justify-center h-full">
+                            <div class="text-6xl font-black mb-8" x-text="stateA.latchCount"></div>
+                            <div class="flex flex-col gap-3 w-full max-w-[200px]">
+                                <button @click="countDown('A')" :disabled="stateA.latchCount===0 || isAwaitingLatch.A" class="bg-blue-600 disabled:bg-slate-300 text-white py-3 rounded-lg font-bold transition">Count Down</button>
+                                <button @click="awaitLatch('A')" :disabled="isAwaitingLatch.A" class="border py-2 rounded-lg text-sm font-medium transition hover:bg-slate-50 disabled:bg-slate-100 disabled:text-slate-400">Await</button>
+                                <button x-show="stateA.latchCount === 0" @click="resetLatch()" class="bg-slate-200 hover:bg-slate-300 py-2 rounded-lg text-xs font-bold transition">Reset Latch</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dsnowflake'" x-cloak class="flex flex-col items-center h-full pt-4">
+                            <button @click="generateSnowflake('A')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg w-full mb-4 shadow transition">Generate ID</button>
+                            <div class="w-full space-y-2">
+                                <template x-for="id in stateA.dlist">
+                                    <div class="bg-slate-50 border rounded p-2 text-center font-mono text-sm font-bold break-all" x-text="id"></div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white border-2 border-purple-200 rounded-xl shadow-sm flex flex-col h-[380px] overflow-hidden relative">
+                    <div x-show="isProcessing.B" x-transition.opacity class="absolute inset-0 bg-purple-50/40 backdrop-blur-[1px] z-50 flex items-center justify-center">
+                        <div class="bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center gap-3 shadow-lg">
+                            <div class="spinner"></div>
+                            <span class="text-sm font-bold">Network Delay...</span>
+                        </div>
+                    </div>
+                    <div x-show="(activeTab === 'dblockingqueue' && isAwaitingQueue.B) || (activeTab === 'dcountdownlatch' && isAwaitingLatch.B)"
+                         x-transition.opacity class="absolute inset-0 bg-yellow-50/60 backdrop-blur-[2px] z-40 flex items-center justify-center">
+                        <div class="bg-yellow-600 text-white px-6 py-3 rounded-xl flex items-center gap-4 shadow-xl border-2 border-yellow-400">
+                            <div class="spinner border-yellow-200"></div>
+                            <span class="font-bold tracking-wide uppercase text-sm">Thread Blocked: Awaiting Signal...</span>
+                        </div>
+                    </div>
+                    <div class="bg-purple-50 px-4 py-3 border-b border-purple-200 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full inline-block transition-colors"
+                                  :class="connected.B ? 'bg-green-400' : 'bg-red-500'"></span>
+                            <h3 class="font-bold text-purple-900">Client B</h3>
+                        </div>
+                        <span class="text-[10px] text-purple-500 font-mono uppercase">NodeID: 02</span>
+                    </div>
+                    <div class="p-6 flex-1 overflow-y-auto">
+                        <div x-show="activeTab === 'dset'">
+                            <div class="flex gap-2 mb-4">
+                                <input type="text" x-model="inputSetB" @keydown.enter="addToSet('B')" placeholder="Key..." class="flex-1 border rounded px-3 py-2 text-sm focus:border-purple-500 outline-none">
+                                <button @click="addToSet('B')" class="bg-purple-600 text-white px-4 py-2 rounded text-sm">Add</button>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <template x-for="item in stateB.dset">
+                                        <span class="bg-slate-100 border rounded-full px-3 py-1 text-sm flex items-center gap-2">
+                                            <span x-text="item"></span>
+                                            <button @click="removeFromSet('B', item)" class="text-slate-400 hover:text-red-500">&times;</button>
+                                        </span>
+                                </template>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dlist'" x-cloak>
+                            <div class="flex gap-2 mb-4">
+                                <input type="text" x-model="inputListB" @keydown.enter="addToList('B')" placeholder="List item..." class="flex-1 border rounded px-3 py-2 text-sm outline-none focus:border-purple-500">
+                                <button @click="addToList('B')" class="bg-purple-600 text-white px-4 py-2 rounded text-sm">Add</button>
+                            </div>
+                            <ul class="divide-y border border-slate-200 rounded-lg">
+                                <template x-for="(item, idx) in stateB.dlist">
+                                    <li class="px-3 py-2 flex justify-between items-center text-sm">
+                                        <span x-text="item"></span>
+                                        <button @click="removeFromList('B', idx)" class="text-red-400 text-xs hover:text-red-600 font-bold">Del</button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                        <div x-show="activeTab === 'dblockingqueue'" x-cloak class="flex flex-col items-center h-full space-y-6 pt-4">
+                            <button @click="produce('B')" class="border border-purple-600 text-purple-600 hover:bg-purple-50 px-6 py-2 rounded-lg text-sm font-medium transition">Produce (put)</button>
+                            <div class="w-full bg-slate-50 border border-slate-200 rounded p-4 flex gap-2 overflow-x-auto">
+                                <template x-for="item in stateB.dqueue">
+                                    <span class="bg-slate-800 text-white text-xs px-2 py-1 rounded" x-text="item"></span>
+                                </template>
+                                <span x-show="stateB.dqueue.length===0" class="text-slate-400 text-xs italic m-auto">Queue Empty</span>
+                            </div>
+                            <button @click="consume('B')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg shadow-sm transition">Consume Job</button>
+                        </div>
+                        <div x-show="activeTab === 'dcircularqueue'" x-cloak class="flex flex-col items-center h-full space-y-4 pt-4">
+                            <button @click="enqueueCQ('B')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition">Push Item</button>
+                            <div class="w-full flex flex-col gap-1 anim-circ">
+                                <template x-for="item in stateB.dcirc">
+                                    <div class="bg-slate-800 text-white text-xs p-2 rounded text-center font-mono" x-text="item"></div>
+                                </template>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'datomiclong'" x-cloak class="flex flex-col items-center justify-center h-full">
+                            <div class="text-5xl font-black mb-8 anim-atomic" x-text="stateB.datomiclong"></div>
+                            <div class="flex gap-4">
+                                <button @click="decrement('B')" class="bg-slate-200 hover:bg-slate-300 px-6 py-2 rounded-lg font-bold transition">-</button>
+                                <button @click="increment('B')" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-bold transition">+</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'datomicreference'" x-cloak class="flex flex-col h-full pt-4 text-center">
+                            <div class="bg-slate-900 rounded-lg p-4 font-mono text-green-400 text-sm h-24 mb-6 flex items-center justify-center anim-ref break-all" x-text="stateB.datomicreference"></div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button @click="updateRef('B', '{&quot;status&quot;: &quot;ACTIVE&quot;}')" class="bg-green-100 text-green-700 hover:bg-green-200 border border-green-200 px-2 py-2 rounded text-[10px] font-bold transition">SET ACTIVE</button>
+                                <button @click="updateRef('B', '{&quot;status&quot;: &quot;IDLE&quot;}')" class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 border border-yellow-200 px-2 py-2 rounded text-[10px] font-bold transition">SET IDLE</button>
+                                <button @click="updateRef('B', '{&quot;status&quot;: &quot;ERROR&quot;}')" class="bg-red-100 text-red-700 hover:bg-red-200 border border-red-200 px-2 py-2 rounded text-[10px] font-bold transition">SET ERROR</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dcounter'" x-cloak class="flex flex-col items-center justify-center h-full">
+                            <div class="text-6xl font-black text-indigo-600 mb-8 anim-dcounter" x-text="stateB.dcounter"></div>
+                            <div class="flex gap-3">
+                                <button @click="addCounter('B', 1)" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-bold transition">+1</button>
+                                <button @click="addCounter('B', 10)" class="bg-purple-800 hover:bg-purple-900 text-white px-6 py-2 rounded-lg font-bold transition">+10</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dsemaphore'" x-cloak class="flex flex-col items-center justify-center h-full">
+                            <div class="text-4xl font-black text-purple-600 mb-8" x-text="clientPermits.B"></div>
+                            <div class="flex gap-4">
+                                <button @click="acquireSemaphore('B')" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-bold transition">Acquire</button>
+                                <button @click="releaseSemaphore('B')" class="border border-slate-300 hover:bg-slate-50 px-6 py-2 rounded-lg font-medium transition">Release</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dcountdownlatch'" x-cloak class="flex flex-col items-center justify-center h-full">
+                            <div class="text-6xl font-black mb-8" x-text="stateB.latchCount"></div>
+                            <div class="flex flex-col gap-3 w-full max-w-[200px]">
+                                <button @click="countDown('B')" :disabled="stateB.latchCount===0 || isAwaitingLatch.B" class="border border-slate-300 py-3 rounded-lg font-bold hover:bg-slate-50 transition text-slate-700 disabled:bg-slate-100 disabled:text-slate-400">Count Down</button>
+                                <button @click="awaitLatch('B')" :disabled="isAwaitingLatch.B" class="bg-purple-600 text-white py-2 rounded-lg text-sm font-medium transition hover:bg-purple-700 disabled:bg-slate-300 disabled:text-slate-500">Await</button>
+                                <button x-show="stateB.latchCount === 0" @click="resetLatch()" class="bg-slate-200 hover:bg-slate-300 py-2 rounded-lg text-xs font-bold transition text-slate-700">Reset Latch</button>
+                            </div>
+                        </div>
+                        <div x-show="activeTab === 'dsnowflake'" x-cloak class="flex flex-col items-center h-full pt-4">
+                            <button @click="generateSnowflake('B')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg w-full mb-4 shadow transition">Generate ID</button>
+                            <div class="w-full space-y-2">
+                                <template x-for="id in stateB.dlist">
+                                    <div class="bg-slate-50 border rounded p-2 text-center font-mono text-sm font-bold break-all" x-text="id"></div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="h-48 bg-[#1e1e1e] flex flex-col shrink-0 z-20">
+        <div class="px-4 py-2 bg-[#252526] border-b border-[#404040] flex justify-between items-center text-xs">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-300 uppercase tracking-wider">Cluster Network Logs</span>
+            </div>
+            <button @click="clearConsole" class="text-slate-400 hover:text-white transition">Clear Logs</button>
+        </div>
+        <div x-ref="consoleBox" class="flex-1 overflow-y-auto p-4 console-font text-sm dark-scrollbar text-slate-300">
+            <template x-for="(log, index) in logs" :key="index">
+                <div class="mb-1 leading-relaxed">
+                    <span class="text-slate-500">[{<span x-text="log.time"></span>}]</span>
+                    <span class="font-bold w-28 inline-block" :class="log.colorClass" x-text="'[' + log.source + ']'"></span>
+                    <span x-text="log.msg" :class="log.colorClass.includes('red') || log.colorClass.includes('yellow') ? log.colorClass : ''"></span>
+                </div>
+            </template>
+        </div>
+    </div>
+
+</main>
+<script src="app.js"></script>
+</body>
+</html>
