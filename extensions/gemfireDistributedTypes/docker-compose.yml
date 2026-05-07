@@ -1,33 +1,60 @@
-  services:
-    gemfire-locator:
-      image: gemfire/gemfire-all:10.2
-      container_name: gemfire-locator
-      ports:
-        - "10334:10334"
-        - "1099:1099"
-        - "7070:7070"
-      environment:
-        - ACCEPT_TERMS=y
-      command: bash -c "gfsh start locator --name=locator --port=10334 --hostname-for-clients=localhost --dir=locator_data && tail -f /dev/null"
+services:
+  gemfire-locator:
+    image: gemfire/gemfire-all:10.2
+    container_name: gemfire-locator
+    ports:
+      - "10334:10334"
+      - "1099:1099"
+      - "7070:7070"
+    environment:
+      - ACCEPT_TERMS=y
+    # Confirms the locator JVM has fully booted and is accepting gfsh connections.
+    # start_period gives the JVM a grace window before failures count against retries.
+    healthcheck:
+      test: ["CMD-SHELL", "gfsh -e 'connect --locator=localhost[10334]' -e 'list members' > /dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 20s
+      retries: 10
+      start_period: 30s
+    command: bash -c "gfsh start locator --name=locator --port=10334 --hostname-for-clients=localhost --dir=locator_data && tail -f /dev/null"
 
-    gemfire-server-1:
-      image: gemfire/gemfire-all:10.2
-      container_name: gemfire-server-1
-      ports:
-        - "40404:40404"
-      environment:
-        - ACCEPT_TERMS=y
-      depends_on:
-        - gemfire-locator
-      command: bash -c "gfsh start server --name=server-1 --locators=gemfire-locator[10334] --server-port=40404 --hostname-for-clients=localhost --dir=server1_data && tail -f /dev/null"
+  gemfire-server-1:
+    image: gemfire/gemfire-all:10.2
+    container_name: gemfire-server-1
+    ports:
+      - "40404:40404"
+    environment:
+      - ACCEPT_TERMS=y
+    # condition: service_healthy waits for the locator's health check to pass before
+    # this container starts — eliminating the locator-not-ready race condition.
+    depends_on:
+      gemfire-locator:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/40404' 2>/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 30s
+    # If gfsh start server fails for any reason, restart instead of silently dying.
+    restart: on-failure
+    command: bash -c "gfsh start server --name=server-1 --locators=gemfire-locator[10334] --server-port=40404 --hostname-for-clients=localhost --dir=server1_data && tail -f /dev/null"
 
-    gemfire-server-2:
-      image: gemfire/gemfire-all:10.2
-      container_name: gemfire-server-2
-      ports:
-        - "40405:40405"
-      environment:
-        - ACCEPT_TERMS=y
-      depends_on:
-        - gemfire-locator
-      command: bash -c "gfsh start server --name=server-2 --locators=gemfire-locator[10334] --server-port=40405 --hostname-for-clients=localhost --dir=server2_data && tail -f /dev/null"
+  gemfire-server-2:
+    image: gemfire/gemfire-all:10.2
+    container_name: gemfire-server-2
+    ports:
+      - "40405:40405"
+    environment:
+      - ACCEPT_TERMS=y
+    depends_on:
+      gemfire-locator:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/40405' 2>/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 30s
+    restart: on-failure
+    command: bash -c "gfsh start server --name=server-2 --locators=gemfire-locator[10334] --server-port=40405 --hostname-for-clients=localhost --dir=server2_data && tail -f /dev/null"
