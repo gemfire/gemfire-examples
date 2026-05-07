@@ -1,8 +1,18 @@
 # Tanzu GemFire Distributed Types Lab
 
-An interactive, browser-based lab demonstrating the power of the Tanzu GemFire Distributed Types library.
+An interactive, browser-based lab demonstrating the power of the Tanzu GemFire Distributed Types extension.
 
 This project demonstrates how state can be shared across independent JVMs. It runs two separate Spring Boot backends connected to a single GemFire cluster. The frontend is designed to maintain no local state; instead, it reflects the real-time data held within the GemFire cluster by polling each backend independently.
+
+---
+
+## Documentation & API Reference
+
+For detailed guides, configuration options, and method signatures, refer to the official documentation:
+
+* **[Tanzu GemFire Distributed Types Product Documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-distributed-types/1-0/gf-distributed-types/overview.html)**
+
+* **[Tanzu GemFire Distributed Types Java API Reference (Javadocs)](https://developer.broadcom.com/xapis/tanzu-gemfire-distributed-types-java-api-reference/latest/dev/gemfire/dtype/package-summary.html)**
 
 ---
 
@@ -10,7 +20,7 @@ This project demonstrates how state can be shared across independent JVMs. It ru
 
 ```text
 +-------------------------------------------------------------+
-|                      GemFire Cluster                         |
+|                      GemFire Cluster                        |
 |  [Locator: 10334]    [Server: 40404]    [Server: 40405]     |
 +-------------------------------------------------------------+
         |                     |                  |
@@ -30,6 +40,7 @@ This project demonstrates how state can be shared across independent JVMs. It ru
                   |   Alpine.js   | <--- heartbeat
                   |   Frontend    |      (every 2s)
                   +---------------+
+
 ```
 
 * **Heartbeat Sync:** The UI maintains no local data arrays. Every 2 seconds, it independently queries both backends to fetch the current cluster state.
@@ -37,10 +48,11 @@ This project demonstrates how state can be shared across independent JVMs. It ru
 
 ---
 
-## Prerequisites and Setup
+## Prerequisites
 
-### 1. Maven Credentials
-Distributed Types are hosted on the Broadcom Maven Repository. Add your credentials to `~/.m2/settings.xml`. Registry tokens are available at the Broadcom Support Portal under My Downloads -> Registry Tokens.
+### Maven Credentials
+
+Distributed Types are hosted on the Broadcom Maven Repository. Ensure your credentials are set in your `~/.m2/settings.xml`. Registry tokens are available at the [Broadcom Support Portal](https://support.broadcom.com/) under *My Downloads -> Registry Tokens*.
 
 ```xml
 <server>
@@ -48,55 +60,87 @@ Distributed Types are hosted on the Broadcom Maven Repository. Add your credenti
   <username>YOUR-BROADCOM-EMAIL</username>
   <password>YOUR-REGISTRY-TOKEN</password>
 </server>
+
 ```
 
-### 2. Launch the Cluster
-```bash
-docker-compose up -d
-```
-Wait approximately 20 seconds for the nodes to synchronize and for the built-in extension JAR to initialize.
+---
 
-### 3. Start the Clients
-Open two separate terminal windows and run the backends:
+## How to Run the Lab
 
-* **Terminal A (Client A):** `mvn spring-boot:run`
-* **Terminal B (Client B):** `mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8081"`
+1. **Start the GemFire Cluster:**
+    ```bash
+    docker-compose up -d
+    ```
+  *Wait for the cluster to fully initialize. You can verify the cluster is ready by running:*
+
+  ```bash
+  docker exec gemfire-locator gfsh -e "connect --locator=localhost[10334]" -e "list members"
+  ```
+
+2. **Start the Clients (in separate terminal windows):**
+* **Client A:** 
+   ```bash
+    ./mvnw spring-boot:run
+  ```
+
+* **Client B:** 
+   ```bash
+    ./mvnw spring-boot:run -Dspring-boot.run.arguments="--server.port=8081"
+  ```
 
 ---
 
 ## The 30-Second Test Sequence
 
 1. **Open the Lab:** Navigate to http://localhost:8080.
-2. **The Consistency Test:** Go to the **DSet** tab. Add an item on **Client A**. Watch **Client B** update automatically within 2 seconds.
+2. **The Consistency Test:** Go to the **DSet** tab. Add an item on **Client A**. Watch **Client B** update automatically.
 3. **The Blocking Test:** Go to **DBlockingQueue**. Click "Consume" on **Client B**. Notice the "THREAD BLOCKED" overlay. Now, click "Produce" on **Client A**. Watch Client B unblock and receive the job instantly.
-4. **The Resiliency Test:** Kill the **Client B** terminal process. Watch the connection dot in the UI turn **Red**. Add data on Client A. Restart Client B and watch it synchronize to the cluster state.
+4. **The Resiliency Test:** Kill the **Client B** terminal process (`CTRL+C`). Watch the connection dot in the UI turn **Red**. Add data on Client A. Restart Client B and watch it instantly synchronize to the cluster state.
+
+---
+
+## How to Stop the Lab
+
+To cleanly shut down the environment and release your ports:
+
+1. Press `CTRL+C` in the terminal windows running your Spring Boot clients.
+2. Run the following command to stop the GemFire cluster:
+```bash
+docker-compose down -v
+```
+*(The `-v` flag is recommended to wipe the GemFire data directories and ensure a clean start for your next session).*
 
 ---
 
 ## Distributed Types Reference
 
-| Type | Use Case |
-| :--- | :--- |
-| **DSet** | Exactly-once processing, unique session tracking. |
-| **DList** | Shared audit logs, ordered event sequences. |
-| **DBlockingQueue** | Work-stealing patterns, distributed task workers. |
-| **DCircularQueue** | Last-N action buffers, log tailing. |
-| **DAtomics** | Global counters, strict rate-limiting, shared config. |
-| **DSemaphore** | Throttling access to limited external resources. |
-| **DSnowflake** | High-scale, time-sortable unique IDs. |
+| Type | Description |
+| --- | --- |
+| **DSet** | A distributed and highly available `Set` that is backed by a GemFire cluster. |
+| **DList** | A distributed and highly available `List` that is backed by a GemFire cluster. |
+| **DBlockingQueue** | An implementation of a `BlockingDeque` that is distributed and highly available. |
+| **DCircularQueue** | An implementation of a `Queue` that provides a FIFO queue with a fixed size that replaces its oldest element if full. |
+| **DAtomicLong** | A distributed and highly-available implementation of `AtomicLong`. |
+| **DAtomicReference** | A distributed and highly-available implementation of `AtomicReference`. |
+| **DCounter** | Similar to `DAtomicLong`, but designed for higher throughput and less potential contention. |
+| **DSemaphore** | A highly-available, distributed version of the JDK's `Semaphore`. |
+| **DCountDownLatch** | A distributed version of a synchronization aid that allows one or more threads to wait until a set of operations completes. |
+| **DSnowflake** | A cluster-unique ID generator based on the Twitter/X Snowflake design. |
 
 ---
 
 ## Troubleshooting
 
-* **Networking:** If clients cannot connect, ensure `hostname-for-clients=localhost` is present in your `docker-compose.yml`. This ensures the cluster advertises its location as `localhost` rather than internal Docker IDs.
-* **CORS:** If one client works but the other is "Red," check the browser console for CORS errors. The backend `CorsConfig.java` must permit both `8080` and `8081`.
-* **Initialization:** If the UI shows empty lists even after backends start, ensure the `gemfire-distributed-types` JAR was correctly picked up by the servers during the Docker startup.
+* **CORS Errors:** If one client works but the other shows as "Red" (disconnected) in the UI, check the browser console. The backend `CorsConfig.java` uses `.allowedOriginPatterns("*")` to permit cross-origin polling.
+* **NoAvailableServersException:** This typically means the Spring Boot app started before the GemFire servers finished booting. Wait 15 seconds and restart the Spring Boot client.
+* **Zombie Processes:** If ports are already in use, run `jps -l` to find and kill any orphaned Java processes, or `docker-compose down -v` to reset the container state.
 
 ---
 
 ## Under the Hood
-The `docker-compose.yml` file automates the following GemFire configuration:
+
+The `docker-compose.yml` file automates the following orchestration:
+
 * Starts a Locator on port 10334.
-* Starts two Servers.
-* Auto-deploys the Distributed Types extension JAR.
+* Starts two Data Servers.
+* Auto-deploys the Distributed Types extension JAR (bundled inside the `gemfire-all` image).

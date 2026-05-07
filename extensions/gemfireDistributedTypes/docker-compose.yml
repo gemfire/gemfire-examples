@@ -1,33 +1,33 @@
-services:
-  gemfire-locator:
-    image: gemfire/gemfire-all:10.2
-    container_name: gemfire-locator
-    ports:
-      - "10334:10334"
-      - "1099:1099"
-      - "7070:7070"
-    environment:
-      - ACCEPT_TERMS=y
-    command: bash -c "gfsh start locator --name=locator --port=10334 --hostname-for-clients=localhost --dir=/data/locator && tail -f /dev/null"
+  services:
+    gemfire-locator:
+      image: gemfire/gemfire-all:10.2
+      container_name: gemfire-locator
+      ports:
+        - "10334:10334"
+        - "1099:1099"
+        - "7070:7070"
+      environment:
+        - ACCEPT_TERMS=y
+      command: bash -c "gfsh start locator --name=locator --port=10334 --hostname-for-clients=localhost --dir=locator_data && tail -f /dev/null"
 
-  gemfire-server-1:
-    image: gemfire/gemfire-all:10.2
-    container_name: gemfire-server-1
-    ports:
-      - "40404:40404"
-    environment:
-      - ACCEPT_TERMS=y
-    depends_on:
-      - gemfire-locator
-    command: bash -c "gfsh start server --name=server-1 --locators=gemfire-locator[10334] --server-port=40404 --hostname-for-clients=localhost --dir=/data/server1 && tail -f /dev/null"
+    gemfire-server-1:
+      image: gemfire/gemfire-all:10.2
+      container_name: gemfire-server-1
+      ports:
+        - "40404:40404"
+      environment:
+        - ACCEPT_TERMS=y
+      depends_on:
+        - gemfire-locator
+      command: bash -c "gfsh start server --name=server-1 --locators=gemfire-locator[10334] --server-port=40404 --hostname-for-clients=localhost --dir=server1_data && tail -f /dev/null"
 
-  gemfire-server-2:
-    image: gemfire/gemfire-all:10.2
-    container_name: gemfire-server-2
-    ports:
-      - "40405:40405"
-    environment:
-      - ACCEPT_TERMS=y
-    depends_on:
-      - gemfire-locator
-    command: bash -c "gfsh start server --name=server-2 --locators=gemfire-locator[10334] --server-port=40405 --hostname-for-clients=localhost --dir=/data/server2 && tail -f /dev/null"
+    gemfire-server-2:
+      image: gemfire/gemfire-all:10.2
+      container_name: gemfire-server-2
+      ports:
+        - "40405:40405"
+      environment:
+        - ACCEPT_TERMS=y
+      depends_on:
+        - gemfire-locator
+      command: bash -c "gfsh start server --name=server-2 --locators=gemfire-locator[10334] --server-port=40405 --hostname-for-clients=localhost --dir=server2_data && tail -f /dev/null"
