@@ -71,10 +71,19 @@ Distributed Types are hosted on the Broadcom Maven Repository. Ensure your crede
     ```bash
     docker-compose up -d
     ```
-  *Wait for the cluster to fully initialize. You can verify the cluster is ready by running:*
+  The locator and both servers have health checks configured. Wait until all three containers show `(healthy)` before starting the clients. You can watch the status live with:
 
   ```bash
-  docker exec gemfire-locator gfsh -e "connect --locator=localhost[10334]" -e "list members"
+  watch docker ps
+  ```
+
+  Or run this one-liner that blocks until the entire cluster is confirmed ready:
+
+  ```bash
+  docker compose wait gemfire-server-1 gemfire-server-2 || \
+    until [ "$(docker inspect --format='{{.State.Health.Status}}' gemfire-server-1)" = "healthy" ] && \
+          [ "$(docker inspect --format='{{.State.Health.Status}}' gemfire-server-2)" = "healthy" ]; \
+    do echo "Waiting for cluster..."; sleep 5; done && echo "Cluster ready."
   ```
 
 2. **Start the Clients (in separate terminal windows):**
@@ -132,7 +141,7 @@ docker-compose down -v
 ## Troubleshooting
 
 * **CORS Errors:** If one client works but the other shows as "Red" (disconnected) in the UI, check the browser console. The backend `CorsConfig.java` uses `.allowedOriginPatterns("*")` to permit cross-origin polling.
-* **NoAvailableServersException:** This typically means the Spring Boot app started before the GemFire servers finished booting. Wait 15 seconds and restart the Spring Boot client.
+* **NoAvailableServersException:** The Spring Boot app started before the GemFire servers finished booting. Wait until both `gemfire-server-1` and `gemfire-server-2` show `(healthy)` in `docker ps`, then restart the client.
 * **Zombie Processes:** If ports are already in use, run `jps -l` to find and kill any orphaned Java processes, or `docker-compose down -v` to reset the container state.
 
 ---
