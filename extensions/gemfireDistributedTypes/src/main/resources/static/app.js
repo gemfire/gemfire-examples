@@ -4,6 +4,7 @@ document.addEventListener('alpine:init', () => {
             activeTab: 'dset',
             showCode: true,
             simLatency: false,
+            logsExpanded: false,
             isProcessing: { A: false, B: false },
             BASE_A: 'http://localhost:8080',
             BASE_B: 'http://localhost:8081',
@@ -97,6 +98,7 @@ document.addEventListener('alpine:init', () => {
             ],
 
             logs: [],
+            particles: [],
 
             init() {
                 this.logSystem("Cluster initialized. Monitoring dual backends.");
@@ -160,6 +162,15 @@ document.addEventListener('alpine:init', () => {
                     el.classList.remove('animate-update');
                     void el.offsetWidth;
                     el.classList.add('animate-update');
+                });
+            },
+
+            triggerFlashAnim(refName) {
+                const els = document.querySelectorAll(`.${refName}`);
+                els.forEach(el => {
+                    el.classList.remove('animate-flash');
+                    void el.offsetWidth;
+                    el.classList.add('animate-flash');
                 });
             },
 
@@ -253,7 +264,7 @@ document.addEventListener('alpine:init', () => {
                     const s = client === 'A' ? this.stateA : this.stateB;
                     s.datomiclong = result.data.value;
                     this.logAction(client, `dAtomicLong.addAndGet(1) -> ${s.datomiclong}`);
-                    this.triggerUpdateAnim('anim-atomic');
+                    this.triggerFlashAnim('anim-atomic');
                 }
             },
             async decrement(client) {
@@ -262,7 +273,7 @@ document.addEventListener('alpine:init', () => {
                     const s = client === 'A' ? this.stateA : this.stateB;
                     s.datomiclong = result.data.value;
                     this.logAction(client, `dAtomicLong.addAndGet(-1) -> ${s.datomiclong}`);
-                    this.triggerUpdateAnim('anim-atomic');
+                    this.triggerFlashAnim('anim-atomic');
                 }
             },
 
@@ -285,7 +296,17 @@ document.addEventListener('alpine:init', () => {
                     s.dcounter = result.data.value;
                     this.logAction(client, `dCounter.increment(${amount}) -> ${s.dcounter}`);
                     this.triggerUpdateAnim('anim-dcounter');
+                    this.spawnParticle(client, amount);
                 }
+            },
+
+            spawnParticle(client, amount) {
+                const id = Date.now() + Math.random();
+                const left = 40 + Math.random() * 20;
+                this.particles.push({ id, client, label: `+${amount}`, left });
+                setTimeout(() => {
+                    this.particles = this.particles.filter(p => p.id !== id);
+                }, 900);
             },
 
             // --- 8. DSemaphore Actions ---
