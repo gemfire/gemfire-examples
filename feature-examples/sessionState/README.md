@@ -26,8 +26,9 @@ This example assumes you have GemFire 10.2+ and Java 17 installed. It also assum
 For more information about how to set up the Tomcat module with your version of Tomcat and GemFire see the official documentation at:
 `https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/tools_modules-http_session_mgmt-tomcat_installing_the_module.html`
 
-The Session Management extension (version 1.1.1 or above) is distributed separately as a `.tgz` file. Download it from the
-[Broadcom Support Portal](https://support.broadcom.com/) and place it in `$GEMFIRE_HOME/extensions/`.
+The Session Management extension (version 1.1.2 or above) is distributed separately as a `.tgz` file.
+Download it from the [Broadcom Support Portal](https://support.broadcom.com/) and extract.
+Locate the extracted .gfm that matches your Tomcat version and place in `$GEMFIRE_HOME/extensions/`.
 
 ## Steps
 
