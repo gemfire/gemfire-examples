@@ -238,7 +238,7 @@ Make sure you have downloaded GemFire 10.x or later and the GemFire Vector DB ex
 
    For example:
     ```
-   vmware-gemfire-10.2.3/extensions/vmware-gemfire-vectordb-1.2.2.gfm
+   vmware-gemfire-10.2.4/extensions/vmware-gemfire-vectordb-1.2.2.gfm
    ```
 3. Open a terminal, navigate to the `bin` folder in the GemFire directory, and start GFSH:
 
@@ -266,7 +266,7 @@ Make sure you have downloaded GemFire 10.x or later and the GemFire Vector DB ex
     GemFire-Source-Revision: 62f20538984ebd92beee00874104d8706c6e4719
     Build-Id: gemfire 2511
     Product-Name: Tanzu GemFire
-    GemFire-Version: 10.2.3
+    GemFire-Version: 10.2.4
     GemFire-Source-Repository: support/10.2
     ----------------------------------------
     Tanzu GemFire Vector DB
