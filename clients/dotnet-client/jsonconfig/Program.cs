@@ -2,7 +2,7 @@
 
 
 using GemFire.Client;
-using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace GemFire.Examples.JsonConfig;
 
@@ -14,8 +14,9 @@ class Program
         var durable_id2 = "Writer-" + Guid.NewGuid().ToString();
 
         // system properties in JSON config file
-        var jsonString = File.ReadAllText("client.json");
-        var config = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString)!;
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("client.json")
+            .Build();
 
         var cacheFactory = new CacheFactory(config);
 

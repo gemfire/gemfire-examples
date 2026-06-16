@@ -1,7 +1,7 @@
 // Copyright 2026 Broadcom. All Rights Reserved.
 
 using GemFire.Client;
-
+using Microsoft.Extensions.Configuration;
 
 namespace GemFire.Examples.AuthInitialize;
 
@@ -19,7 +19,7 @@ class ExampleAuthInitialize : IAuthInitialize
         Console.Out.WriteLine("ExampleAuthInitialize::Close called");
     }
 
-    public IDictionary<string, object> GetCredentials(IDictionary<string, string> props, string server)
+    public IDictionary<string, object> GetCredentials(IConfiguration props, string server)
     {
         // TODO get your username and password
         Console.Out.WriteLine("ExampleAuthInitialize::GetCredentials called");
