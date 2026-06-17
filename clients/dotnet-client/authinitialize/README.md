@@ -7,7 +7,7 @@ The Java code demonstrates the basics required on the server side needed for the
 
 ## Prerequisites
 - Install VMware Tanzu GemFire (see [VMware Tanzu GemFire documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html))
-- Install [VMware Tanzu GemFire .NET Client](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-dotnet-client/1-0-beta/gf-dotnet-client/installation.html)
+- Install [VMware Tanzu GemFire .NET Client](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-dotnet-client/1-0/gf-dotnet-client/installation.html)
     - VMware Tanzu GemFire .NET Client is delivered as a NuGet package
     - Follow instructions in solution README to install package
 - Build Java example classes (see solution README for details)

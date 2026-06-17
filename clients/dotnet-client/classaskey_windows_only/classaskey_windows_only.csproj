@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="gemfire.client" Version="1.0.0-beta.3-1222" />
+    <PackageReference Include="gemfire.client" Version="1.0.0-1233" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
   </ItemGroup>
 
