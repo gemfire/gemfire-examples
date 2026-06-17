@@ -295,6 +295,32 @@ Demonstrates loading configuration from a JSON file and converting it to a dicti
 - SystemProperties configuration
 - Cache listener integration
 
+### Web / ASP.NET
+
+#### sessionstate
+
+Demonstrates backing ASP.NET Core session state with Tanzu GemFire. Uses `GemFire.Client.Session`'s `GemFireSessionStateCache`, an `IDistributedCache` implementation, so sessions are stored in a GemFire region via the standard `AddSession`/`UseSession` middleware.
+
+**Location**: `sessionstate/`
+
+**Key Features**:
+- ASP.NET Core distributed session state
+- `IDistributedCache` backed by a GemFire region
+- `AddGemFireSessionStateCache` registration
+
+### Observability
+
+#### prometheus
+
+Demonstrates exposing GemFire .NET Client metrics on a Prometheus endpoint using the OpenTelemetry Prometheus exporter. The client is instrumented with the Microsoft Metrics API, so its `GemFire.Client.*` meters can be scraped and graphed in Prometheus.
+
+**Location**: `prometheus/`
+
+**Key Features**:
+- OpenTelemetry Prometheus exporter
+- GemFire client metrics (`GemFire.Client.*` meters)
+- Prometheus scrape configuration
+
 ## Example Structure
 
 Each example follows a similar structure:
