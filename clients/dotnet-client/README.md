@@ -1,14 +1,14 @@
 # VMware Tanzu GemFire .NET Client Examples
 
-The VMware Tanzu GemFire .NET Client distribution includes examples that demonstrate how the client library can be used. The examples and their source files are located in the [dotnet-client](https://github.com/gemfire-examples/dotnet-client) repository on GitHub.
+The VMware Tanzu GemFire .NET Client distribution includes examples that demonstrate how the client library can be used. The examples and their source files are located in the [gemfire-examples](https://github.com/gemfire/gemfire-examples) repository on GitHub.
 
 ## Prerequisites
 
 Before running the examples, ensure you have the following components installed:
 
-- **.NET 8.0 SDK** - Download from [Microsoft .NET Downloads](https://dotnet.microsoft.com/download)
+- **.NET 10.0 SDK** - Download from [Microsoft .NET Downloads](https://dotnet.microsoft.com/download)
 - **Java 17 JDK** - Required to run Tanzu GemFire Locator and Server processes
-- **VMware Tanzu GemFire** - Download and install from [VMware Tanzu GemFire Downloads](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-2/gf/about_gemfire.html)))
+- **VMware Tanzu GemFire 10.3+** - Download and install from [VMware Tanzu GemFire Downloads](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire/10-3/gf/about_gemfire.html)
 - **VMware Tanzu GemFire .NET Client** - Install the `GemFire.Client` NuGet package (see [Installation Guide](https://techdocs.broadcom.com/us/en/vmware-tanzu/data-solutions/tanzu-gemfire-dotnet-client/1-0-beta/gf-dotnet-client/installation.html) for installation instructions)
 
 ## Getting the Examples
@@ -16,8 +16,8 @@ Before running the examples, ensure you have the following components installed:
 Clone the examples repository from GitHub:
 
 ```bash
-git clone https://github.com/gemfire-examples/dotnet-client.git
-cd dotnet-client/examples
+git clone git@github.com:gemfire/gemfire-examples.git
+cd gemfire-examples/clients/dotnet-client
 ```
 
 ## Building the Examples
@@ -83,7 +83,16 @@ Each example includes:
    cd <example-name>
    ```
 
-2. **Start the Tanzu GemFire cluster:**
+2. **Make the scripts executable (Linux/macOS only — one time per example):**
+   ```bash
+   chmod +x startlocator_servers.sh stoplocator_servers.sh
+   ```
+   On Windows, if PowerShell blocks `.ps1` execution, run once:
+   ```powershell
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
+
+3. **Start the Tanzu GemFire cluster:**
    
    **Windows (PowerShell):**
    ```powershell
@@ -101,12 +110,12 @@ Each example includes:
    - Start Servers to store and manage key-value data
    - Create a Tanzu GemFire Region (distributed hashmap for organizing data)
 
-3. **Run the example:**
+4. **Run the example:**
    ```bash
    dotnet run
    ```
 
-4. **Stop the Tanzu GemFire cluster:**
+5. **Stop the Tanzu GemFire cluster:**
    
    **Windows (PowerShell):**
    ```powershell
