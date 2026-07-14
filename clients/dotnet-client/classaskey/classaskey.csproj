@@ -18,7 +18,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="gemfire.client" Version="1.0.0-1233" />
+    <PackageReference Include="gemfire.client" Version="1.0.0-1334" />
   </ItemGroup>
 
 </Project>
