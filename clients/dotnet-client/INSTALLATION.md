@@ -19,27 +19,26 @@ Before installing the VMware Tanzu GemFire .NET Client, ensure you have the foll
 
 ### Required
 
-- **.NET 8.0 SDK or later** - The client requires .NET 8.0 runtime
-  - Download from: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+- **.NET 10.0 SDK or later** - The client requires .NET 10.0 runtime
+  - Download from: https://dotnet.microsoft.com/en-us/download/dotnet/10.0
   - Verify installation:
     ```bash
     dotnet --version
     ```
-    Should output: `8.0.x` or later
+    Should output: `10.0.x` or later
 
-- **VMware Tanzu GemFire Server 10.2.0 or later** - The client requires VMware Tanzu GemFire server version 10.2.0 or later
+- **VMware Tanzu GemFire Server 10.3.0 or later** - The client requires VMware Tanzu GemFire server version 10.3.0 or later
 
 ### Supported Operating Systems
 
 - Windows Server 2022
-- Ubuntu 22.04
 - RHEL 9
+- RHEL 10
 
 ### Development Tools (Optional but Recommended)
 
 - **Visual Studio 2022** (Community, Professional, or Enterprise)
 - **Visual Studio Code** with C# extension
-- **JetBrains Rider** 2023.1 or later
 
 ## Installation Methods
 
@@ -66,7 +65,7 @@ The VMware Tanzu GemFire .NET Client consists of two NuGet packages:
    - **Dependencies**: Requires `GemFire.Client` to be installed first
 
 Both packages:
-- **Target Framework**: .NET 8.0
+- **Target Framework**: .NET 10.0
 - **NuGet Feed**: Configure your NuGet source as provided by your VMware Tanzu GemFire distribution
 
 **Note**: For most applications, you'll want to install both packages. The session package is optional if you're not using ASP.NET Core session state management.
@@ -76,7 +75,7 @@ Both packages:
 #### Step 1: Open Your Project
 
 1. Open your .NET project in Visual Studio 2022
-2. Ensure your project targets .NET 8.0
+2. Ensure your project targets .NET 10.0
 
 #### Step 2: Configure NuGet Package Source (if needed)
 
@@ -115,8 +114,8 @@ Check that the package references were added to your `.csproj` file:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="GemFire.Client" Version="1.0.0" />
-  <PackageReference Include="GemFire.Client.Session" Version="1.0.0" />
+  <PackageReference Include="GemFire.Client" Version="1.0.0-1233" />
+  <PackageReference Include="GemFire.Client.Session" Version="1.0.0-1233" />
 </ItemGroup>
 ```
 
@@ -155,7 +154,7 @@ dotnet add package GemFire.Client
 To install a specific version:
 
 ```bash
-dotnet add package GemFire.Client --version 1.0.0
+dotnet add package GemFire.Client --version 1.0.0-1233
 ```
 
 If you need ASP.NET Core session state management, also install the session package:
@@ -167,7 +166,7 @@ dotnet add package GemFire.Client.Session
 Or with a specific version:
 
 ```bash
-dotnet add package GemFire.Client.Session --version 1.0.0
+dotnet add package GemFire.Client.Session --version 1.0.0-1233
 ```
 
 #### Step 4: Verify Installation
@@ -182,8 +181,8 @@ You should see:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="GemFire.Client" Version="1.0.0" />
-  <PackageReference Include="GemFire.Client.Session" Version="1.0.0" />
+  <PackageReference Include="GemFire.Client" Version="1.0.0-1233" />
+  <PackageReference Include="GemFire.Client.Session" Version="1.0.0-1233" />
 </ItemGroup>
 ```
 
@@ -206,7 +205,7 @@ Install-Package GemFire.Client
 To install a specific version:
 
 ```powershell
-Install-Package GemFire.Client -Version 1.0.0
+Install-Package GemFire.Client -Version 1.0.0-1233
 ```
 
 If you need ASP.NET Core session state management, also install the session package:
@@ -218,7 +217,7 @@ Install-Package GemFire.Client.Session
 Or with a specific version:
 
 ```powershell
-Install-Package GemFire.Client.Session -Version 1.0.0
+Install-Package GemFire.Client.Session -Version 1.0.0-1233
 ```
 
 ### Method 4: Manual .csproj Edit
@@ -230,8 +229,8 @@ You can manually add the package references to your project file:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="GemFire.Client" Version="1.0.0" />
-  <PackageReference Include="GemFire.Client.Session" Version="1.0.0" />
+  <PackageReference Include="GemFire.Client" Version="1.0.0-1233" />
+  <PackageReference Include="GemFire.Client.Session" Version="1.0.0-1233" />
 </ItemGroup>
 ```
 
@@ -279,14 +278,14 @@ The extracted archive should contain both client DLLs:
 ```
 gemfire.client/
 ├── lib/
-│   └── net8.0/
+│   └── net10.0/
 │       ├── GemFire.Client.dll
 │       └── GemFire.Client.Session.dll
 │       └── GemFire.Client.deps.json
 │       └── GemFire.Client.Session.deps.json
 │
-├── GemFire.Client.1.0.0.nupkg
-├── GemFire.Client.Session.1.0.0.nupkg
+├── GemFire.Client.1.0.0-1233.nupkg
+├── GemFire.Client.Session.1.0.0-1233.nupkg
 └── [other package files]
 ```
 
@@ -302,10 +301,10 @@ gemfire.client/
 ```xml
 <ItemGroup>
   <Reference Include="GemFire.Client">
-    <HintPath>path/to/gemfire.client/lib/net8.0/GemFire.Client.dll</HintPath>
+    <HintPath>path/to/gemfire.client/lib/net10.0/GemFire.Client.dll</HintPath>
   </Reference>
   <Reference Include="GemFire.Client.Session">
-    <HintPath>path/to/gemfire.client/lib/net8.0/GemFire.Client.Session.dll</HintPath>
+    <HintPath>path/to/gemfire.client/lib/net10.0/GemFire.Client.Session.dll</HintPath>
   </Reference>
 </ItemGroup>
 ```
@@ -315,10 +314,10 @@ Or use relative paths:
 ```xml
 <ItemGroup>
   <Reference Include="GemFire.Client">
-    <HintPath>../libraries/gemfire.client/lib/net8.0/GemFire.Client.dll</HintPath>
+    <HintPath>../libraries/gemfire.client/lib/net10.0/GemFire.Client.dll</HintPath>
   </Reference>
   <Reference Include="GemFire.Client.Session">
-    <HintPath>../libraries/gemfire.client/lib/net8.0/GemFire.Client.Session.dll</HintPath>
+    <HintPath>../libraries/gemfire.client/lib/net10.0/GemFire.Client.Session.dll</HintPath>
   </Reference>
 </ItemGroup>
 ```
@@ -339,13 +338,13 @@ Or use relative paths:
 Add the core client:
 
 ```bash
-dotnet add reference path/to/gemfire.client/lib/net8.0/GemFire.Client.dll
+dotnet add reference path/to/gemfire.client/lib/net10.0/GemFire.Client.dll
 ```
 
 If you need session management, also add:
 
 ```bash
-dotnet add reference path/to/gemfire.client/lib/net8.0/GemFire.Client.Session.dll
+dotnet add reference path/to/gemfire.client/lib/net10.0/GemFire.Client.Session.dll
 ```
 
 ### Step 4: Install Dependencies
@@ -355,26 +354,27 @@ The VMware Tanzu GemFire .NET Client packages have the following NuGet dependenc
 **For GemFire.Client:**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
-  <PackageReference Include="Serilog" Version="4.0.1" />
   <PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
   <PackageReference Include="DotNetty.Codecs" Version="0.7.6" />
   <PackageReference Include="DotNetty.Common" Version="0.7.6" />
-  <PackageReference Include="DotNetty.Transport" Version="0.7.6" />
   <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
+  <PackageReference Include="DotNetty.Transport" Version="0.7.6" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
+  <PackageReference Include="Serilog" Version="4.3.1" />
   <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
-  <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+  <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
   <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-  <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.1" />
 </ItemGroup>
 ```
 
 **For GemFire.Client.Session (if installed):**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
-  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-  <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.8" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.8" />
+  <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.8" />
+  <PackageReference Include="Serilog" Version="4.3.1" />
 </ItemGroup>
 ```
 
@@ -397,8 +397,8 @@ Verify the package or reference is listed in your `.csproj` file:
 **For NuGet installation:**
 ```xml
 <ItemGroup>
-  <PackageReference Include="GemFire.Client" Version="1.0.0" />
-  <PackageReference Include="GemFire.Client.Session" Version="1.0.0" />
+  <PackageReference Include="GemFire.Client" Version="1.0.0-1233" />
+  <PackageReference Include="GemFire.Client.Session" Version="1.0.0-1233" />
 </ItemGroup>
 ```
 
@@ -516,17 +516,17 @@ You should see `GemFire.Client` (and optionally `GemFire.Client.Session`) in the
 **Symptoms:**
 
 - Error: `The project does not reference any .NET framework`
-- Package requires .NET 8.0
+- Package requires .NET 10.0
 
 **Solutions:**
 
-1. Update your project to target .NET 8.0:
+1. Update your project to target .NET 10.0:
    ```xml
    <PropertyGroup>
-     <TargetFramework>net8.0</TargetFramework>
+     <TargetFramework>net10.0</TargetFramework>
    </PropertyGroup>
    ```
-2. Verify .NET 8.0 SDK is installed:
+2. Verify .NET 10.0 SDK is installed:
    ```bash
    dotnet --version
    ```
@@ -562,7 +562,7 @@ You should see `GemFire.Client` (and optionally `GemFire.Client.Session`) in the
 
 **Solutions:**
 
-1. Verify your operating system is supported (Windows Server 2022, Ubuntu 22.04, or RHEL 9)
+1. Verify your operating system is supported (Windows Server 2022, RHEL 9, or RHEL 10)
 2. Ensure you're running on x64 architecture
 
 ## Next Steps
@@ -576,9 +576,9 @@ After successful installation:
 ## Additional Resources
 
 - [Examples README](README.md) - Overview of available examples
-- [GitHub Repository](https://github.com/gemfire-examples/dotnet-client) - Source code and issue tracking
+- [GitHub Repository](https://github.com/gemfire/gemfire-examples) - Source code and issue tracking
 
 ---
 
-**Last Updated**: This guide was last updated for VMware Tanzu GemFire .NET Client version 1.0.0.
+**Last Updated**: This guide was last updated for VMware Tanzu GemFire .NET Client version 1.0.0-1233.
 
