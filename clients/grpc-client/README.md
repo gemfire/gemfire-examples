@@ -20,13 +20,11 @@ The client targets the `CacheService` API and can be pointed at any running serv
   go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
   go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
   ```
-- **GemFire gRPC Protobuf Definition**: You must extract `gemfire.proto` from the shipped `.tgz` artifact and place it in the `proto/gemfire/v1/` directory before building the client.
+- **GemFire gRPC Protobuf Definition**: Download the VMware Tanzu GemFire gRPC Extension `.tgz` artifact. Extract the `gemfire.proto` file from the archive and place it in the `../proto/gemfire/v1/` directory relative to this app (e.g., `clients/grpc-client/proto/gemfire/v1/gemfire.proto`).
 
 ## Running End-to-End
 
-To verify the client end to end against a real local cluster with no manual setup, run its `run-<client>.sh` script. This requires `GEMFIRE_HOME` to be set to a GemFire installation that has the gRPC extension `.gfm` file installed in its `extensions/` directory (or specified via `GEMFIRE_EXTENSIONS_REPOSITORY_PATH`).
-
-You must also extract `gemfire.proto` from the shipped `.tgz` artifact and place it in the `proto/gemfire/v1/` directory before building the client.
+To verify the client end to end against a real local cluster with no manual setup, run its `run-<client>.sh` script.
 
 ```bash
 ./go-client/run-go-client.sh
