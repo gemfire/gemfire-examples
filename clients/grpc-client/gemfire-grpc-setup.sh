@@ -82,18 +82,20 @@ startCluster() {
     # Export trust material for the client
     export SSL_CERT_FILE="$pemFile"
 
-    # Go < 1.27 on macOS ignores SSL_CERT_FILE and uses the system keychain instead.
-    # Check if we are on macOS and using an older Go version.
-    if [[ "$(uname)" == "Darwin" ]]; then
-      go_version=$(go version | awk '{print $3}' | sed 's/go//')
-      if [[ $(echo -e "$go_version\n1.27" | sort -V | head -n1) == "1.27" || "$go_version" == "1.27" ]]; then
-        # Go 1.27 or newer, it will respect SSL_CERT_FILE natively.
-        true
-      else
-        echo "macOS and Go < 1.27 detected: Temporarily adding generated CA to your login keychain so Go can trust it."
-        echo "(You may be prompted for your macOS password/Touch ID)"
-        security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db "$pemFile"
-        addedToKeychain="true"
+    if [[ "${CLIENT_LANG:-}" == "go" ]]; then
+      # Go < 1.27 on macOS ignores SSL_CERT_FILE and uses the system keychain instead.
+      # Check if we are on macOS and using an older Go version.
+      if [[ "$(uname)" == "Darwin" ]]; then
+        go_version=$(go version | awk '{print $3}' | sed 's/go//')
+        if [[ $(echo -e "$go_version\n1.27" | sort -V | head -n1) == "1.27" || "$go_version" == "1.27" ]]; then
+          # Go 1.27 or newer, it will respect SSL_CERT_FILE natively.
+          true
+        else
+          echo "macOS and Go < 1.27 detected: Temporarily adding generated CA to your login keychain so Go can trust it."
+          echo "(You may be prompted for your macOS password/Touch ID)"
+          security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db "$pemFile"
+          addedToKeychain="true"
+        fi
       fi
     fi
   fi

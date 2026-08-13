@@ -11,6 +11,8 @@
 
 set -euo pipefail
 
+export CLIENT_LANG="go"
+
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/gemfire-grpc-setup.sh"
 
 parseFlags "$@"
