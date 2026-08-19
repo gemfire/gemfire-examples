@@ -21,6 +21,23 @@ Directly with Make:
 make build
 ```
 
+## Verifying end to end
+
+The fastest way to see this working for real: from the `python-client` directory, run
+
+```bash
+./run-python-client.sh
+```
+
+You can also run it with TLS enabled by passing `--tls`:
+```bash
+./run-python-client.sh --tls
+```
+
+This starts a local locator + server using `gfsh`, creates
+`region1`/`region2`, and runs this app against them over a real xDS bootstrap — no manual setup
+needed. See [`run-python-client.sh`](run-python-client.sh) for details.
+
 ## Running
 
 The client always dials `xds:///gemfire_grpc`. 
@@ -53,23 +70,6 @@ Create a file named `grpc-xds-bootstrap.json` (the name and location don't matte
 ```bash
 GRPC_XDS_BOOTSTRAP=/absolute/path/to/grpc-xds-bootstrap.json make run
 ```
-
-## Verifying end to end
-
-The fastest way to see this working for real: from the `python-client` directory, run
-
-```bash
-./run-python-client.sh
-```
-
-You can also run it with TLS enabled by passing `--tls`:
-```bash
-./run-python-client.sh --tls
-```
-
-This starts a local locator + server using `gfsh`, creates
-`region1`/`region2`, and runs this app against them over a real xDS bootstrap — no manual setup
-needed. See [`run-python-client.sh`](run-python-client.sh) for details.
 
 ## Doing it manually
 

@@ -31,7 +31,7 @@ The client targets the `CacheService` API and can be pointed at any running serv
 To verify the client end to end against a real local cluster with no manual setup, run its `run-<client>.sh` script.
 
 ```bash
-./go-client/run-go-client.sh
+./go-client/run-<client>.sh
 ```
 
 See the client's README for the manual steps this automates.

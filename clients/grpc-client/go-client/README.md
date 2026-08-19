@@ -16,6 +16,7 @@ Go gRPC client example for the GemFire gRPC extension.
   go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
   ```
 - **GemFire gRPC Protobuf Definition**: Download the VMware Tanzu GemFire gRPC Extension `.tgz` artifact. Extract the `gemfire.proto` file from the archive and place it in the `../proto/gemfire/v1/` directory relative to this app (e.g., `clients/grpc-client/proto/gemfire/v1/gemfire.proto`).
+
 ## Building
 
 Directly with Make:
@@ -23,6 +24,27 @@ Directly with Make:
 ```bash
 make build
 ```
+
+## Verifying end to end
+
+The fastest way to see this working for real: from the `go-client` directory, run
+
+```bash
+./run-go-client.sh
+```
+
+You can also run it with TLS enabled by passing `--tls`:
+```bash
+./run-go-client.sh --tls
+```
+
+> **Note for macOS Users (TLS)**: Prior to Go 1.27, Go's `crypto/x509` package on macOS delegates certificate validation to the macOS `Security` framework and ignores the `SSL_CERT_FILE` environment variable. 
+> 
+> If you are using Go 1.26 or earlier, the `run-go-client.sh --tls` script handles this automatically by temporarily adding the generated CA to your login keychain and removing it when finished (you may be prompted for your Mac password). Go 1.27 and later correctly honors `SSL_CERT_FILE` on macOS.
+
+This starts a local locator + server using `gfsh`, creates
+`region1`/`region2`, and runs this app against them over a real xDS bootstrap — no manual setup
+needed. See [`run-go-client.sh`](run-go-client.sh) for details.
 
 ## Running
 
@@ -56,27 +78,6 @@ Create a file named `grpc-xds-bootstrap.json` (the name and location don't matte
 ```bash
 GRPC_XDS_BOOTSTRAP=/absolute/path/to/grpc-xds-bootstrap.json ./cache-client
 ```
-
-## Verifying end to end
-
-The fastest way to see this working for real: from the `go-client` directory, run
-
-```bash
-./run-go-client.sh
-```
-
-You can also run it with TLS enabled by passing `--tls`:
-```bash
-./run-go-client.sh --tls
-```
-
-> **Note for macOS Users (TLS)**: Prior to Go 1.27, Go's `crypto/x509` package on macOS delegates certificate validation to the macOS `Security` framework and ignores the `SSL_CERT_FILE` environment variable. 
-> 
-> If you are using Go 1.26 or earlier, the `run-go-client.sh --tls` script handles this automatically by temporarily adding the generated CA to your login keychain and removing it when finished (you may be prompted for your Mac password). Go 1.27 and later correctly honors `SSL_CERT_FILE` on macOS.
-
-This starts a local locator + server using `gfsh`, creates
-`region1`/`region2`, and runs this app against them over a real xDS bootstrap — no manual setup
-needed. See [`run-go-client.sh`](run-go-client.sh) for details.
 
 ## Doing it manually
 
