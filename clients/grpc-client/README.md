@@ -28,10 +28,10 @@ The client targets the `CacheService` API and can be pointed at any running serv
 
 ## Running End-to-End
 
-To verify the client end to end against a real local cluster with no manual setup, run its `run-<client>.sh` script.
+To verify the client end to end against a real local cluster with no manual setup. From the `clients/grpc-client/<client>` directory, run its `run-<client>.sh` script.
 
 ```bash
-./go-client/run-<client>.sh
+./run-<client>.sh
 ```
 
 See the client's README for the manual steps this automates.
