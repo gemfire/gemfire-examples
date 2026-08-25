@@ -8,7 +8,7 @@
 #
 # Requires GEMFIRE_HOME to be set to a local GemFire installation.
 
-bootstrapFile="$(mktemp -t grpc-xds-bootstrap)"
+bootstrapFile="$(mktemp -t grpc-xds-bootstrap-XXXXXX)"
 useTls="false"
 locatorHostPort=""
 serverHostPort=""
