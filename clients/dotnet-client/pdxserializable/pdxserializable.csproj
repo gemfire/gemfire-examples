@@ -2,23 +2,21 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DebugSymbols>true</DebugSymbols>
-		<DefineConstants>TRACE;RELEASE;NET;NET8_0_OR_GREATER;NETCOREAPP</DefineConstants>
 		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DebugSymbols>true</DebugSymbols>
-		<DefineConstants>TRACE;RELEASE;NET;NET8_0_OR_GREATER;NETCOREAPP</DefineConstants>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 	</PropertyGroup>
 
 	<ItemGroup>
-    <PackageReference Include="gemfire.client" Version="1.0.0-1334" />
+    <PackageReference Include="gemfire.client" Version="1.0.1-1425" />
   </ItemGroup>  
 
 </Project>

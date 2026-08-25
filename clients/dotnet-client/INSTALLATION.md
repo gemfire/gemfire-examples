@@ -19,13 +19,13 @@ Before installing the VMware Tanzu GemFire .NET Client, ensure you have the foll
 
 ### Required
 
-- **.NET 10.0 SDK or later** - The client requires .NET 10.0 runtime
-  - Download from: https://dotnet.microsoft.com/en-us/download/dotnet/10.0
+- **.NET 8.0 SDK or .NET 10.0 SDK** - The client supports .NET 8.0 and .NET 10.0
+  - Download from: https://dotnet.microsoft.com/en-us/download/dotnet/8.0 or https://dotnet.microsoft.com/en-us/download/dotnet/10.0
   - Verify installation:
     ```bash
     dotnet --version
     ```
-    Should output: `10.0.x` or later
+    Should output: `8.0.x` or `10.0.x` (or later within either major version)
 
 - **VMware Tanzu GemFire Server 10.3.0 or later** - The client requires VMware Tanzu GemFire server version 10.3.0 or later
 
@@ -65,7 +65,7 @@ The VMware Tanzu GemFire .NET Client consists of two NuGet packages:
    - **Dependencies**: Requires `GemFire.Client` to be installed first
 
 Both packages:
-- **Target Framework**: .NET 10.0
+- **Target Frameworks**: .NET 8.0 and .NET 10.0
 - **NuGet Feed**: Configure your NuGet source as provided by your VMware Tanzu GemFire distribution
 
 **Note**: For most applications, you'll want to install both packages. The session package is optional if you're not using ASP.NET Core session state management.
@@ -75,7 +75,7 @@ Both packages:
 #### Step 1: Open Your Project
 
 1. Open your .NET project in Visual Studio 2022
-2. Ensure your project targets .NET 10.0
+2. Ensure your project targets .NET 8.0 or .NET 10.0
 
 #### Step 2: Configure NuGet Package Source (if needed)
 
@@ -278,6 +278,11 @@ The extracted archive should contain both client DLLs:
 ```
 gemfire.client/
 ├── lib/
+│   ├── net8.0/
+│   │   ├── GemFire.Client.dll
+│   │   └── GemFire.Client.Session.dll
+│   │   └── GemFire.Client.deps.json
+│   │   └── GemFire.Client.Session.deps.json
 │   └── net10.0/
 │       ├── GemFire.Client.dll
 │       └── GemFire.Client.Session.dll
@@ -289,7 +294,7 @@ gemfire.client/
 └── [other package files]
 ```
 
-**Note**: The ZIP archive includes both `GemFire.Client.dll` (core client) and `GemFire.Client.Session.dll` (session state management). You can reference one or both depending on your needs.
+**Note**: The ZIP archive includes both `GemFire.Client.dll` (core client) and `GemFire.Client.Session.dll` (session state management), built for both .NET 8.0 and .NET 10.0. Reference the `lib/net8.0/` or `lib/net10.0/` folder that matches your project's target framework.
 
 ### Step 3: Add References to Your Project
 
@@ -322,14 +327,14 @@ Or use relative paths:
 </ItemGroup>
 ```
 
-**Note**: Only `GemFire.Client.dll` is required. Add `GemFire.Client.Session.dll` only if you need ASP.NET Core session state management.
+**Note**: Replace `net10.0` with `net8.0` in the `HintPath` values above if your project targets .NET 8.0 instead. Only `GemFire.Client.dll` is required. Add `GemFire.Client.Session.dll` only if you need ASP.NET Core session state management.
 
 #### Option B: Using Visual Studio
 
 1. Right-click on your project in Solution Explorer
 2. Select `Add` → `Reference...`
 3. Click `Browse...`
-4. Navigate to the extracted archive location: `gemfire.client/lib/net8.0/`
+4. Navigate to the extracted archive location: `gemfire.client/lib/net10.0/` (or `gemfire.client/lib/net8.0/` if your project targets .NET 8.0)
 5. Select both `GemFire.Client.dll` and `GemFire.Client.Session.dll` (or just `GemFire.Client.dll` if you don't need session management)
 6. Click `Add` and `OK`
 
@@ -346,6 +351,8 @@ If you need session management, also add:
 ```bash
 dotnet add reference path/to/gemfire.client/lib/net10.0/GemFire.Client.Session.dll
 ```
+
+**Note**: Replace `net10.0` with `net8.0` in the paths above if your project targets .NET 8.0 instead.
 
 ### Step 4: Install Dependencies
 
@@ -516,17 +523,19 @@ You should see `GemFire.Client` (and optionally `GemFire.Client.Session`) in the
 **Symptoms:**
 
 - Error: `The project does not reference any .NET framework`
-- Package requires .NET 10.0
+- Package requires .NET 8.0 or .NET 10.0
 
 **Solutions:**
 
-1. Update your project to target .NET 10.0:
+1. Update your project to target .NET 8.0 or .NET 10.0:
    ```xml
    <PropertyGroup>
      <TargetFramework>net10.0</TargetFramework>
+     <!-- or: <TargetFramework>net8.0</TargetFramework> -->
+     <!-- or, to build both: <TargetFrameworks>net8.0;net10.0</TargetFrameworks> -->
    </PropertyGroup>
    ```
-2. Verify .NET 10.0 SDK is installed:
+2. Verify a compatible .NET SDK is installed:
    ```bash
    dotnet --version
    ```
