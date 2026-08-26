@@ -379,9 +379,10 @@ The VMware Tanzu GemFire .NET Client packages have the following NuGet dependenc
 **For GemFire.Client.Session (if installed):**
 ```xml
 <ItemGroup>
-  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.8" />
-  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.8" />
-  <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.8" />
+  <PackageReference Include="GemFire.Client" Version="1.0.1-build.1425" />
+  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.9" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
+  <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.9" />
   <PackageReference Include="Serilog" Version="4.3.1" />
 </ItemGroup>
 ```
