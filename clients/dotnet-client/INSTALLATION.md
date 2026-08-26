@@ -280,18 +280,19 @@ gemfire.client/
 ├── lib/
 │   ├── net8.0/
 │   │   ├── GemFire.Client.dll
-│   │   └── GemFire.Client.Session.dll
-│   │   └── GemFire.Client.deps.json
+│   │   ├── GemFire.Client.deps.json
+│   │   ├── GemFire.Client.Session.dll
 │   │   └── GemFire.Client.Session.deps.json
 │   └── net10.0/
 │       ├── GemFire.Client.dll
-│       └── GemFire.Client.Session.dll
-│       └── GemFire.Client.deps.json
+│       ├── GemFire.Client.deps.json
+│       ├── GemFire.Client.Session.dll
 │       └── GemFire.Client.Session.deps.json
 │
 ├── GemFire.Client.1.0.0-1233.nupkg
+├── GemFire.Client.1.0.0-1233.symbols.nupkg
 ├── GemFire.Client.Session.1.0.0-1233.nupkg
-└── [other package files]
+└── GemFire.Client.Session.1.0.0-1233.snupkg
 ```
 
 **Note**: The ZIP archive includes both `GemFire.Client.dll` (core client) and `GemFire.Client.Session.dll` (session state management), built for both .NET 8.0 and .NET 10.0. Reference the `lib/net8.0/` or `lib/net10.0/` folder that matches your project's target framework.
