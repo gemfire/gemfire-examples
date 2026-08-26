@@ -367,8 +367,8 @@ The VMware Tanzu GemFire .NET Client packages have the following NuGet dependenc
   <PackageReference Include="DotNetty.Common" Version="0.7.6" />
   <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
   <PackageReference Include="DotNetty.Transport" Version="0.7.6" />
-  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
-  <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.17" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.17" />
   <PackageReference Include="Serilog" Version="4.3.1" />
   <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
   <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
