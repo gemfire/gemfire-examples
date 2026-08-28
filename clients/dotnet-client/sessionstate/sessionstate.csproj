@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="gemfire.client" Version="1.0.1-1425" />
-        <PackageReference Include="gemfire.client.session" Version="1.0.1-1425" />
+        <PackageReference Include="gemfire.client" Version="1.0.1" />
+        <PackageReference Include="gemfire.client.session" Version="1.0.1" />
     </ItemGroup>
 </Project>

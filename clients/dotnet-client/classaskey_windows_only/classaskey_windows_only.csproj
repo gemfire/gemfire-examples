@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="gemfire.client" Version="1.0.1-1425" />
+    <PackageReference Include="gemfire.client" Version="1.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
   </ItemGroup>
 

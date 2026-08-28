@@ -114,8 +114,8 @@ Check that the package references were added to your `.csproj` file:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="GemFire.Client" Version="1.0.1-build.1425" />
-  <PackageReference Include="GemFire.Client.Session" Version="1.0.1-build.1425" />
+  <PackageReference Include="GemFire.Client" Version="1.0.1" />
+  <PackageReference Include="GemFire.Client.Session" Version="1.0.1" />
 </ItemGroup>
 ```
 
@@ -154,7 +154,7 @@ dotnet add package GemFire.Client
 To install a specific version:
 
 ```bash
-dotnet add package GemFire.Client --version 1.0.1-build.1425
+dotnet add package GemFire.Client --version 1.0.1
 ```
 
 If you need ASP.NET Core session state management, also install the session package:
@@ -166,7 +166,7 @@ dotnet add package GemFire.Client.Session
 Or with a specific version:
 
 ```bash
-dotnet add package GemFire.Client.Session --version 1.0.1-build.1425
+dotnet add package GemFire.Client.Session --version 1.0.1
 ```
 
 #### Step 4: Verify Installation
@@ -181,8 +181,8 @@ You should see:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="GemFire.Client" Version="1.0.1-build.1425" />
-  <PackageReference Include="GemFire.Client.Session" Version="1.0.1-build.1425" />
+  <PackageReference Include="GemFire.Client" Version="1.0.1" />
+  <PackageReference Include="GemFire.Client.Session" Version="1.0.1" />
 </ItemGroup>
 ```
 
@@ -205,7 +205,7 @@ Install-Package GemFire.Client
 To install a specific version:
 
 ```powershell
-Install-Package GemFire.Client -Version 1.0.1-build.1425
+Install-Package GemFire.Client -Version 1.0.1
 ```
 
 If you need ASP.NET Core session state management, also install the session package:
@@ -217,7 +217,7 @@ Install-Package GemFire.Client.Session
 Or with a specific version:
 
 ```powershell
-Install-Package GemFire.Client.Session -Version 1.0.1-build.1425
+Install-Package GemFire.Client.Session -Version 1.0.1
 ```
 
 ### Method 4: Manual .csproj Edit
@@ -229,8 +229,8 @@ You can manually add the package references to your project file:
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="GemFire.Client" Version="1.0.1-build.1425" />
-  <PackageReference Include="GemFire.Client.Session" Version="1.0.1-build.1425" />
+  <PackageReference Include="GemFire.Client" Version="1.0.1" />
+  <PackageReference Include="GemFire.Client.Session" Version="1.0.1" />
 </ItemGroup>
 ```
 
@@ -289,10 +289,10 @@ gemfire.client/
 │       ├── GemFire.Client.Session.dll
 │       └── GemFire.Client.Session.deps.json
 │
-├── GemFire.Client.1.0.1-build.1425.nupkg
-├── GemFire.Client.1.0.1-build.1425.symbols.nupkg
-├── GemFire.Client.Session.1.0.1-build.1425.nupkg
-└── GemFire.Client.Session.1.0.1-build.1425.snupkg
+├── GemFire.Client.1.0.1.nupkg
+├── GemFire.Client.1.0.1.symbols.nupkg
+├── GemFire.Client.Session.1.0.1.nupkg
+└── GemFire.Client.Session.1.0.1.snupkg
 ```
 
 **Note**: The ZIP archive includes both `GemFire.Client.dll` (core client) and `GemFire.Client.Session.dll` (session state management), built for both .NET 8.0 and .NET 10.0. Reference the `lib/net8.0/` or `lib/net10.0/` folder that matches your project's target framework.
@@ -379,7 +379,7 @@ The VMware Tanzu GemFire .NET Client packages have the following NuGet dependenc
 **For GemFire.Client.Session (if installed):**
 ```xml
 <ItemGroup>
-  <PackageReference Include="GemFire.Client" Version="1.0.1-build.1425" />
+  <PackageReference Include="GemFire.Client" Version="1.0.1" />
   <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.9" />
   <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
   <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.9" />
@@ -406,8 +406,8 @@ Verify the package or reference is listed in your `.csproj` file:
 **For NuGet installation:**
 ```xml
 <ItemGroup>
-  <PackageReference Include="GemFire.Client" Version="1.0.1-build.1425" />
-  <PackageReference Include="GemFire.Client.Session" Version="1.0.1-build.1425" />
+  <PackageReference Include="GemFire.Client" Version="1.0.1" />
+  <PackageReference Include="GemFire.Client.Session" Version="1.0.1" />
 </ItemGroup>
 ```
 
@@ -591,5 +591,5 @@ After successful installation:
 
 ---
 
-**Last Updated**: This guide was last updated for VMware Tanzu GemFire .NET Client version 1.0.1-build.1425.
+**Last Updated**: This guide was last updated for VMware Tanzu GemFire .NET Client version 1.0.1.
 
