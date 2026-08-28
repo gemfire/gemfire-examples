@@ -9,14 +9,14 @@ class Program
     static void Main(string[] args)
     {
         var baseDirectory = AppContext.BaseDirectory;
-        var projectDirectory = Path.GetFullPath(Path.Combine(baseDirectory, @"..\..\..\"));
+        var projectDirectory = Path.GetFullPath(Path.Combine(baseDirectory, "..", "..", ".."));
 
         var cacheFactory = new CacheFactory()
           .Set("log-level", "none")
           .Set("ssl-enabled", "true")
-          .Set("ssl-keystore", projectDirectory + "keys\\client.pfx")
+          .Set("ssl-keystore", Path.Combine(projectDirectory, "keys", "client.pfx"))
           .Set("ssl-keystore-password", "password")
-          .Set("ssl-truststore", projectDirectory + "keys\\ca.pfx")
+          .Set("ssl-truststore", Path.Combine(projectDirectory, "keys", "ca.pfx"))
           .Set("ssl-truststore-password", "password");
         cacheFactory.AddLocator("localhost", 10334);
 
