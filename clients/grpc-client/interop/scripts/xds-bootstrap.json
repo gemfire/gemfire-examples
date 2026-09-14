@@ -1,0 +1,10 @@
+{
+  "xds_servers": [
+    {
+      "server_uri": "127.0.0.1:41051",
+      "channel_creds": [ { "type": "insecure" } ],
+      "server_features": ["xds_v3"]
+    }
+  ],
+  "node": { "id": "grpc-interop-example", "cluster": "gemfire" }
+}
