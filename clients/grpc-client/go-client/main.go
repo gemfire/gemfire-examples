@@ -5,7 +5,7 @@
  * Generated in whole or in part by Claude
  * Description:
  * 2026-08-11: Add grpc go client to gemfire-examples clients.
- * 2026-09-16: Added OQL query example (GEM-20556).
+ * 2026-09-16: Added OQL query example.
  */
 
 package main
