@@ -50,7 +50,7 @@ API, whatever wrote it.
 
    Expected output, one line per entry:
 
-        [info ... server1 <grpc-worker-1> tid=0x54] [PersonCacheListener] afterCreate key=alice originRemote=false valueClass=com.vmware.gemfire.proto.internal.document.ProtoAnyDocumentImpl first_name=Alice last_name=Anderson
+        [info ... server1 <grpc-worker-1> tid=0x54] [PersonCacheListener] afterCreate key=alice originRemote=false valueClass=com.vmware.gemfire.proto.internal.document.ProtobufMessageCached first_name=Alice last_name=Anderson
 
    The `grpc-worker` thread name is the point of the example: a gRPC call drove a GemFire
    cache listener.
@@ -58,7 +58,7 @@ API, whatever wrote it.
 5. Run
    [`GemFireClientExample`](src/main/java/com/vmware/gemfire/examples/grpc/interop/GemFireClientExample.java),
    the Java GemFire client. It reads both gRPC-written entries as typed `Person` objects with
-   `unpack`, then writes `grace` of its own with `ProtoAnyDocument.pack`.
+   `unpack`, then writes `grace` of its own with `ProtobufMessage.pack`.
 
         $ make run-gemfire-client
 
