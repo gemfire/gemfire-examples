@@ -5,6 +5,7 @@
 Generated in whole or in part by Claude
 Description:
 2026-08-12: Add grpc python client to gemfire-examples clients.
+2026-09-16: Added OQL query example.
 """
 
 import sys
@@ -97,9 +98,12 @@ def main():
         get_and_remove_int(client, "region2", 200)
         get_and_remove_int(client, "region1", 999)
 
-        # Test Person with Any
+    # Test Person with Any
         print("\n=== Testing Person with Any ===")
         test_person_with_any(client, "region1", "person_key")
+
+        # Test OQL Query
+        test_query(client)
 
 def put_string(client, region_name, key, value):
     try:
@@ -110,6 +114,17 @@ def put_string(client, region_name, key, value):
         )
         client.Put(req, timeout=10)
         print("PUT successful (string key)")
+    except grpc.RpcError as e:
+        print(f"PUT failed (string key): {e.details()}")
+
+def put_string_silent(client, region_name, key, value):
+    try:
+        req = pb.PutRequest(
+            region_name=region_name,
+            key=pb.Key(string=key),
+            value=pb.Value(string=value)
+        )
+        client.Put(req, timeout=10)
     except grpc.RpcError as e:
         print(f"PUT failed (string key): {e.details()}")
 
@@ -342,6 +357,85 @@ def test_person_with_any(client, region_name, key):
             print("GET failed: Key not found")
         else:
             print(f"GET failed (Person with Any): {e.details()}")
+
+def test_query(client):
+    print("\n=== Testing OQL Query ===")
+    
+    # Insert enough data to span multiple batches (assuming a test batch size of 2 or default 1000)
+    for i in range(1, 11):
+        put_string_silent(client, "region1", f"query_key{i}", f"query_value{i}")
+
+    # Basic query
+    print("Executing basic query on /region1...")
+    req = pb.QueryRequest(query="SELECT * FROM /region1")
+    execute_and_print_query(client, req)
+
+    # Parameterized query
+    print("\nExecuting parameterized query on /region1...")
+    param_req = pb.QueryRequest(
+        query="SELECT p.key, p.value FROM /region1.entries p WHERE p.value.toString() = $1 OR p.value.toString() = $2",
+        parameters=[
+            pb.Value(string="query_value1"),
+            pb.Value(string="query_value2")
+        ]
+    )
+    execute_and_print_query(client, param_req)
+
+def execute_and_print_query(client, req):
+    try:
+        response_stream = client.Query(req)
+        
+        first = True
+        batch_count = 0
+        row_count = 0
+        
+        for resp in response_stream:
+            batch_count += 1
+            
+            # field_names is only meaningful on the first response message.
+            # gRPC guarantees stream ordering, so this is safe.
+            if first:
+                if resp.field_names:
+                    print(f"Fields: {list(resp.field_names)}")
+                else:
+                    print("Fields: <none>")
+                first = False
+                
+            for row in resp.rows:
+                row_str_parts = []
+                for field in row.fields:
+                    row_str_parts.append(query_value_to_string(field))
+                print(f"Row {row_count}: [{', '.join(row_str_parts)}]")
+                row_count += 1
+                
+        print(f"Received {row_count} rows across {batch_count} batches")
+        
+    except grpc.RpcError as e:
+        print(f"Query failed: {e.details()}")
+
+def query_value_to_string(value):
+    field_name = value.WhichOneof("value_value")
+    if not field_name:
+        return "null"
+        
+    if field_name == "string":
+        return value.string
+    elif field_name == "bytes":
+        return f"[bytes:{len(value.bytes)} bytes]"
+    elif field_name == "int32":
+        return str(value.int32)
+    elif field_name == "int64":
+        return str(value.int64)
+    elif field_name == "bool":
+        return str(value.bool)
+    elif field_name == "double":
+        return str(value.double)
+    elif field_name == "float":
+        return str(value.float)
+    elif field_name == "any":
+        return f"[Any:{value.any.type_url}]"
+    else:
+        return "[unknown value type]"
 
 if __name__ == '__main__':
     # Required for xDS support in Python gRPC
