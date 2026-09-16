@@ -91,7 +91,7 @@ go-client: go-proto
 
 # --- Java GemFire client and the deployed listener ---------------------------
 
-## Unpacks the jars this example compiles against. gemfire-proto-serialization supplies
+## Unpacks the jars this example compiles against. gemfire-protobuf-serialization supplies
 ## ProtobufMessage and must be on the runtime classpath of any GemFire client reading
 ## gRPC-written values: it registers the PROTOBUF DSCODE decoder. protobuf-java comes from here
 ## too, so the client uses the same version the server does. The installation ships both only
@@ -103,7 +103,7 @@ $(EXTENSION_STAMP): | check
 	@echo "Unpacking extension jars from the .gfm..."
 	@mkdir -p $(EXTENSION_JARS)
 	@cd $(EXTENSION_JARS) && unzip -joq "$$(ls $(EXTENSIONS_DIR)/*grpc*.gfm | head -1)" \
-		"*/gemfire-proto-serialization-*.jar" "*/protobuf-java-*.jar"
+		"*/gemfire-protobuf-serialization-*.jar" "*/protobuf-java-*.jar"
 	@rm -f $(EXTENSION_JARS)/protobuf-java-util-*.jar
 	@touch $@
 
@@ -135,8 +135,8 @@ $(CLASSES_STAMP): $(JAVA_SOURCES) $(DESCRIPTOR_SET) $(EXTENSION_STAMP)
 $(LISTENER_JAR): $(CLASSES_STAMP)
 	@echo "Packaging the listener jar..."
 	@rm -rf $(JAR_STAGE)
-	@mkdir -p $(JAR_STAGE)/META-INF/gemfire/proto $(JAR_STAGE)/$(JAVA_PACKAGE)
-	@cp $(DESCRIPTOR_SET) $(JAR_STAGE)/META-INF/gemfire/proto/
+	@mkdir -p $(JAR_STAGE)/META-INF/gemfire/protobuf $(JAR_STAGE)/$(JAVA_PACKAGE)
+	@cp $(DESCRIPTOR_SET) $(JAR_STAGE)/META-INF/gemfire/protobuf/
 	@cp $(CLASSES)/$(JAVA_PACKAGE)/PersonCacheListener*.class $(JAR_STAGE)/$(JAVA_PACKAGE)/
 	@cd $(JAR_STAGE) && jar cf $(CURDIR)/$(LISTENER_JAR) .
 
