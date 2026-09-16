@@ -138,7 +138,7 @@ The `run-go-client.sh` script automates the following steps. If you want to set 
 
 ## What it does
 
-Exercises Put, Get, Remove, GetAndPut, and GetAndRemove operations with string, int, and Any (Person) keys, and tests error-handling for non-existent keys and regions.
+Exercises Put, Get, Query, Remove, GetAndPut, and GetAndRemove operations with string, int, and Any (Person) keys, and tests error-handling for non-existent keys and regions.
 
 ## Cleaning up
 

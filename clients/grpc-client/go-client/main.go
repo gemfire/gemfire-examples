@@ -5,6 +5,7 @@
  * Generated in whole or in part by Claude
  * Description:
  * 2026-08-11: Add grpc go client to gemfire-examples clients.
+ * 2026-09-16: Added OQL query example (GEM-20556).
  */
 
 package main
@@ -12,6 +13,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"time"
 
@@ -117,6 +119,9 @@ func main() {
 	// Test Person with Any
 	fmt.Println("\n=== Testing Person with Any ===")
 	testPersonWithAny(client, ctx, "region1", "person_key")
+
+	// Test OQL Query
+	testQuery(client, ctx)
 }
 
 func putString(client pb.CacheServiceClient, ctx context.Context, regionName, key, value string) {
@@ -465,5 +470,119 @@ func testPersonWithAny(client pb.CacheServiceClient, ctx context.Context, region
 		}
 	} else {
 		fmt.Printf("GET failed: Key not found\n")
+	}
+}
+
+func putStringSilent(client pb.CacheServiceClient, ctx context.Context, regionName, key, value string) {
+	keyMsg := &pb.Key{
+		KeyValue: &pb.Key_String_{String_: key},
+	}
+	valueMsg := &pb.Value{
+		ValueValue: &pb.Value_String_{String_: value},
+	}
+	req := &pb.PutRequest{
+		RegionName: regionName,
+		Key:        keyMsg,
+		Value:      valueMsg,
+	}
+	client.Put(ctx, req)
+}
+
+func testQuery(client pb.CacheServiceClient, ctx context.Context) {
+	fmt.Println("\n=== Testing OQL Query ===")
+	// Insert enough data to span multiple batches (assuming a test batch size of 2 or default 1000)
+	for i := 1; i <= 10; i++ {
+		putStringSilent(client, ctx, "region1", fmt.Sprintf("query_key%d", i), fmt.Sprintf("query_value%d", i))
+	}
+
+	// Basic query
+	fmt.Printf("Executing basic query on /region1...\n")
+	req := &pb.QueryRequest{
+		Query: "SELECT * FROM /region1",
+	}
+	executeAndPrintQuery(client, ctx, req)
+
+	// Parameterized query
+	fmt.Printf("\nExecuting parameterized query on /region1...\n")
+	paramReq := &pb.QueryRequest{
+		Query: "SELECT p.key, p.value FROM /region1.entries p WHERE p.value.toString() = $1 OR p.value.toString() = $2",
+		Parameters: []*pb.Value{
+			{ValueValue: &pb.Value_String_{String_: "query_value1"}},
+			{ValueValue: &pb.Value_String_{String_: "query_value2"}},
+		},
+	}
+	executeAndPrintQuery(client, ctx, paramReq)
+}
+
+func executeAndPrintQuery(client pb.CacheServiceClient, ctx context.Context, req *pb.QueryRequest) {
+	stream, err := client.Query(ctx, req)
+	if err != nil {
+		log.Printf("Query failed: %v", err)
+		return
+	}
+
+	first := true
+	batchCount := 0
+	rowCount := 0
+	for {
+		resp, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Printf("Error receiving query response: %v", err)
+			break
+		}
+		batchCount++
+
+		// field_names is only meaningful on the first response message.
+		// gRPC guarantees stream ordering, so this is safe.
+		if first {
+			if len(resp.FieldNames) > 0 {
+				fmt.Printf("Fields: %v\n", resp.FieldNames)
+			} else {
+				fmt.Printf("Fields: <none>\n")
+			}
+			first = false
+		}
+
+		for _, row := range resp.Rows {
+			var rowStr string
+			for j, field := range row.Fields {
+				if j > 0 {
+					rowStr += ", "
+				}
+				rowStr += queryValueToString(field)
+			}
+			fmt.Printf("Row %d: [%s]\n", rowCount, rowStr)
+			rowCount++
+		}
+	}
+	fmt.Printf("Received %d rows across %d batches\n", rowCount, batchCount)
+}
+
+func queryValueToString(value *pb.QueryValue) string {
+	if value == nil {
+		return "null"
+	}
+	switch v := value.ValueValue.(type) {
+	case *pb.QueryValue_String_:
+		return v.String_
+	case *pb.QueryValue_Bytes:
+		return fmt.Sprintf("[bytes:%d bytes]", len(v.Bytes))
+	case *pb.QueryValue_Int32:
+		return fmt.Sprintf("%d", v.Int32)
+	case *pb.QueryValue_Int64:
+		return fmt.Sprintf("%d", v.Int64)
+	case *pb.QueryValue_Bool:
+		return fmt.Sprintf("%t", v.Bool)
+	case *pb.QueryValue_Double:
+		return fmt.Sprintf("%f", v.Double)
+	case *pb.QueryValue_Float:
+		return fmt.Sprintf("%f", v.Float)
+	case *pb.QueryValue_Any:
+		return fmt.Sprintf("[Any:%s]", v.Any.TypeUrl)
+	default:
+		return "[unknown value type]"
 	}
 }
