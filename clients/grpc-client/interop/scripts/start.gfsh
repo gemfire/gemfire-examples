@@ -1,0 +1,21 @@
+# Copyright 2026 Broadcom. All Rights Reserved.
+#
+# Starts a locator and a server with their gRPC endpoints bound, deploys the listener, and
+# creates the region. Run from the interop directory: gfsh run --file=scripts/start.gfsh
+#
+# The locator's gRPC address has to be a fixed, known one: it is the xDS ADS endpoint that
+# resolves xds:///gemfire_grpc, and scripts/xds-bootstrap.json names it literally. Keep the two
+# in step. The server's gRPC port is deliberately left unset, so it binds an ephemeral port and
+# announces the endpoint it got through the locator, which is how the client discovers it.
+
+start locator --name=locator --bind-address=127.0.0.1 --port=10334 --J=-Dgemfire.grpc.bind-address=127.0.0.1:41051
+start server --name=server1 --locators=127.0.0.1[10334] --server-port=0
+list members
+
+# The deploy must precede the region so the listener class resolves. It also registers
+# test.v1.Person: the jar carries a descriptor set, and only a deployed jar gets scanned for one.
+# gfsh resolves this path from your working directory, not from this script's directory.
+deploy --jar=build/grpc-interop-listener.jar
+
+create region --name=people --type=REPLICATE --cache-listener=com.vmware.gemfire.examples.grpc.interop.PersonCacheListener
+describe region --name=people

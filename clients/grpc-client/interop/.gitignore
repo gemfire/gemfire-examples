@@ -1,0 +1,4 @@
+build/
+/interop-client
+/gemfire/
+/test/
