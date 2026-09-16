@@ -92,7 +92,7 @@ go-client: go-proto
 # --- Java GemFire client and the deployed listener ---------------------------
 
 ## Unpacks the jars this example compiles against. gemfire-proto-serialization supplies
-## ProtoAnyDocument and must be on the runtime classpath of any GemFire client reading
+## ProtobufMessage and must be on the runtime classpath of any GemFire client reading
 ## gRPC-written values: it registers the PROTOBUF DSCODE decoder. protobuf-java comes from here
 ## too, so the client uses the same version the server does. The installation ships both only
 ## inside the .gfm.

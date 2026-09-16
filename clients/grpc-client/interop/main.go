@@ -73,7 +73,7 @@ func main() {
 func put(ctx context.Context, client gemfirepb.CacheServiceClient, key string,
 	person *personpb.Person) {
 	// anypb.New sets the type URL to type.googleapis.com/test.v1.Person. The server stores the
-	// Any as-is, wrapped in a ProtoAnyDocument. It never needs the Person type to do that.
+	// Any as-is, wrapped in a ProtobufMessage. It never needs the Person type to do that.
 	anyValue, err := anypb.New(person)
 	if err != nil {
 		log.Fatalf("Failed to pack Person into Any: %v", err)
