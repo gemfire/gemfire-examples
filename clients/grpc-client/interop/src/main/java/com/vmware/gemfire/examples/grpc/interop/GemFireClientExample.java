@@ -5,7 +5,7 @@
  * Generated in whole or in part by Claude
  * Description:
  * 2026-09-09: GemFire client that reads gRPC-written Protobuf and writes a message of its own.
- * 2026-09-16: Uses ProtobufMessage, which replaced ProtoAnyDocument in the extension.
+ * 2026-09-16: Uses com.vmware.gemfire.protobuf.ProtobufMessage, which replaced ProtoAnyDocument.
  */
 
 package com.vmware.gemfire.examples.grpc.interop;
@@ -17,7 +17,7 @@ import org.apache.geode.cache.Region;
 import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 
-import com.vmware.gemfire.proto.ProtobufMessage;
+import com.vmware.gemfire.protobuf.ProtobufMessage;
 
 /**
  * Uses the GemFire client API on the same entries the gRPC API writes, in both directions: it
@@ -25,7 +25,7 @@ import com.vmware.gemfire.proto.ProtobufMessage;
  * client reads back over gRPC with {@code --mode=get}.
  *
  * <p>
- * A {@code get} returns a {@link ProtobufMessage} because {@code gemfire-proto-serialization}
+ * A {@code get} returns a {@link ProtobufMessage} because {@code gemfire-protobuf-serialization}
  * is on this application's classpath. That jar registers the decoder for GemFire's PROTOBUF
  * DSCODE. Without it the client cannot deserialize the value at all.
  *

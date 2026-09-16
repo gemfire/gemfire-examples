@@ -50,7 +50,7 @@ API, whatever wrote it.
 
    Expected output, one line per entry:
 
-        [info ... server1 <grpc-worker-1> tid=0x54] [PersonCacheListener] afterCreate key=alice originRemote=false valueClass=com.vmware.gemfire.proto.internal.document.ProtobufMessageCached first_name=Alice last_name=Anderson
+        [info ... server1 <grpc-worker-1> tid=0x54] [PersonCacheListener] afterCreate key=alice originRemote=false valueClass=com.vmware.gemfire.protobuf.internal.document.ProtobufAnyPure first_name=Alice last_name=Anderson
 
    The `grpc-worker` thread name is the point of the example: a gRPC call drove a GemFire
    cache listener.
