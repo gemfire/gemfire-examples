@@ -1,0 +1,5 @@
+# Copyright 2026 Broadcom. All Rights Reserved.
+
+version: v1
+deps:
+  - buf.build/googleapis/googleapis
