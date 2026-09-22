@@ -1,0 +1,17 @@
+# Copyright 2026 Broadcom. All Rights Reserved.
+#
+# @AI-Generated
+# Generated in whole or in part by Claude
+# Description:
+# 2026-09-22: Standardized on using buf instead of protoc
+
+version: v1
+plugins:
+  - plugin: buf.build/protocolbuffers/go:v1.33.0
+    out: .
+    opt:
+      - paths=source_relative
+  - plugin: buf.build/grpc/go:v1.3.0
+    out: .
+    opt:
+      - paths=source_relative

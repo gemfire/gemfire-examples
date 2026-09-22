@@ -6,15 +6,10 @@ Go gRPC client example for the GemFire gRPC extension.
 
 - **GemFire Installation**: `GEMFIRE_HOME` must be set to a valid GemFire installation directory.
 - **gRPC Extension**: The VMware Tanzu GemFire gRPC Extension (`.gfm` file) must be installed in `$GEMFIRE_HOME/extensions/` (or specified via `$GEMFIRE_EXTENSIONS_REPOSITORY_PATH`).
-- [Protocol Buffers compiler (`protoc`)](https://protobuf.dev/installation/)
+- [Buf](https://buf.build/docs/installation)
 - [OpenSSL](https://openssl-library.org/source/) (if running with TLS enabled)
 - **Make**: Required to run the build scripts. (Mac: `xcode-select --install`, Linux: `sudo apt install make`).
 - [Go](https://go.dev/doc/install) 1.26 or later
-- Go plugins for protoc:
-  ```bash
-  go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-  go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-  ```
 - **GemFire gRPC Protobuf Definition**: Download the VMware Tanzu GemFire gRPC Extension `.tgz` artifact. Extract the `gemfire.proto` file from the archive and place it in the `../proto/gemfire/v1/` directory relative to this app (e.g., `clients/grpc-client/proto/gemfire/v1/gemfire.proto`).
 
 ## Building
