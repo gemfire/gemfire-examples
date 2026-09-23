@@ -4,8 +4,8 @@ Example client applications demonstrating how to connect to and interact with th
 
 | Module | Language | Description |
 |---|---|---|
-| [`go-client/`](go-client/README.md) | Go | Go gRPC client exercising Put, Get, and error-handling scenarios |
-| [`python-client/`](python-client/README.md) | Python | Python gRPC client exercising Put, Get, and error-handling scenarios |
+| [`go-client/`](go-client/README.md) | Go | Go gRPC client exercising Put, Get, Query, and error-handling scenarios |
+| [`python-client/`](python-client/README.md) | Python | Python gRPC client exercising Put, Get, Query, and error-handling scenarios |
 
 The client targets the `CacheService` API and can be pointed at any running server — a GemFire cluster with the VMware Tanzu GemFire gRPC Extension installed.
 

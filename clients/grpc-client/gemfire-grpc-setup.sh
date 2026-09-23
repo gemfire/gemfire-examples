@@ -107,7 +107,7 @@ startCluster() {
   serverPeerPort="$(pickFreeHostPort)"
   
   echo "Starting server (CRUD port bound at 127.0.0.1:$serverHostPort)..."
-  "$gfshPath" -e "start server --name=server-0 --bind-address=127.0.0.1 --server-bind-address=127.0.0.1 --locators=127.0.0.1[$locatorPeerPort] --server-port=$serverPeerPort --http-service-port=0 --dir=$serverDir --J=-Dgemfire.grpc.bind-address=127.0.0.1:$serverHostPort $tlsArguments" >/dev/null
+  "$gfshPath" -e "start server --name=server-0 --bind-address=127.0.0.1 --server-bind-address=127.0.0.1 --locators=127.0.0.1[$locatorPeerPort] --server-port=$serverPeerPort --http-service-port=0 --dir=$serverDir --J=-Dgemfire.grpc.bind-address=127.0.0.1:$serverHostPort --J=-Dgemfire.grpc.query-batch-size=2 $tlsArguments" >/dev/null
 
   echo "Creating region1/region2..."
   "$gfshPath" \
