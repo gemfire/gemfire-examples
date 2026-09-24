@@ -18,15 +18,6 @@
  # the License.
  #
 
-#
-# @AI-Generated
-# Generated in whole or in part by Cursor
-# Description:
-# 2026-03-04: Extended shutdown to stop Tomcat and remove all GemFire-placed files from the
-#             Tomcat installation, leaving it in a clean state for the next setup run
-# 2026-03-04: Switch cleanup to use gemfire-client-dependencies zip manifest instead of lib/
-#
-
 # Usage: ./example-shutdown.sh <root directory of GemFire install>
 # Example: ./example-shutdown.sh /path/to/vmware-gemfire
 #
