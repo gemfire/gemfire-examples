@@ -10,8 +10,7 @@ proto:
 	fi
 	@echo "Generating Go code from proto files..."
 	@mkdir -p gemfire/v1 test/v1
-	@buf generate ../proto --path ../proto/gemfire/v1 --template buf.gen.gemfire.yaml
-	@buf generate ../proto --path ../proto/test/v1 --template buf.gen.person.yaml
+	@buf generate ../proto --path ../proto/gemfire/v1 --path ../proto/test/v1 --template buf.gen.yaml
 
 build: proto
 	@echo "Building Go client..."

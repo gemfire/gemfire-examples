@@ -10,6 +10,11 @@ Go gRPC client example for the GemFire gRPC extension.
 - [OpenSSL](https://openssl-library.org/source/) (if running with TLS enabled)
 - **Make**: Required to run the build scripts. (Mac: `xcode-select --install`, Linux: `sudo apt install make`).
 - [Go](https://go.dev/doc/install) 1.26 or later
+- **Go Plugins for Buf**:
+  ```bash
+  go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+  go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+  ```
 - **GemFire gRPC Protobuf Definition**: Download the VMware Tanzu GemFire gRPC Extension `.tgz` artifact. Extract the `gemfire.proto` file from the archive and place it in the `../proto/gemfire/v1/` directory relative to this app (e.g., `clients/grpc-client/proto/gemfire/v1/gemfire.proto`).
 
 ## Building
