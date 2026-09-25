@@ -1,0 +1,8 @@
+# Copyright 2026 Broadcom. All Rights Reserved.
+
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/python:v25.3
+    out: .
+  - remote: buf.build/grpc/python:v1.60.0
+    out: .

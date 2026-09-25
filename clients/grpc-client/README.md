@@ -14,10 +14,10 @@ The client targets the `CacheService` API and can be pointed at any running serv
 - **GemFire Installation**: `GEMFIRE_HOME` must be set to a valid GemFire installation directory.
 - **gRPC Extension**: The VMware Tanzu GemFire gRPC Extension (`.gfm` file) must be installed in `$GEMFIRE_HOME/extensions/` (or specified via `$GEMFIRE_EXTENSIONS_REPOSITORY_PATH`).
 - **Make**: Required to run the build scripts. (Mac: `xcode-select --install`, Linux: `sudo apt install make`).
-- **Protocol Buffers Compiler**: `protoc` must be installed. ([Install protoc](https://protobuf.dev/installation/))
+- **Buf**: Used to generate code from proto files. ([Install Buf](https://buf.build/docs/installation))
 - **OpenSSL**: Required if you want to run the examples with TLS enabled (`--tls`). ([Install OpenSSL](https://openssl-library.org/source/))
 - **Go**: 1.26 or later (required for the Go client). ([Install Go](https://go.dev/doc/install))
-- **Go Plugins for protoc**:  (required for the Go client).
+- **Go Plugins for Buf**: (required for the Go client).
   ```bash
   go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
   go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
