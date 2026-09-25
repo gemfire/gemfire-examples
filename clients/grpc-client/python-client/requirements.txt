@@ -1,7 +1,5 @@
 # Copyright 2026 Broadcom. All Rights Reserved.
 
 grpcio>=1.60.0
-# Pinned exactly to match the protoc version pinned in Makefile's PROTOC_VERSION — see the
-# comment there for why these two must move together.
-protobuf==5.29.3
+protobuf>=4.25.0
 googleapis-common-protos>=1.60.0

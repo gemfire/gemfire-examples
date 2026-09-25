@@ -2,7 +2,7 @@
 
 version: v2
 plugins:
-  - protoc_builtin: python
+  - remote: buf.build/protocolbuffers/python:v25.3
     out: .
-  - local: grpc_python_plugin
+  - remote: buf.build/grpc/python:v1.60.0
     out: .
