@@ -23,11 +23,6 @@ The client targets the `CacheService` API and can be pointed at any running serv
   go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
   ```
 - **Python**: 3.8 or later (required for the Python client). ([Install Python](https://www.python.org/downloads/))
-- **Python Plugin for Buf**: `grpc_python_plugin` on `PATH` (required for the Python client). `protoc` itself is downloaded automatically, pinned to a version compatible with `python-client/requirements.txt`.
-  ```bash
-  brew install grpc  # macOS
-  sudo apt install protobuf-compiler-grpc  # Linux
-  ```
 - **Python Tools**: `pip` and `venv` must be available (required for the Python client). These are usually bundled with Python, but on Linux you may need to install them (e.g., `sudo apt install python3-pip python3-venv`).
 - **GemFire gRPC Protobuf Definition**: Download the VMware Tanzu GemFire gRPC Extension `.tgz` artifact. Extract the `gemfire.proto` file from the archive and place it in the `../proto/gemfire/v1/` directory relative to this app (e.g., `clients/grpc-client/proto/gemfire/v1/gemfire.proto`).
 

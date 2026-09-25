@@ -1,5 +1,4 @@
 .venv/
-.tools/
 __pycache__/
 gemfire/
 test/
