@@ -52,7 +52,7 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := pb.NewCacheServiceClient(conn)
+	client := pb.NewGemFireClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -124,7 +124,7 @@ func main() {
 	testQuery(client, ctx)
 }
 
-func putString(client pb.CacheServiceClient, ctx context.Context, regionName, key, value string) {
+func putString(client pb.GemFireClient, ctx context.Context, regionName, key, value string) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_String_{String_: key},
 	}
@@ -146,7 +146,7 @@ func putString(client pb.CacheServiceClient, ctx context.Context, regionName, ke
 	fmt.Printf("PUT successful (string key)\n")
 }
 
-func putInt(client pb.CacheServiceClient, ctx context.Context, regionName string, key int32, value string) {
+func putInt(client pb.GemFireClient, ctx context.Context, regionName string, key int32, value string) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_Int{Int: key},
 	}
@@ -168,7 +168,7 @@ func putInt(client pb.CacheServiceClient, ctx context.Context, regionName string
 	fmt.Printf("PUT successful (int key)\n")
 }
 
-func getAndPutString(client pb.CacheServiceClient, ctx context.Context, regionName, key, value string) {
+func getAndPutString(client pb.GemFireClient, ctx context.Context, regionName, key, value string) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_String_{String_: key},
 	}
@@ -195,7 +195,7 @@ func getAndPutString(client pb.CacheServiceClient, ctx context.Context, regionNa
 	}
 }
 
-func getAndPutInt(client pb.CacheServiceClient, ctx context.Context, regionName string, key int32, value string) {
+func getAndPutInt(client pb.GemFireClient, ctx context.Context, regionName string, key int32, value string) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_Int{Int: key},
 	}
@@ -222,7 +222,7 @@ func getAndPutInt(client pb.CacheServiceClient, ctx context.Context, regionName 
 	}
 }
 
-func removeString(client pb.CacheServiceClient, ctx context.Context, regionName, key string) {
+func removeString(client pb.GemFireClient, ctx context.Context, regionName, key string) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_String_{String_: key},
 	}
@@ -244,7 +244,7 @@ func removeString(client pb.CacheServiceClient, ctx context.Context, regionName,
 	fmt.Printf("REMOVE successful (string key): Key=%s was removed\n", key)
 }
 
-func removeInt(client pb.CacheServiceClient, ctx context.Context, regionName string, key int32) {
+func removeInt(client pb.GemFireClient, ctx context.Context, regionName string, key int32) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_Int{Int: key},
 	}
@@ -266,7 +266,7 @@ func removeInt(client pb.CacheServiceClient, ctx context.Context, regionName str
 	fmt.Printf("REMOVE successful (int key): Key=%d was removed\n", key)
 }
 
-func getAndRemoveString(client pb.CacheServiceClient, ctx context.Context, regionName, key string) {
+func getAndRemoveString(client pb.GemFireClient, ctx context.Context, regionName, key string) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_String_{String_: key},
 	}
@@ -293,7 +293,7 @@ func getAndRemoveString(client pb.CacheServiceClient, ctx context.Context, regio
 	}
 }
 
-func getAndRemoveInt(client pb.CacheServiceClient, ctx context.Context, regionName string, key int32) {
+func getAndRemoveInt(client pb.GemFireClient, ctx context.Context, regionName string, key int32) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_Int{Int: key},
 	}
@@ -320,7 +320,7 @@ func getAndRemoveInt(client pb.CacheServiceClient, ctx context.Context, regionNa
 	}
 }
 
-func getString(client pb.CacheServiceClient, ctx context.Context, regionName, key string) {
+func getString(client pb.GemFireClient, ctx context.Context, regionName, key string) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_String_{String_: key},
 	}
@@ -347,7 +347,7 @@ func getString(client pb.CacheServiceClient, ctx context.Context, regionName, ke
 	}
 }
 
-func getInt(client pb.CacheServiceClient, ctx context.Context, regionName string, key int32) {
+func getInt(client pb.GemFireClient, ctx context.Context, regionName string, key int32) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_Int{Int: key},
 	}
@@ -397,7 +397,7 @@ func valueToString(value *pb.Value) string {
 	}
 }
 
-func testPersonWithAny(client pb.CacheServiceClient, ctx context.Context, regionName, key string) {
+func testPersonWithAny(client pb.GemFireClient, ctx context.Context, regionName, key string) {
 	// Create a Person instance
 	person := &personpb.Person{
 		FirstName: "John",
@@ -473,7 +473,7 @@ func testPersonWithAny(client pb.CacheServiceClient, ctx context.Context, region
 	}
 }
 
-func putStringSilent(client pb.CacheServiceClient, ctx context.Context, regionName, key, value string) {
+func putStringSilent(client pb.GemFireClient, ctx context.Context, regionName, key, value string) {
 	keyMsg := &pb.Key{
 		KeyValue: &pb.Key_String_{String_: key},
 	}
@@ -488,7 +488,7 @@ func putStringSilent(client pb.CacheServiceClient, ctx context.Context, regionNa
 	client.Put(ctx, req)
 }
 
-func testQuery(client pb.CacheServiceClient, ctx context.Context) {
+func testQuery(client pb.GemFireClient, ctx context.Context) {
 	fmt.Println("\n=== Testing OQL Query ===")
 	// Insert enough data to span multiple batches (assuming a test batch size of 2 or default 1000)
 	for i := 1; i <= 10; i++ {
@@ -514,7 +514,7 @@ func testQuery(client pb.CacheServiceClient, ctx context.Context) {
 	executeAndPrintQuery(client, ctx, paramReq)
 }
 
-func executeAndPrintQuery(client pb.CacheServiceClient, ctx context.Context, req *pb.QueryRequest) {
+func executeAndPrintQuery(client pb.GemFireClient, ctx context.Context, req *pb.QueryRequest) {
 	stream, err := client.Query(ctx, req)
 	if err != nil {
 		log.Printf("Query failed: %v", err)
