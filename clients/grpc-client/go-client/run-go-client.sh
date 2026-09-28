@@ -23,7 +23,7 @@ startCluster
 echo
 echo "=== Running the Go example client ==="
 (cd "$(dirname "${BASH_SOURCE[0]}")" && make build)
-GRPC_XDS_BOOTSTRAP="$bootstrapFile" "$(dirname "${BASH_SOURCE[0]}")/cache-client"
+GRPC_XDS_BOOTSTRAP="$bootstrapFile" "$(dirname "${BASH_SOURCE[0]}")/gemfire-client"
 
 echo
 echo "Done."

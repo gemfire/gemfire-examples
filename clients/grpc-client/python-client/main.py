@@ -36,7 +36,7 @@ def main():
 
     print(f"Connecting to {DEFAULT_TARGET}...")
     with grpc.secure_channel(DEFAULT_TARGET, channel_credentials) as channel:
-        client = pb_grpc.CacheServiceStub(channel)
+        client = pb_grpc.GemFireStub(channel)
 
         # Test PUT operations with different key types
         print("\n=== Testing PUT operations ===")
