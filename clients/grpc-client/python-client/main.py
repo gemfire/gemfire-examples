@@ -1,13 +1,5 @@
 # Copyright 2026 Broadcom. All Rights Reserved.
 
-"""
-@AI-Generated
-Generated in whole or in part by Claude
-Description:
-2026-08-12: Add grpc python client to gemfire-examples clients.
-2026-09-16: Added OQL query example.
-"""
-
 import sys
 import grpc
 from google.protobuf import any_pb2
@@ -360,7 +352,7 @@ def test_person_with_any(client, region_name, key):
 
 def test_query(client):
     print("\n=== Testing OQL Query ===")
-    
+
     # Insert enough data to span multiple batches (assuming a test batch size of 2 or default 1000)
     for i in range(1, 11):
         put_string_silent(client, "region1", f"query_key{i}", f"query_value{i}")
@@ -384,14 +376,14 @@ def test_query(client):
 def execute_and_print_query(client, req):
     try:
         response_stream = client.Query(req)
-        
+
         first = True
         batch_count = 0
         row_count = 0
-        
+
         for resp in response_stream:
             batch_count += 1
-            
+
             # field_names is only meaningful on the first response message.
             # gRPC guarantees stream ordering, so this is safe.
             if first:
@@ -400,16 +392,16 @@ def execute_and_print_query(client, req):
                 else:
                     print("Fields: <none>")
                 first = False
-                
+
             for row in resp.rows:
                 row_str_parts = []
                 for field in row.fields:
                     row_str_parts.append(query_value_to_string(field))
                 print(f"Row {row_count}: [{', '.join(row_str_parts)}]")
                 row_count += 1
-                
+
         print(f"Received {row_count} rows across {batch_count} batches")
-        
+
     except grpc.RpcError as e:
         print(f"Query failed: {e.details()}")
 
@@ -417,7 +409,7 @@ def query_value_to_string(value):
     field_name = value.WhichOneof("value_value")
     if not field_name:
         return "null"
-        
+
     if field_name == "string":
         return value.string
     elif field_name == "bytes":

@@ -6,7 +6,7 @@ Python gRPC client example for the GemFire gRPC extension.
 
 - **GemFire Installation**: `GEMFIRE_HOME` must be set to a valid GemFire installation directory.
 - **gRPC Extension**: The VMware Tanzu GemFire gRPC Extension (`.gfm` file) must be installed in `$GEMFIRE_HOME/extensions/` (or specified via `$GEMFIRE_EXTENSIONS_REPOSITORY_PATH`).
-- [Protocol Buffers compiler (`protoc`)](https://protobuf.dev/installation/)
+- [Buf](https://buf.build/docs/installation)
 - [OpenSSL](https://openssl-library.org/source/) (if running with TLS enabled)
 - **Make**: Required to run the build scripts. (Mac: `xcode-select --install`, Linux: `sudo apt install make`).
 - [Python](https://www.python.org/downloads/) 3.8 or later

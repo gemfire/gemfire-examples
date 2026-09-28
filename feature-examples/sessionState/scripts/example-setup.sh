@@ -18,16 +18,6 @@
  # the License.
  #
 
-#
-# @AI-Generated
-# Generated in whole or in part by Cursor
-# Description:
-# 2026-03-04: Added pre-setup cleanup of any previously-installed GemFire JARs and copying of
-#             GemFire runtime JARs to Tomcat lib/ so the session management module resolves at startup
-# 2026-03-04: Switch GemFire client dependency source from lib/ to the curated
-#             gemfire-client-dependencies zip in tools/Modules/gemfire-session-management/
-#
-
 # Usage: ./example-setup.sh <root directory of GemFire install>
 # Example: ./example-setup.sh /path/to/vmware-gemfire
 #
