@@ -76,7 +76,7 @@ Create a file named `grpc-xds-bootstrap.json` (the name and location don't matte
 `grpc-go` reads the `GRPC_XDS_BOOTSTRAP` environment variable at process-init time. Set this variable to the absolute path of the file you just created:
 
 ```bash
-GRPC_XDS_BOOTSTRAP=/absolute/path/to/grpc-xds-bootstrap.json ./cache-client
+GRPC_XDS_BOOTSTRAP=/absolute/path/to/grpc-xds-bootstrap.json ./gemfire-client
 ```
 
 ## Doing it manually

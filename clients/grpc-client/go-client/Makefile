@@ -25,14 +25,14 @@ proto:
 
 build: proto
 	@echo "Building Go client..."
-	@go build -o cache-client main.go
+	@go build -o gemfire-client main.go
 
 run: build
 	@echo "Running Go client..."
-	@./cache-client
+	@./gemfire-client
 
 clean:
 	@echo "Cleaning..."
-	@rm -rf gemfire cache-client
+	@rm -rf gemfire gemfire-client
 	@go clean
 
