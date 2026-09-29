@@ -134,10 +134,24 @@ configure([project(':gemfire-client'), project(':gemfire-server')]) {
 // connect to it. The gfsh scripts therefore live at the root rather than per module.
 // start.gfsh deploys the listener jar, so it has to exist before the script runs.
 tasks.register('start', Exec) {
-    dependsOn checkEnv, project(':gemfire-server').tasks.named('jar')
+    dependsOn checkEnv, ':gemfire-server:jar'
     description = 'Start the locator and server, deploy the listener, and create the region'
     workingDir rootDir
     commandLine 'sh', '-c', "${installDir}/bin/gfsh run --file=${rootDir}/scripts/start.gfsh"
+
+    doFirst {
+        println """
+Starting the interop cluster:
+  locator   127.0.0.1[10334], gRPC/xDS on 127.0.0.1:41051
+  server1   ephemeral port, endpoint announced through the locator
+  deploy    gemfire-server/build/libs/grpc-interop-listener.jar
+  region    people (REPLICATE), PersonCacheListener attached
+"""
+    }
+
+    doLast {
+        println "\nCluster is up."
+    }
 }
 
 tasks.register('stop', Exec) {

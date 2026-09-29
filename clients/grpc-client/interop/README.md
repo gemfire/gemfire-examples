@@ -73,10 +73,6 @@ depends on it, so a broken setup fails with a clear message rather than a compil
 
         $ GRPC_XDS_BOOTSTRAP=scripts/xds-bootstrap.json ./go-client/interop-client --mode=put
 
-   This is the one step that is not a Gradle task. Running the binary directly keeps
-   `GRPC_XDS_BOOTSTRAP` visible: it points the gRPC xDS resolver at the locator, which is how
-   `xds:///gemfire_grpc` resolves to the server's announced endpoint.
-
         gRPC put alice -> type.googleapis.com/test.v1.Person Alice Anderson
         gRPC put bob -> type.googleapis.com/test.v1.Person Bob Barnes
 
