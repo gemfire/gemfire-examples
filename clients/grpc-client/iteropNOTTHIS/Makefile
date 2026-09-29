@@ -23,6 +23,8 @@ DESCRIPTOR_SET := $(BUILD)/person.desc
 LISTENER_JAR := $(BUILD)/grpc-interop-listener.jar
 
 JAVA_PACKAGE := com/vmware/gemfire/examples/grpc/interop
+# Where protoc puts the generated Person classes, from person.proto's java_package.
+PROTO_JAVA_PACKAGE := com/example/test/v1
 JAVA_SOURCES := $(wildcard src/main/java/$(JAVA_PACKAGE)/*.java)
 MAIN_CLASS := com.vmware.gemfire.examples.grpc.interop.GemFireClientExample
 # Quoted wherever it is used, so javac and java expand the * rather than the shell.
@@ -128,16 +130,22 @@ $(CLASSES_STAMP): $(JAVA_SOURCES) $(DESCRIPTOR_SET) $(EXTENSION_STAMP)
 	@echo "$(GEMFIRE_HOME)" > $(GEMFIRE_HOME_STAMP)
 	@touch $@
 
-## The jar handed to "gfsh deploy" carries the listener and the descriptor set, and nothing else.
-## Generated message classes are deliberately left out: GemFire loads a deployed jar in its own
-## isolated module that cannot see com.google.protobuf, so they would fail to link and the deploy
-## itself would fail. A descriptor set needs no Protobuf classes at all.
+## The jar handed to "gfsh deploy" carries the listener, the generated Person classes, and the
+## descriptor set. The generated classes are needed because the listener calls
+## ProtobufMessage.unpack(Person.class); without them it deploys clean and then throws
+## NoClassDefFoundError on the first afterCreate, since linking is lazy.
+##
+## They can be carried only because the extension module exports com/google/protobuf and
+## com/vmware/gemfire/protobuf. Person extends GeneratedMessage, so the deploy-time scanner links
+## it immediately - against an extension that does not export those, the deploy itself fails.
 $(LISTENER_JAR): $(CLASSES_STAMP)
 	@echo "Packaging the listener jar..."
 	@rm -rf $(JAR_STAGE)
-	@mkdir -p $(JAR_STAGE)/META-INF/gemfire/protobuf $(JAR_STAGE)/$(JAVA_PACKAGE)
+	@mkdir -p $(JAR_STAGE)/META-INF/gemfire/protobuf $(JAR_STAGE)/$(JAVA_PACKAGE) \
+		$(JAR_STAGE)/$(PROTO_JAVA_PACKAGE)
 	@cp $(DESCRIPTOR_SET) $(JAR_STAGE)/META-INF/gemfire/protobuf/
 	@cp $(CLASSES)/$(JAVA_PACKAGE)/PersonCacheListener*.class $(JAR_STAGE)/$(JAVA_PACKAGE)/
+	@cp $(CLASSES)/$(PROTO_JAVA_PACKAGE)/*.class $(JAR_STAGE)/$(PROTO_JAVA_PACKAGE)/
 	@cd $(JAR_STAGE) && jar cf $(CURDIR)/$(LISTENER_JAR) .
 
 java: $(LISTENER_JAR)

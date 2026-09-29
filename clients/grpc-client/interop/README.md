@@ -1,77 +1,132 @@
-
 # GemFire gRPC API Interop Example
 
-Interop between the GemFire API and the gRPC API: a Go gRPC app writes Protobuf messages, a
-server-side cache listener reads their fields as they arrive, and a Java GemFire client reads the
-same entries back as Protobuf objects and writes one of its own.
+Interop between the GemFire API and the gRPC API: the same region entries are readable and
+writable through either API, whatever wrote them.
 
-The two sides are deliberately in different languages. GemFire has no native Go client, and a
-Java gRPC client would prove less: the point is that the stored value is readable through either
-API, whatever wrote it.
+The example is split into three modules, one per side of that story:
+
+| Module | What it is |
+| --- | --- |
+| `gemfire-server` | [`PersonCacheListener`](gemfire-server/src/main/java/com/vmware/gemfire/examples/grpc/interop/PersonCacheListener.java), packaged into a jar and loaded into the server with `gfsh deploy`. It fires on every write to the region and unpacks the value into a typed `Person`. |
+| `gemfire-client` | [`GemFireClientExample`](gemfire-client/src/main/java/com/vmware/gemfire/examples/grpc/interop/GemFireClientExample.java), an ordinary GemFire client application. It reads entries as `Person` objects and writes one of its own. |
+| `go-client` | [`main.go`](go-client/main.go), a gRPC client in Go. It writes two entries over gRPC and reads back the one the GemFire client wrote. |
+
+The gRPC side is deliberately in another language. GemFire has no native Go client, and a Java
+gRPC client would prove less: the point is that the stored value is readable through either API.
+
+The server module comes first in every sense. Its listener has to be deployed before the region
+exists, and the region has to exist before any client can touch it.
 
 ## Prerequisites
 
-- **GemFire Installation**: `GEMFIRE_HOME` must be set to a valid GemFire 10.3.2 or newer installation directory; older lines have no PROTOBUF DSCODE. Put `$GEMFIRE_HOME/bin` on your `PATH` as well, since the steps below call `gfsh` directly.
-- **gRPC Extension**: The VMware Tanzu GemFire gRPC Extension (`.gfm` file) must be installed in `$GEMFIRE_HOME/extensions/` (or specified via `$GEMFIRE_EXTENSIONS_REPOSITORY_PATH`). It must be built against the same GemFire line as the installation, because it links GemFire internals — mixing lines fails at runtime with `NoClassDefFoundError`, not at build time.
-- [JDK](https://adoptium.net/) 17 or later
-- **Go**: 1.26 or later (required for the Go client). ([Install Go](https://go.dev/doc/install))
-- **Protocol Buffers Compiler**: `protoc` must be installed. ([Install protoc](https://protobuf.dev/installation/))
-- **Go Plugins for protoc**: (required for the Go client).
-  ```bash
-  go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-  go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-  ```
-- **Make**: Required to run the build scripts. (Mac: `xcode-select --install`, Linux: `sudo apt install make`).
-- **GemFire gRPC Protobuf Definition**: Download the VMware Tanzu GemFire gRPC Extension `.tgz` artifact. Extract the `gemfire.proto` file from the archive and place it in the `../proto/gemfire/v1/` directory relative to this app (e.g., `clients/grpc-client/proto/gemfire/v1/gemfire.proto`).
+- **GemFire installation**: `GEMFIRE_HOME` must be set to a GemFire 10.3.2 or newer installation
+  directory; older lines have no PROTOBUF DSCODE.
+- **gRPC extension**: The VMware Tanzu GemFire gRPC Extension (`.gfm` file) must be installed in
+  `$GEMFIRE_HOME/extensions/` (or pointed at with `$GEMFIRE_EXTENSIONS_REPOSITORY_PATH`). It must
+  be built against the same GemFire line as the installation, because it links GemFire internals
+  — mixing lines fails at runtime with `NoClassDefFoundError`, not at build time.
+- [JDK](https://adoptium.net/) 17 or later.
+- **Go** 1.26 or later. ([Install Go](https://go.dev/doc/install)) An older Go still works if
+  `GOTOOLCHAIN` is at its default of `auto`: Go downloads the toolchain `go.mod` asks for.
+- **Protocol Buffers compiler**: `protoc` must be on your `PATH`, or its location set in
+  `$PROTOC`. ([Install protoc](https://protobuf.dev/installation/))
+- **Go plugins for protoc**:
+
+        $ go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+        $ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+  Both must be on your `PATH` — `protoc` runs them as `protoc-gen-go` and `protoc-gen-go-grpc`.
+- **GemFire gRPC Protobuf definition**: Download the VMware Tanzu GemFire gRPC Extension `.tgz`
+  artifact, extract `gemfire.proto` from it, and place it in `../proto/gemfire/v1/` relative to
+  this directory (that is, `clients/grpc-client/proto/gemfire/v1/gemfire.proto`).
+
+Gradle itself is not a prerequisite. The `./gradlew` wrapper in this directory downloads the
+version it needs. Run every command below from this directory.
+
+The `checkEnv` task verifies all of the above and names whatever is missing. Every other task
+depends on it, so a broken setup fails with a clear message rather than a compile error.
 
 ## Steps
 
-1. From the `gemfire-examples/clients/grpc-client/interop` directory, build both halves: the Go
-   gRPC client, and the Java GemFire client plus the listener jar the servers load.
+1. Build all three modules.
 
-        $ make build
+        $ ./gradlew build
 
-2. Next start a locator, start a server, deploy the listener, and create the region.
+   This generates the `Person` classes and the descriptor set from `person.proto`, packages them
+   with the listener into `grpc-interop-listener.jar`, generates the Go stubs from
+   `gemfire.proto` and `person.proto`, and builds the `interop-client` binary.
 
-        $ gfsh run --file=scripts/start.gfsh
+   The listener jar is not an ordinary one. Along with the listener it carries the generated
+   `Person` classes, because the listener calls `ProtobufMessage.unpack(Person.class)`, and
+   `META-INF/gemfire/protobuf/person.desc`, the descriptor set that registers `test.v1.Person` in
+   the server's proto type registry. Only a deployed jar gets scanned for a descriptor set.
 
-3. Run [`main.go --mode=put`](main.go), the Go gRPC client. It packs each `Person` with
-   `anypb.New` and sends it through `CacheService.Put`, leaving two entries in the region that
-   were written entirely over gRPC.
+2. Start the cluster. This starts a locator and a server, deploys the listener jar, and creates
+   the `people` region with the listener attached.
 
-        $ GRPC_XDS_BOOTSTRAP=scripts/xds-bootstrap.json ./interop-client --mode=put
+        $ ./gradlew start
 
-4. Observe that the server logs the two entries through the 
-   [`PersonCacheListener`](src/main/java/com/vmware/gemfire/examples/grpc/interop/PersonCacheListener.java). 
-   It fired as those puts landed, reading `first_name` and `last_name` by name through GemFire's `Document`
-   while naming no Protobuf type. This step only greps the line it already wrote.
+   The deploy has to precede the region so the listener class resolves.
+
+3. Run the Go gRPC client with `--mode=put`. It packs each `Person` with `anypb.New` and sends it
+   through `CacheService.Put`, leaving two entries written entirely over gRPC.
+
+        $ GRPC_XDS_BOOTSTRAP=scripts/xds-bootstrap.json ./go-client/interop-client --mode=put
+
+   This is the one step that is not a Gradle task. Running the binary directly keeps
+   `GRPC_XDS_BOOTSTRAP` visible: it points the gRPC xDS resolver at the locator, which is how
+   `xds:///gemfire_grpc` resolves to the server's announced endpoint.
+
+        gRPC put alice -> type.googleapis.com/test.v1.Person Alice Anderson
+        gRPC put bob -> type.googleapis.com/test.v1.Person Bob Barnes
+
+4. Confirm the deployed listener saw both writes.
 
         $ grep PersonCacheListener server1/server1.log
 
-   Expected output, one line per entry:
+   Two lines, one per entry:
 
-        [info ... server1 <grpc-worker-1> tid=0x54] [PersonCacheListener] afterCreate key=alice originRemote=false valueClass=com.vmware.gemfire.protobuf.internal.document.ProtobufAnyPure first_name=Alice last_name=Anderson
+        [info ... server1 <grpc-worker-1> tid=0x55] [PersonCacheListener] afterCreate key=alice originRemote=false valueClass=com.vmware.gemfire.protobuf.internal.document.ProtobufAnyPure firstName=Alice lastName=Anderson
+        [info ... server1 <grpc-worker-1> tid=0x55] [PersonCacheListener] afterCreate key=bob originRemote=false valueClass=com.vmware.gemfire.protobuf.internal.document.ProtobufAnyPure firstName=Bob lastName=Barnes
 
-   The `grpc-worker` thread name is the point of the example: a gRPC call drove a GemFire
-   cache listener.
+   The `grpc-worker` thread is the point of the example: a gRPC call drove an ordinary GemFire
+   cache listener, which unpacked the value into a typed `Person` without the caller naming a
+   Protobuf type.
 
-5. Run
-   [`GemFireClientExample`](src/main/java/com/vmware/gemfire/examples/grpc/interop/GemFireClientExample.java),
-   the Java GemFire client. It reads both gRPC-written entries as typed `Person` objects with
+5. Run the GemFire client. It reads both gRPC-written entries as typed `Person` objects with
    `unpack`, then writes `grace` of its own with `ProtobufMessage.pack`.
 
-        $ make run-gemfire-client
+        $ ./gradlew :gemfire-client:run
 
-6. Run the Go gRPC client again, this time with [`main.go --mode=get`](main.go). It reads `grace` back
-   as a `google.protobuf.Any` and unpacks it, closing the loop in the other direction.
+        === Reading what the gRPC client wrote ===
+        GemFire get alice -> com.vmware.gemfire.protobuf.internal.document.ProtobufMessageCached
+          Person: Alice Anderson
+        GemFire get bob -> com.vmware.gemfire.protobuf.internal.document.ProtobufMessageCached
+          Person: Bob Barnes
+        === Writing a message for the gRPC client to read ===
+        GemFire put grace -> Grace Hopper
 
-        $ GRPC_XDS_BOOTSTRAP=scripts/xds-bootstrap.json ./interop-client --mode=get
+   The two representations differ by how the value reached the reader. The listener in step 4 saw
+   `ProtobufAnyPure`, because it fires as the `Any` arrives over gRPC, before it is stored as
+   bytes. Here the value does arrive as bytes, and the PROTOBUF DSCODE decoder produces
+   `ProtobufMessageCached`. That decoder is registered by `gemfire-protobuf-serialization`, which
+   is why that jar has to be on this client's runtime classpath and not just its compile
+   classpath.
 
-7. Shut down the system.
+6. Run the Go gRPC client again with `--mode=get`, closing the loop in the other direction. It
+   reads the GemFire-written entry back as a `google.protobuf.Any` and unpacks it.
 
-        $ gfsh run --file=scripts/stop.gfsh
+        $ GRPC_XDS_BOOTSTRAP=scripts/xds-bootstrap.json ./go-client/interop-client --mode=get
 
-8. Clean up. This removes the build output, the generated Go stubs, the `interop-client` binary,
-   and the `locator` and `server1` directories that `start.gfsh` leaves behind in this directory.
+        gRPC get grace -> type.googleapis.com/test.v1.Person
+          Person: Grace Hopper
 
-        $ make clean
+7. Shut down the cluster.
+
+        $ ./gradlew stop
+
+8. Clean up. This removes the build output of every module, the generated Go stubs, the
+   `interop-client` binary, and the `locator` and `server1` directories that `start` leaves
+   behind in this directory.
+
+        $ ./gradlew clean

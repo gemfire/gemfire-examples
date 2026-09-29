@@ -15,7 +15,7 @@ list members
 # The deploy must precede the region so the listener class resolves. It also registers
 # test.v1.Person: the jar carries a descriptor set, and only a deployed jar gets scanned for one.
 # gfsh resolves this path from your working directory, not from this script's directory.
-deploy --jar=gemfire-server/build/libs/grpc-interop-listener.jar
+deploy --jar=build/grpc-interop-listener.jar
 
 create region --name=people --type=REPLICATE --cache-listener=com.vmware.gemfire.examples.grpc.interop.PersonCacheListener
 describe region --name=people
