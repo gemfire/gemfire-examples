@@ -1,4 +1,4 @@
 build/
-/interop-client
-/gemfire/
-/test/
+/go-client/gemfire/
+/go-client/test/
+/go-client/interop-client

@@ -1,0 +1,25 @@
+// Copyright (c) 2026 Broadcom. All Rights Reserved.
+
+/*
+ * @AI-Generated
+ * Generated in whole or in part by Claude
+ * Description:
+ * 2026-09-25: Multi-project build for the interop example: two GemFire-API modules and a gRPC
+ * client in Go, all against one cluster.
+ */
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'interop'
+
+// The GemFire API side of the interop: a client application, and a listener deployed to the
+// server. Both are ordinary GemFire code that never mentions gRPC.
+include 'gemfire-client'
+include 'gemfire-server'
+
+// The gRPC side. Not a Java project; its build shells out to protoc and go build.
+include 'go-client'

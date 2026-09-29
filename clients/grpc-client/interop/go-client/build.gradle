@@ -1,0 +1,69 @@
+// Copyright (c) 2026 Broadcom. All Rights Reserved.
+
+/*
+ * @AI-Generated
+ * Generated in whole or in part by Claude
+ * Description:
+ * 2026-09-25: Wraps the Go build so one gradlew invocation covers all three modules. Gradle only
+ * shells out here; the Go toolchain does the work.
+ * 2026-09-29: main.go landed, so the tasks no longer skip themselves.
+ */
+
+// This module needs no GemFire jars at all. A gRPC client's whole contract is the wire protocol,
+// so it needs protoc, the Go toolchain, and a running cluster - nothing from $GEMFIRE_HOME.
+// protoc-gen-go and protoc-gen-go-grpc must be on PATH.
+
+def protoDir = rootProject.gemfireProtoDir
+def protoc = System.getenv('PROTOC') ?: 'protoc'
+
+// gemfire.proto imports google/api/field_behavior.proto, which is not redistributed with this
+// repository and is gitignored. Fetch it on first use rather than making it a manual step.
+def fieldBehaviorProto = file("${protoDir}/google/api/field_behavior.proto")
+def fieldBehaviorUrl = 'https://raw.githubusercontent.com/googleapis/googleapis/master/' +
+        'google/api/field_behavior.proto'
+
+def fetchFieldBehaviorProto = tasks.register('fetchFieldBehaviorProto') {
+    description = 'Download the google/api import that gemfire.proto needs'
+    outputs.file fieldBehaviorProto
+    onlyIf { !fieldBehaviorProto.exists() }
+    doLast {
+        fieldBehaviorProto.parentFile.mkdirs()
+        new URL(fieldBehaviorUrl).withInputStream { source ->
+            fieldBehaviorProto.withOutputStream { target -> target << source }
+        }
+    }
+}
+
+def generateProto = tasks.register('generateProto', Exec) {
+    dependsOn rootProject.tasks.named('checkEnv'), fetchFieldBehaviorProto
+    description = 'Generate the Go stubs for CacheService and Person'
+    workingDir projectDir
+    commandLine 'sh', '-c', """
+        set -e
+        mkdir -p gemfire/v1 test/v1
+        ${protoc} --go_out=gemfire/v1 --go_opt=paths=source_relative \
+            --go-grpc_out=gemfire/v1 --go-grpc_opt=paths=source_relative \
+            --proto_path=${protoDir}/gemfire/v1 --proto_path=${protoDir} \
+            ${protoDir}/gemfire/v1/gemfire.proto
+        ${protoc} --go_out=test/v1 --go_opt=paths=source_relative \
+            --go-grpc_out=test/v1 --go-grpc_opt=paths=source_relative \
+            --proto_path=${protoDir}/test/v1 \
+            ${protoDir}/test/v1/person.proto
+    """
+}
+
+def goBuild = tasks.register('goBuild', Exec) {
+    dependsOn generateProto
+    description = 'Build the interop-client binary'
+    workingDir projectDir
+    commandLine 'go', 'build', '-o', 'interop-client', 'main.go'
+}
+
+// Named to match the Java modules, so "gradlew build" at the root covers every module.
+tasks.register('build') {
+    dependsOn goBuild
+}
+
+tasks.register('clean', Delete) {
+    delete 'gemfire', 'test', 'interop-client'
+}

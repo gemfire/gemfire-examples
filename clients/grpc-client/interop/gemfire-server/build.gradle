@@ -1,0 +1,33 @@
+// Copyright (c) 2026 Broadcom. All Rights Reserved.
+
+/*
+ * @AI-Generated
+ * Generated in whole or in part by Claude
+ * Description:
+ * 2026-09-25: Scaffolding for the server half.
+ * 2026-09-29: Packages grpc-interop-listener.jar, the jar gfsh deploys into the server.
+ */
+
+// The jar handed to "gfsh deploy" is not an ordinary jar. It has to carry three things:
+//
+//   1. PersonCacheListener
+//   2. the generated Person classes - the listener calls ProtobufMessage.unpack(Person.class),
+//      and without them it deploys clean and then throws NoClassDefFoundError on the first
+//      afterCreate, because linking is lazy
+//   3. META-INF/gemfire/protobuf/person.desc - the descriptor set, which is what registers
+//      test.v1.Person in the server's proto registry
+//
+// Items 1 and 2 are just this module's compiled output: the root build adds the generated
+// sources to both Java modules. Only the descriptor set has to be placed by hand.
+//
+// Carrying the generated classes works only because the extension module exports
+// com/google/protobuf and com/vmware/gemfire/protobuf. Person extends GeneratedMessage, so the
+// deploy-time scanner links it immediately; against an extension without those exports the
+// deploy itself fails.
+tasks.named('jar') {
+    dependsOn rootProject.tasks.named('generateProtoJava')
+    archiveFileName = 'grpc-interop-listener.jar'
+    from(rootProject.protoDescriptorSet) {
+        into 'META-INF/gemfire/protobuf'
+    }
+}
