@@ -20,10 +20,9 @@ def extensionsDir = System.getenv('GEMFIRE_EXTENSIONS_REPOSITORY_PATH') ?: "${in
 
 // The proto sources are shared with the sibling grpc-client examples rather than copied here.
 def protoDir = file("${rootDir}/../proto")
-def protoc = System.getenv('PROTOC') ?: 'protoc'
+def buf = System.getenv('BUF') ?: 'buf'
 
 ext {
-    gemfireInstallDir = installDir
     gemfireProtoDir = protoDir
     // Where unpackExtensionJars puts the jars both Java modules compile against.
     extensionJarsDir = file("${buildDir}/extension-jars")
@@ -83,25 +82,31 @@ def unpackExtensionJars = tasks.register('unpackExtensionJars', Copy) {
 }
 
 /**
- * Generates the Person classes and the descriptor set from person.proto, in one protoc call.
- * Both Java modules compile the classes: the client reads Person values, the listener unpacks
- * them. The descriptor set is packaged into the listener jar; deploying it is what registers
- * test.v1.Person in the server's proto registry. --include_imports makes it self-contained, so
- * the server resolves imported well-known types without their .proto files.
+ * Generates the Person classes and the descriptor set from person.proto. Both Java modules
+ * compile the classes: the client reads Person values, the listener unpacks them. The descriptor
+ * set is packaged into the listener jar; deploying it is what registers test.v1.Person in the
+ * server's proto registry.
+ *
+ * buf build includes imports by default, which is what --include_imports did for protoc, and
+ * makes the descriptor set self-contained. Source info is excluded because the server only reads
+ * the type, and keeping it out leaves the descriptor the same size protoc produced.
  */
 def generateProtoJava = tasks.register('generateProtoJava', Exec) {
     dependsOn checkEnv
     description = 'Generate the Person classes and the descriptor set from person.proto'
     inputs.file "${protoDir}/test/v1/person.proto"
+    inputs.file "${rootDir}/buf.gen.java.yaml"
     outputs.dir generatedJavaDir
     outputs.file protoDescriptorSet
-    // protoc writes into these directories but does not create them.
+    // buf writes into these directories but does not create them.
     doFirst { generatedJavaDir.mkdirs() }
+    workingDir rootDir
     commandLine 'sh', '-c', """
-        ${protoc} --java_out=${generatedJavaDir} \
-            --descriptor_set_out=${protoDescriptorSet} --include_imports \
-            --proto_path=${protoDir}/test/v1 \
-            ${protoDir}/test/v1/person.proto
+        set -e
+        ${buf} generate ${protoDir} --path ${protoDir}/test/v1/person.proto \
+            --template ${rootDir}/buf.gen.java.yaml
+        ${buf} build ${protoDir} --path ${protoDir}/test/v1/person.proto \
+            --as-file-descriptor-set --exclude-source-info -o ${protoDescriptorSet}
     """
 }
 
@@ -126,8 +131,6 @@ configure([project(':gemfire-client'), project(':gemfire-server')]) {
     tasks.named('compileJava').configure {
         dependsOn unpackExtensionJars, generateProtoJava
     }
-
-    project.version = null
 }
 
 // One cluster serves all three modules: the listener is deployed into it, and both clients
