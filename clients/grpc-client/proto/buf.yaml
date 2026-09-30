@@ -1,0 +1,17 @@
+# Copyright 2026 Broadcom. All Rights Reserved.
+#
+# @AI-Generated
+# Generated in whole or in part by Claude
+# Description:
+# 2026-09-29: Standardized on using buf instead of protoc. gemfire.proto imports
+# google/api/field_behavior.proto, which the Buf Schema Registry supplies as a dependency
+# rather than the file being vendored into this directory.
+version: v1
+deps:
+  - buf.build/googleapis/googleapis
+build:
+  # The sibling go-client and python-client Makefiles still use protoc, and they curl
+  # google/api/field_behavior.proto into this directory when it is missing. Excluding it keeps
+  # that copy out of this module, so it cannot collide with the same file from the dependency.
+  excludes:
+    - google

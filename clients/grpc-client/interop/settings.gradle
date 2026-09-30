@@ -8,12 +8,6 @@
  * client in Go, all against one cluster.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-}
-
 rootProject.name = 'interop'
 
 // The GemFire API side of the interop: a client application, and a listener deployed to the
@@ -21,5 +15,5 @@ rootProject.name = 'interop'
 include 'gemfire-client'
 include 'gemfire-server'
 
-// The gRPC side. Not a Java project; its build shells out to protoc and go build.
+// The gRPC side. Not a Java project; its build shells out to buf and go build.
 include 'go-client'
