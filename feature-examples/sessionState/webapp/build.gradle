@@ -21,7 +21,8 @@ version '1.0-SNAPSHOT'
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    // Defaults to 17; override with -PcompileJVMVer=<n> to build with another JDK
+    languageVersion = JavaLanguageVersion.of((findProperty('compileJVMVer') ?: 17) as int)
   }
 }
 
