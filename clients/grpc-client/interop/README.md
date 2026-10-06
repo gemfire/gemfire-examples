@@ -84,7 +84,7 @@ directory", not a GemFire or gRPC error. That is a working-directory problem, no
    The deploy has to precede the region so the listener class resolves.
 
 3. Run the Go gRPC client with `--mode=put`. It packs each `Person` with `anypb.New` and sends it
-   through `CacheService.Put`, leaving two entries written entirely over gRPC.
+   through `GemFire.Put`, leaving two entries written entirely over gRPC.
 
         $ GRPC_XDS_BOOTSTRAP=scripts/xds-bootstrap.json ./go-client/interop-client --mode=put
 

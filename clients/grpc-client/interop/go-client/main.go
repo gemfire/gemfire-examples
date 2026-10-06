@@ -5,7 +5,7 @@
  * Generated in whole or in part by Claude
  * Description:
  * 2026-09-10: gRPC legs of the interop example: --mode=put writes Protobuf, --mode=get reads it.
- * 2026-09-29: Moved into the go-client module.
+ * 2026-09-29: Moved into the go-client module; follows the CacheService -> GemFire rename
  */
 
 package main
@@ -58,7 +58,7 @@ func main() {
 	}
 	defer connection.Close()
 
-	client := gemfirepb.NewCacheServiceClient(connection)
+	client := gemfirepb.NewGemFireClient(connection)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -71,7 +71,7 @@ func main() {
 	get(ctx, client, "grace")
 }
 
-func put(ctx context.Context, client gemfirepb.CacheServiceClient, key string,
+func put(ctx context.Context, client gemfirepb.GemFireClient, key string,
 	person *personpb.Person) {
 	// anypb.New sets the type URL to type.googleapis.com/test.v1.Person. The server stores the
 	// Any as-is, wrapped in a ProtobufMessage. It never needs the Person type to do that.
@@ -93,7 +93,7 @@ func put(ctx context.Context, client gemfirepb.CacheServiceClient, key string,
 		person.GetFirstName(), person.GetLastName())
 }
 
-func get(ctx context.Context, client gemfirepb.CacheServiceClient, key string) {
+func get(ctx context.Context, client gemfirepb.GemFireClient, key string) {
 	response, err := client.Get(ctx, &gemfirepb.GetRequest{
 		RegionName: regionName,
 		Key:        &gemfirepb.Key{KeyValue: &gemfirepb.Key_String_{String_: key}},

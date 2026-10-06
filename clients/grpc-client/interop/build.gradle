@@ -4,9 +4,7 @@
  * @AI-Generated
  * Generated in whole or in part by Claude
  * Description:
- * 2026-09-25: Root build. Shape follows feature-examples (checkEnv, start/stop/cleanServer,
- * shared subproject config), but dependencies come from $GEMFIRE_HOME and the extension .gfm
- * rather than a Maven repository, matching the other examples under clients/grpc-client.
+ * 2026-09-25: Root build from $GEMFIRE_HOME/.gfm; checkEnv+cleanServer configuration-cache safe
  */
 
 // base supplies clean, which cleanServer hangs off; the root builds no code of its own.
@@ -22,6 +20,10 @@ def extensionsDir = System.getenv('GEMFIRE_EXTENSIONS_REPOSITORY_PATH') ?: "${in
 def protoDir = file("${rootDir}/../proto")
 def buf = System.getenv('BUF') ?: 'buf'
 
+def extensionsDirFile = new File(extensionsDir.toString())
+def installLibDir = installDir ? new File(installDir.toString(), 'lib') : null
+def gemfireProtoFile = new File(protoDir, 'gemfire/v1/gemfire.proto')
+
 ext {
     gemfireProtoDir = protoDir
     // Where unpackExtensionJars puts the jars both Java modules compile against.
@@ -34,8 +36,10 @@ ext {
 
 /** The gRPC extension module archive, or null when it is not installed. */
 def grpcModuleArchive = {
-    def dir = file(extensionsDir)
-    dir.isDirectory() ? dir.listFiles()?.find { it.name.contains('grpc') && it.name.endsWith('.gfm') }
+    extensionsDirFile.isDirectory()
+            ? extensionsDirFile.listFiles()?.find {
+                it.name.contains('grpc') && it.name.endsWith('.gfm')
+            }
             : null
 }
 
@@ -45,7 +49,7 @@ def checkEnv = tasks.register('checkEnv') {
             throw new GradleException('Please export GEMFIRE_HOME=<the top-level directory of a '
                     + 'GemFire 10.3.2 or newer installation>. Older lines have no PROTOBUF DSCODE.')
         }
-        if (!file("${installDir}/lib").listFiles()?.any { it.name.startsWith('gemfire-core-') }) {
+        if (!installLibDir?.listFiles()?.any { it.name.startsWith('gemfire-core-') }) {
             throw new GradleException("No gemfire-core jar under ${installDir}/lib. "
                     + 'GEMFIRE_HOME must be a GemFire installation directory.')
         }
@@ -54,7 +58,7 @@ def checkEnv = tasks.register('checkEnv') {
                     + 'Tanzu GemFire gRPC Extension module there, or set '
                     + 'GEMFIRE_EXTENSIONS_REPOSITORY_PATH to the directory holding it.')
         }
-        if (!file("${protoDir}/gemfire/v1/gemfire.proto").exists()) {
+        if (!gemfireProtoFile.exists()) {
             throw new GradleException("${protoDir}/gemfire/v1/gemfire.proto not found. Extract "
                     + 'gemfire.proto from the extension .tgz into that directory.')
         }
@@ -164,12 +168,11 @@ tasks.register('stop', Exec) {
     commandLine 'sh', '-c', "${installDir}/bin/gfsh run --file=${rootDir}/scripts/stop.gfsh"
 }
 
-tasks.register('cleanServer') {
+// A Delete task rather than an ad-hoc doLast: project.delete() from a task action is rejected by
+// the configuration cache, and the targets are fixed, so they can be declared here.
+tasks.register('cleanServer', Delete) {
     description = 'Remove the member directories start.gfsh leaves behind'
-    doLast {
-        delete 'locator'
-        delete 'server1'
-    }
+    delete 'locator', 'server1'
 }
 
 tasks.named('clean').configure {
