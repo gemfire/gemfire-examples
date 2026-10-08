@@ -6,7 +6,7 @@
 #
 # out is relative to the directory buf runs in. The generateProtoJava task runs it from the
 # interop root, so this resolves to the build/generated-java that both Java modules compile.
-version: v1
+version: v2
 plugins:
-  - plugin: buf.build/protocolbuffers/java
+  - remote: buf.build/protocolbuffers/java
     out: build/generated-java

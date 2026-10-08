@@ -20,7 +20,7 @@ exists, and the region has to exist before any client can touch it.
 ## Prerequisites
 
 - **GemFire installation**: `GEMFIRE_HOME` must be set to a GemFire 10.3.2 or newer installation
-  directory; older lines have no PROTOBUF DSCODE.
+  directory.
 - **gRPC extension**: The VMware Tanzu GemFire gRPC Extension (`.gfm` file) must be installed in
   `$GEMFIRE_HOME/extensions/` (or pointed at with `$GEMFIRE_EXTENSIONS_REPOSITORY_PATH`). It must
   be built against the same GemFire line as the installation, because it links GemFire internals

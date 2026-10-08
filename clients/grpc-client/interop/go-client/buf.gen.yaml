@@ -6,13 +6,13 @@
 # paths=source_relative with out "." reproduces the layout the imports in main.go expect:
 # gemfire/v1/gemfire.proto and test/v1/person.proto are the paths inside the proto module, so
 # the stubs land in ./gemfire/v1 and ./test/v1. One template covers both files.
-version: v1
+version: v2
 plugins:
-  - plugin: go
+  - local: protoc-gen-go
     out: .
     opt:
       - paths=source_relative
-  - plugin: go-grpc
+  - local: protoc-gen-go-grpc
     out: .
     opt:
       - paths=source_relative
