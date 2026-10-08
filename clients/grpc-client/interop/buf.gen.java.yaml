@@ -1,10 +1,5 @@
 # Copyright 2026 Broadcom. All Rights Reserved.
 #
-# @AI-Generated
-# Generated in whole or in part by Claude
-# Description:
-# 2026-09-29: Standardized on using buf instead of protoc.
-#
 # The Java generator is built into protoc rather than shipped as a protoc-gen-java binary, so
 # there is no local plugin to call. The Buf Schema Registry runs it remotely, which is what lets
 # this example drop protoc as a prerequisite.

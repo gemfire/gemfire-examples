@@ -1,15 +1,5 @@
 // Copyright (c) 2026 Broadcom. All Rights Reserved.
 
-/*
- * @AI-Generated
- * Generated in whole or in part by Claude
- * Description:
- * 2026-09-25: Wraps the Go build so one gradlew invocation covers all three modules. Gradle only
- * shells out here; the Go toolchain does the work.
- * 2026-09-29: main.go landed, so the tasks no longer skip themselves. Standardized on using buf
- * instead of protoc, which also retired the hand-rolled google/api download.
- */
-
 // This module needs no GemFire jars at all. A gRPC client's whole contract is the wire protocol,
 // so it needs buf, the Go toolchain, and a running cluster - nothing from $GEMFIRE_HOME.
 // protoc-gen-go and protoc-gen-go-grpc must be on PATH; buf runs them as local plugins.

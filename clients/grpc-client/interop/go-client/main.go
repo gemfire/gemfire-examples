@@ -1,13 +1,5 @@
 // Copyright 2026 Broadcom. All Rights Reserved.
 
-/*
- * @AI-Generated
- * Generated in whole or in part by Claude
- * Description:
- * 2026-09-10: gRPC legs of the interop example: --mode=put writes Protobuf, --mode=get reads it.
- * 2026-09-29: Moved into the go-client module; follows the CacheService -> GemFire rename
- */
-
 package main
 
 import (

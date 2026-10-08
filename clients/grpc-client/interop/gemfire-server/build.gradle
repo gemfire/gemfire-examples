@@ -1,13 +1,5 @@
 // Copyright (c) 2026 Broadcom. All Rights Reserved.
 
-/*
- * @AI-Generated
- * Generated in whole or in part by Claude
- * Description:
- * 2026-09-25: Scaffolding for the server half.
- * 2026-09-29: Packages grpc-interop-listener.jar, the jar gfsh deploys into the server.
- */
-
 // The jar handed to "gfsh deploy" is not an ordinary jar. It has to carry three things:
 //
 //   1. PersonCacheListener

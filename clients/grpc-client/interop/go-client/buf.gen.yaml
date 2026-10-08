@@ -1,10 +1,5 @@
 # Copyright 2026 Broadcom. All Rights Reserved.
 #
-# @AI-Generated
-# Generated in whole or in part by Claude
-# Description:
-# 2026-09-29: Standardized on using buf instead of protoc.
-#
 # go and go-grpc are local plugins: buf runs protoc-gen-go and protoc-gen-go-grpc from PATH.
 # Only the Java generator needs a remote plugin.
 #

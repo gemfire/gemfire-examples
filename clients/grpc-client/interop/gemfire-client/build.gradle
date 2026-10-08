@@ -1,13 +1,5 @@
 // Copyright (c) 2026 Broadcom. All Rights Reserved.
 
-/*
- * @AI-Generated
- * Generated in whole or in part by Claude
- * Description:
- * 2026-09-25: The GemFire-API client half of the interop example. Compiler and dependency setup
- * come from the root build; only the entry point is declared here.
- */
-
 // A GemFire client reading values the gRPC API wrote needs gemfire-protobuf-serialization on its
 // runtime classpath, not just at compile time: that jar registers the PROTOBUF DSCODE decoder.
 // The root build puts it on both, so the run task needs no extra classpath of its own.

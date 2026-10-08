@@ -1,14 +1,5 @@
 // Copyright (c) 2026 Broadcom. All Rights Reserved.
 
-/*
- * @AI-Generated
- * Generated in whole or in part by Claude
- * Description:
- * 2026-09-09: GemFire client that reads gRPC-written Protobuf and writes a message of its own.
- * 2026-09-16: Uses com.vmware.gemfire.protobuf.ProtobufMessage, which replaced ProtoAnyDocument.
- * 2026-09-29: Moved into the gemfire-client module.
- */
-
 package com.vmware.gemfire.examples.grpc.interop;
 
 import com.example.test.v1.Person;

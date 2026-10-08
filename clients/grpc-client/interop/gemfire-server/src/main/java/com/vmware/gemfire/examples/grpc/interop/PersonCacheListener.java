@@ -1,13 +1,5 @@
 // Copyright (c) 2026 Broadcom. All Rights Reserved.
 
-/*
- * @AI-Generated
- * Generated in whole or in part by Claude
- * Description:
- * 2026-09-09: Server-side listener that reads Protobuf values written over the gRPC API.
- * 2026-09-29: Moved into the gemfire-server module.
- */
-
 package com.vmware.gemfire.examples.grpc.interop;
 
 import com.example.test.v1.Person;
@@ -31,21 +23,20 @@ import com.vmware.gemfire.protobuf.ProtobufMessage;
  * Logging goes through the cache logger because {@code gfsh} does not capture a callback's
  * {@code System.out}.
  */
-public class PersonCacheListener extends CacheListenerAdapter<String, Object> {
+public class PersonCacheListener extends CacheListenerAdapter<String, ProtobufMessage> {
 
   @Override
-  public void afterCreate(final EntryEvent<String, Object> event) {
+  public void afterCreate(final EntryEvent<String, ProtobufMessage> event) {
     log("afterCreate", event);
   }
 
   @Override
-  public void afterUpdate(final EntryEvent<String, Object> event) {
+  public void afterUpdate(final EntryEvent<String, ProtobufMessage> event) {
     log("afterUpdate", event);
   }
 
-  private void log(final String operation, final EntryEvent<String, Object> event) {
-    final Object newValue = event.getNewValue();
-    final ProtobufMessage message = (ProtobufMessage) newValue;
+  private void log(final String operation, final EntryEvent<String, ProtobufMessage> event) {
+    final ProtobufMessage message = event.getNewValue();
 
     final Person person;
     try {
@@ -58,7 +49,7 @@ public class PersonCacheListener extends CacheListenerAdapter<String, Object> {
     event.getRegion().getCache().getLogger().info("[PersonCacheListener] " + operation
         + " key=" + event.getKey()
         + " originRemote=" + event.isOriginRemote()
-        + " valueClass=" + newValue.getClass().getName()
+        + " valueClass=" + message.getClass().getName()
         + " firstName=" + person.getFirstName()
         + " lastName=" + person.getLastName());
   }
