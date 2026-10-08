@@ -1,0 +1,38 @@
+// Copyright (c) 2026 Broadcom. All Rights Reserved.
+
+// This module needs no GemFire jars at all. A gRPC client's whole contract is the wire protocol,
+// so it needs buf, the Go toolchain, and a running cluster - nothing from $GEMFIRE_HOME.
+// protoc-gen-go and protoc-gen-go-grpc must be on PATH; buf runs them as local plugins.
+
+def protoDir = rootProject.gemfireProtoDir
+def buf = System.getenv('BUF') ?: 'buf'
+
+// gemfire.proto imports google/api/field_behavior.proto. buf.yaml in the proto directory
+// declares buf.build/googleapis/googleapis as a dependency, so buf resolves that import from
+// the Buf Schema Registry instead of the file being downloaded and vendored.
+def generateProto = tasks.register('generateProto', Exec) {
+    dependsOn rootProject.tasks.named('checkEnv')
+    description = 'Generate the Go stubs for CacheService and Person'
+    inputs.file "${protoDir}/gemfire/v1/gemfire.proto"
+    inputs.file "${protoDir}/test/v1/person.proto"
+    inputs.file 'buf.gen.yaml'
+    outputs.dirs 'gemfire', 'test'
+    workingDir projectDir
+    commandLine 'sh', '-c', "${buf} generate ${protoDir}"
+}
+
+def goBuild = tasks.register('goBuild', Exec) {
+    dependsOn generateProto
+    description = 'Build the interop-client binary'
+    workingDir projectDir
+    commandLine 'go', 'build', '-o', 'interop-client', 'main.go'
+}
+
+// Named to match the Java modules, so "gradlew build" at the root covers every module.
+tasks.register('build') {
+    dependsOn goBuild
+}
+
+tasks.register('clean', Delete) {
+    delete 'gemfire', 'test', 'interop-client'
+}

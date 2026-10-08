@@ -1,0 +1,11 @@
+// Copyright (c) 2026 Broadcom. All Rights Reserved.
+
+// A GemFire client reading values the gRPC API wrote needs gemfire-protobuf-serialization on its
+// runtime classpath, not just at compile time: that jar registers the PROTOBUF DSCODE decoder.
+// The root build puts it on both, so the run task needs no extra classpath of its own.
+// Assigning runtimeClasspath carries its own dependency on compilation, so no dependsOn.
+tasks.register('run', JavaExec) {
+    description = 'Read what the gRPC client wrote, then write a value for it to read'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.vmware.gemfire.examples.grpc.interop.GemFireClientExample'
+}

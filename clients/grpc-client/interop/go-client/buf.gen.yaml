@@ -1,0 +1,18 @@
+# Copyright 2026 Broadcom. All Rights Reserved.
+#
+# go and go-grpc are local plugins: buf runs protoc-gen-go and protoc-gen-go-grpc from PATH.
+# Only the Java generator needs a remote plugin.
+#
+# paths=source_relative with out "." reproduces the layout the imports in main.go expect:
+# gemfire/v1/gemfire.proto and test/v1/person.proto are the paths inside the proto module, so
+# the stubs land in ./gemfire/v1 and ./test/v1. One template covers both files.
+version: v2
+plugins:
+  - local: protoc-gen-go
+    out: .
+    opt:
+      - paths=source_relative
+  - local: protoc-gen-go-grpc
+    out: .
+    opt:
+      - paths=source_relative

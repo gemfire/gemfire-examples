@@ -1,0 +1,12 @@
+# Copyright 2026 Broadcom. All Rights Reserved.
+#
+# The Java generator is built into protoc rather than shipped as a protoc-gen-java binary, so
+# there is no local plugin to call. The Buf Schema Registry runs it remotely, which is what lets
+# this example drop protoc as a prerequisite.
+#
+# out is relative to the directory buf runs in. The generateProtoJava task runs it from the
+# interop root, so this resolves to the build/generated-java that both Java modules compile.
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/java
+    out: build/generated-java

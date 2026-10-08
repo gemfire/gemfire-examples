@@ -1,0 +1,173 @@
+// Copyright (c) 2026 Broadcom. All Rights Reserved.
+
+// base supplies clean, which cleanServer hangs off; the root builds no code of its own.
+plugins {
+    id 'base'
+}
+
+def installDir = System.getenv('GEMFIRE_HOME') ?: System.getenv('GEODE_HOME')
+        ?: System.getProperty('GEMFIRE_HOME')
+def extensionsDir = System.getenv('GEMFIRE_EXTENSIONS_REPOSITORY_PATH') ?: "${installDir}/extensions"
+
+// The proto sources are shared with the sibling grpc-client examples rather than copied here.
+def protoDir = file("${rootDir}/../proto")
+def buf = System.getenv('BUF') ?: 'buf'
+
+def extensionsDirFile = new File(extensionsDir.toString())
+def installLibDir = installDir ? new File(installDir.toString(), 'lib') : null
+def gemfireProtoFile = new File(protoDir, 'gemfire/v1/gemfire.proto')
+
+ext {
+    gemfireProtoDir = protoDir
+    // Where unpackExtensionJars puts the jars both Java modules compile against.
+    extensionJarsDir = file("${buildDir}/extension-jars")
+    // Where generateProtoJava puts the Person classes both Java modules compile.
+    generatedJavaDir = file("${buildDir}/generated-java")
+    // Packaged into the listener jar by the gemfire-server module.
+    protoDescriptorSet = file("${buildDir}/person.desc")
+}
+
+/** The gRPC extension module archive, or null when it is not installed. */
+def grpcModuleArchive = {
+    extensionsDirFile.isDirectory()
+            ? extensionsDirFile.listFiles()?.find {
+                it.name.contains('grpc') && it.name.endsWith('.gfm')
+            }
+            : null
+}
+
+def checkEnv = tasks.register('checkEnv') {
+    doLast {
+        if (!installDir) {
+            throw new GradleException('Please export GEMFIRE_HOME=<the top-level directory of a '
+                    + 'GemFire 10.3.2 or newer installation>. Older lines have no PROTOBUF DSCODE.')
+        }
+        if (!installLibDir?.listFiles()?.any { it.name.startsWith('gemfire-core-') }) {
+            throw new GradleException("No gemfire-core jar under ${installDir}/lib. "
+                    + 'GEMFIRE_HOME must be a GemFire installation directory.')
+        }
+        if (grpcModuleArchive() == null) {
+            throw new GradleException("No *grpc*.gfm found in ${extensionsDir}. Copy the VMware "
+                    + 'Tanzu GemFire gRPC Extension module there, or set '
+                    + 'GEMFIRE_EXTENSIONS_REPOSITORY_PATH to the directory holding it.')
+        }
+        if (!gemfireProtoFile.exists()) {
+            throw new GradleException("${protoDir}/gemfire/v1/gemfire.proto not found. Extract "
+                    + 'gemfire.proto from the extension .tgz into that directory.')
+        }
+        println "GemFire installation: ${installDir}"
+        println "gRPC extension:       ${grpcModuleArchive()}"
+    }
+}
+
+/**
+ * Unpacks the two jars this example compiles against out of the .gfm. The installation ships
+ * them nowhere else: gemfire-protobuf-serialization supplies ProtobufMessage and registers the
+ * PROTOBUF DSCODE decoder, and protobuf-java comes from here too so the example uses the same
+ * version the server does. Neither is published to a Maven repository.
+ */
+def unpackExtensionJars = tasks.register('unpackExtensionJars', Copy) {
+    dependsOn checkEnv
+    from { grpcModuleArchive() ? zipTree(grpcModuleArchive()) : files() }
+    include '**/gemfire-protobuf-serialization-*.jar'
+    include '**/protobuf-java-*.jar'
+    exclude '**/protobuf-java-util-*.jar'
+    // Flatten: the jars sit several directories deep inside the module archive.
+    eachFile { it.relativePath = new RelativePath(true, it.name) }
+    includeEmptyDirs = false
+    into extensionJarsDir
+}
+
+/**
+ * Generates the Person classes and the descriptor set from person.proto. Both Java modules
+ * compile the classes: the client reads Person values, the listener unpacks them. The descriptor
+ * set is packaged into the listener jar; deploying it is what registers test.v1.Person in the
+ * server's proto registry.
+ *
+ * buf build includes imports by default, which is what --include_imports did for protoc, and
+ * makes the descriptor set self-contained. Source info is excluded because the server only reads
+ * the type, and keeping it out leaves the descriptor the same size protoc produced.
+ */
+def generateProtoJava = tasks.register('generateProtoJava', Exec) {
+    dependsOn checkEnv
+    description = 'Generate the Person classes and the descriptor set from person.proto'
+    inputs.file "${protoDir}/test/v1/person.proto"
+    inputs.file "${rootDir}/buf.gen.java.yaml"
+    outputs.dir generatedJavaDir
+    outputs.file protoDescriptorSet
+    // buf writes into these directories but does not create them.
+    doFirst { generatedJavaDir.mkdirs() }
+    workingDir rootDir
+    commandLine 'sh', '-c', """
+        set -e
+        ${buf} generate ${protoDir} --path ${protoDir}/test/v1/person.proto \
+            --template ${rootDir}/buf.gen.java.yaml
+        ${buf} build ${protoDir} --path ${protoDir}/test/v1/person.proto \
+            --as-file-descriptor-set --exclude-source-info -o ${protoDescriptorSet}
+    """
+}
+
+// go-client is deliberately excluded: it is not a Java project.
+configure([project(':gemfire-client'), project(':gemfire-server')]) {
+    apply plugin: 'java-library'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(Integer.parseInt(rootProject.compileJVMVer))
+        }
+    }
+
+    // Generated once at the root, compiled by both modules rather than generated twice.
+    sourceSets.main.java.srcDir rootProject.generatedJavaDir
+
+    dependencies {
+        implementation fileTree(dir: "${installDir}/lib", include: '*.jar')
+        implementation fileTree(dir: rootProject.extensionJarsDir, include: '*.jar')
+    }
+
+    tasks.named('compileJava').configure {
+        dependsOn unpackExtensionJars, generateProtoJava
+    }
+}
+
+// One cluster serves all three modules: the listener is deployed into it, and both clients
+// connect to it. The gfsh scripts therefore live at the root rather than per module.
+// start.gfsh deploys the listener jar, so it has to exist before the script runs.
+tasks.register('start', Exec) {
+    dependsOn checkEnv, ':gemfire-server:jar'
+    description = 'Start the locator and server, deploy the listener, and create the region'
+    workingDir rootDir
+    commandLine 'sh', '-c', "${installDir}/bin/gfsh run --file=${rootDir}/scripts/start.gfsh"
+
+    doFirst {
+        println """
+Starting the interop cluster:
+  locator   127.0.0.1[10334], gRPC/xDS on 127.0.0.1:41051
+  server1   ephemeral port, endpoint announced through the locator
+  deploy    gemfire-server/build/libs/grpc-interop-listener.jar
+  region    people (REPLICATE), PersonCacheListener attached
+"""
+    }
+
+    doLast {
+        println "\nCluster is up."
+    }
+}
+
+tasks.register('stop', Exec) {
+    dependsOn checkEnv
+    description = 'Shut down the cluster'
+    workingDir rootDir
+    commandLine 'sh', '-c', "${installDir}/bin/gfsh run --file=${rootDir}/scripts/stop.gfsh"
+}
+
+// A Delete task rather than an ad-hoc doLast: project.delete() from a task action is rejected by
+// the configuration cache, and the targets are fixed, so they can be declared here.
+tasks.register('cleanServer', Delete) {
+    description = 'Remove the member directories start.gfsh leaves behind'
+    delete 'locator', 'server1'
+}
+
+tasks.named('clean').configure {
+    finalizedBy tasks.named('cleanServer')
+}

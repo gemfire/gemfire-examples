@@ -1,0 +1,7 @@
+# Copyright 2026 Broadcom. All Rights Reserved.
+#
+# Shuts down the cluster that start.gfsh created. Run from the interop directory:
+# gfsh run --file=scripts/stop.gfsh
+
+connect --locator=127.0.0.1[10334]
+shutdown --include-locators=true
