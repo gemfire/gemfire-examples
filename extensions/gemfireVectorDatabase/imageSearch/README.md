@@ -37,7 +37,7 @@ The application currently expects to find the GemFire `--http-service-port`  at 
 
 ## Requirements
 
-- [GemFire 10.3+](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Tanzu%20GemFire&displayGroup=VMware%20Tanzu%20GemFire&release=10.3.0&os=&servicePk=545883&language=EN)
+- [GemFire 10.3+](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Tanzu%20GemFire&displayGroup=VMware%20Tanzu%20GemFire&release=10.3.4&os=&servicePk=549076&language=EN)
 - [GemFire Vector Database extension 2.0+](https://support.broadcom.com/group/ecx/productfiles?subFamily=VMware%20Tanzu%20GemFire%20Vector%20Database&displayGroup=VMware%20Tanzu%20GemFire%20Vector%20Database&release=2.0.1&os=&servicePk=547682&language=EN)
 - React
 - Flask (python webserver)
