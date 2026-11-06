@@ -133,7 +133,14 @@ subprojects {
         dependsOn checkEnvTask
         workingDir projectDir
         environment 'GEODE_HOME', installDir
-        commandLine 'sh', '-c', "$installDir/bin/gfsh run --file=${projectDir}/scripts/start.gfsh"
+        // If start.gfsh fails part-way (e.g. a command fails after the locator/servers are up), Gradle aborts
+        // before the 'stop' task can run, leaving members behind that hold ports (such as 10334) and break
+        // any later example or demo on the same host (GEM-24378).  Best-effort stop the cluster, then fail.
+        commandLine 'sh', '-c',
+                "$installDir/bin/gfsh run --file=${projectDir}/scripts/start.gfsh || { rc=\$? ; " +
+                "echo \"start.gfsh failed (exit \$rc); stopping any members it started...\" ; " +
+                "$installDir/bin/gfsh run --file=${projectDir}/scripts/stop.gfsh || true ; " +
+                "exit \$rc ; }"
     }
 
     tasks.register('stop', Exec) {
@@ -196,15 +203,63 @@ subprojects {
         }
     }
 
+    // Opt-in (-PkillLeftoverMembers=true, used by CI): terminate GemFire members left behind by an earlier
+    // example or a failed run and wait for the locator port to be free, instead of failing on them (GEM-24378).
+    tasks.register('killLeftoverMembers') {
+        onlyIf { project.hasProperty('killLeftoverMembers') }
+        doLast {
+            def sh = { String cmd ->
+                new ProcessBuilder('sh', '-c', cmd).inheritIO().start().waitFor()
+            }
+            def membersRunning = { sh('pgrep -f "(Server|Locator)Launcher" > /dev/null') == 0 }
+            if (membersRunning()) {
+                println "Terminating leftover GemFire members..."
+                sh('pkill -f "(Server|Locator)Launcher"')
+                for (int i = 0; i < 20 && membersRunning(); i++) {
+                    sleep(1000)
+                }
+                if (membersRunning()) {
+                    sh('pkill -9 -f "(Server|Locator)Launcher"')
+                    sleep(1000)
+                }
+            }
+            def portFree = {
+                try {
+                    def socket = new ServerSocket()
+                    socket.setReuseAddress(true)
+                    socket.bind(new InetSocketAddress(10334))
+                    socket.close()
+                    return true
+                } catch (IOException ignored) {
+                    return false
+                }
+            }
+            for (int i = 0; i < 30 && !portFree(); i++) {
+                sleep(1000)
+            }
+            if (!portFree()) {
+                throw new GradleException("Port 10334 is still in use after terminating leftover members")
+            }
+        }
+    }
+
     tasks.register('runAll') {
-      ['verifyNoMembersRunning', 'start', 'run', 'stop', 'waitForExitingMembers'].each {
+      ['killLeftoverMembers', 'verifyNoMembersRunning', 'start', 'run', 'stop', 'waitForExitingMembers'].each {
         dependsOn tasks.named(it)
       }
     }
+    tasks.named('verifyNoMembersRunning').configure {mustRunAfter tasks.named('killLeftoverMembers')}
     tasks.named('start').configure {mustRunAfter tasks.named('verifyNoMembersRunning')}
     tasks.named('run').configure {mustRunAfter tasks.named('start')}
     tasks.named('stop').configure {mustRunAfter tasks.named('run')}
     tasks.named('waitForExitingMembers').configure {mustRunAfter tasks.named('stop')}
+
+    // When running runAll, always stop the cluster once 'run' has been attempted, even if it fails;
+    // otherwise Gradle aborts and the members keep holding their ports for whatever runs next (GEM-24378).
+    // (Not applied to a standalone 'run', which is meant to leave the cluster up.)
+    if (gradle.startParameter.taskNames.any { it == 'runAll' || it.endsWith(':runAll') }) {
+        tasks.named('run').configure {finalizedBy tasks.named('stop')}
+    }
 }
 
 apply from: "gradle/spotless.gradle"

@@ -137,7 +137,13 @@ tasks.register('start', Exec) {
     dependsOn checkEnv, ':gemfire-server:jar'
     description = 'Start the locator and server, deploy the listener, and create the region'
     workingDir rootDir
-    commandLine 'sh', '-c', "${installDir}/bin/gfsh run --file=${rootDir}/scripts/start.gfsh"
+    // If start.gfsh fails part-way, Gradle aborts before 'stop' can run and the members keep holding their
+    // ports; best-effort stop the cluster, then fail with the original exit code (GEM-24378).
+    commandLine 'sh', '-c',
+            "${installDir}/bin/gfsh run --file=${rootDir}/scripts/start.gfsh || { rc=\$? ; " +
+            "echo \"start.gfsh failed (exit \$rc); stopping any members it started...\" ; " +
+            "${installDir}/bin/gfsh run --file=${rootDir}/scripts/stop.gfsh || true ; " +
+            "exit \$rc ; }"
 
     doFirst {
         println """
