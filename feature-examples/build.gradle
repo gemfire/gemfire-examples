@@ -16,7 +16,6 @@
  */
 
 plugins {
-    id "org.nosphere.apache.rat" version "0.7.1"
     id "com.diffplug.spotless" version "8.3.0"
     id "de.undercouch.download" version "4.0.4"
 }
@@ -264,4 +263,3 @@ subprojects {
 
 apply from: "gradle/spotless.gradle"
 apply from: "gradle/ide.gradle"
-apply from: "gradle/rat.gradle"
