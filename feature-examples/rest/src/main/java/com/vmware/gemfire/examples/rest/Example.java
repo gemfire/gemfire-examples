@@ -60,7 +60,7 @@ public class Example {
     URL url = new URL(GEODE_REST_END_POINT + "example-region" + POST_REQUEST_PARAMETER);
     HttpURLConnection httpURLConnection = getHttpURLConnection(url);
     httpURLConnection.setRequestMethod("POST");
-    httpURLConnection.setRequestProperty("Content-Type", "application/json; utf-8");
+    httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
     httpURLConnection.setRequestProperty("Accept", "application/json");
     httpURLConnection.setDoOutput(true);
     return httpURLConnection;
